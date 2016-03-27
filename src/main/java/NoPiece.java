@@ -6,6 +6,11 @@ import java.util.List;
 public class NoPiece extends Piece
 {
 
+	public NoPiece()
+	{
+		super(PieceType.NO_PIECE);
+	}
+
 	@Override
 	List<RelativePosition> getNewPositionOffsets()
 	{

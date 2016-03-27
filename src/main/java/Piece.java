@@ -8,8 +8,9 @@ public abstract class Piece
 
 	protected PieceType type;
 
-	public Piece()
+	public Piece(PieceType type)
 	{
+		this.type = type;
 	}
 
 	public Piece(PieceColor color, PieceType type)

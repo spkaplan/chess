@@ -1,6 +1,5 @@
 package main.java;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Board
@@ -118,14 +117,20 @@ public class Board
 	/**
 	 * Determine the positions that the piece at the given position can move to.
 	 * 
-	 * @param position
+	 * @param position Location at which the piece in questions is located.
 	 * @return A list of the valid new positions.
 	 */
 	List<Position> getValidNewPositions(Position position)
 	{
-		return new ArrayList<Position>();
+		return null;
 	}
 
+	/**
+	 * Use the given location to get the piece on the grid at that location.
+	 * 
+	 * @param position Location at which to inspect the grid.
+	 * @return The piece at the given location.
+	 */
 	Piece gridLookup(Position position)
 	{
 		//TODO: Throw index outside of grid exception if the array is indexed out of bounds
