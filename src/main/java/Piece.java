@@ -4,23 +4,18 @@ import java.util.List;
 
 public abstract class Piece
 {
-	private PieceColor color;
+	protected PieceColor color;
 
-	private PieceType type;
+	protected PieceType type;
 
 	public Piece()
 	{
-
 	}
 
-	void setColor()
+	public Piece(PieceColor color, PieceType type)
 	{
-
-	}
-
-	void setType()
-	{
-
+		this.color = color;
+		this.type = type;
 	}
 
 	PieceColor getColor()
@@ -39,5 +34,6 @@ public abstract class Piece
 	 * 
 	 * @return A list of these valid position offsets.
 	 */
-	abstract List<Position> getNewPositionOffsets();
+	abstract List<RelativePosition> getNewPositionOffsets();
+
 }

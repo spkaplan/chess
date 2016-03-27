@@ -5,13 +5,15 @@ import java.util.List;
 
 public class Board
 {
-	private static final int GRID_DIMENSION = 8;
+	static final int GRID_DIMENSION = 8;
 
 	Piece[][] grid;
 
 	public Board()
 	{
-		grid = new Piece[GRID_DIMENSION][GRID_DIMENSION];
+		this.grid = new Piece[GRID_DIMENSION][GRID_DIMENSION];
+
+		placePiecesForNewGame();
 	}
 
 	/**
@@ -20,7 +22,45 @@ public class Board
 	 */
 	void placePiecesForNewGame()
 	{
+		for (int row = 0; row < GRID_DIMENSION; row++)
+		{
+			for (int column = 0; column < GRID_DIMENSION; column++)
+			{
+				placePiece(new NoPiece(), new Position(row, column));
+			}
+		}
 
+		/*Top row*/
+		placePiece(new Rook(PieceColor.BLACK), new Position(0, 0));
+		placePiece(new Knight(PieceColor.BLACK), new Position(0, 1));
+		placePiece(new Bishop(PieceColor.BLACK), new Position(0, 2));
+		placePiece(new Queen(PieceColor.BLACK), new Position(0, 3));
+		placePiece(new King(PieceColor.BLACK), new Position(0, 4));
+		placePiece(new Bishop(PieceColor.BLACK), new Position(0, 5));
+		placePiece(new Knight(PieceColor.BLACK), new Position(0, 6));
+		placePiece(new Rook(PieceColor.BLACK), new Position(0, 7));
+
+		/*Second to top row*/
+		for (int column = 0; column < GRID_DIMENSION; column++)
+		{
+			placePiece(new Pawn(PieceColor.BLACK), new Position(1, column));
+		}
+
+		/*Second to bottom row*/
+		for (int column = 0; column < GRID_DIMENSION; column++)
+		{
+			placePiece(new Pawn(PieceColor.BLACK), new Position(6, column));
+		}
+
+		/*Bottom Row*/
+		placePiece(new Rook(PieceColor.BLACK), new Position(7, 0));
+		placePiece(new Knight(PieceColor.BLACK), new Position(7, 1));
+		placePiece(new Bishop(PieceColor.BLACK), new Position(7, 2));
+		placePiece(new Queen(PieceColor.BLACK), new Position(7, 3));
+		placePiece(new King(PieceColor.BLACK), new Position(7, 4));
+		placePiece(new Bishop(PieceColor.BLACK), new Position(7, 5));
+		placePiece(new Knight(PieceColor.BLACK), new Position(7, 6));
+		placePiece(new Rook(PieceColor.BLACK), new Position(7, 7));
 	}
 
 	/**
@@ -31,7 +71,15 @@ public class Board
 	 */
 	private void placePiece(Piece piece, Position position)
 	{
+		Piece pieceAtDestination = gridLookup(position);
 
+		if (pieceAtDestination.type == PieceType.NO_PIECE)
+		{
+			this.grid[position.getRow()][position.getColumn()] = piece;
+		} else
+		{
+			//TODO: throw piece already at this location exception
+		}
 	}
 
 	/**
@@ -77,4 +125,14 @@ public class Board
 	{
 		return new ArrayList<Position>();
 	}
+
+	Piece gridLookup(Position position)
+	{
+		//TODO: Throw index outside of grid exception if the array is indexed out of bounds
+		return this.grid[position.getRow()][position.getColumn()];
+	}
+
+	//TODO: Create index outside of grid exception
+
+	//TODO: Create piece already at this location exception
 }
