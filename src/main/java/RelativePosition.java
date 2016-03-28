@@ -2,7 +2,7 @@ package main.java;
 
 public class RelativePosition extends Position
 {
-	int distance;
+	private int distance;
 
 	RelativePosition(int row, int column, int distance)
 	{

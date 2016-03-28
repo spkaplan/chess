@@ -1,25 +1,32 @@
 package main.java;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board
 {
 	static final int GRID_DIMENSION = 8;
 
-	Piece[][] grid;
+	private Piece[][] grid;
 
 	public Board()
 	{
 		this.grid = new Piece[GRID_DIMENSION][GRID_DIMENSION];
 
-		placePiecesForNewGame();
+		try
+		{
+			placePiecesForNewGame();
+		} catch (CannotPlacePieceException ex)
+		{
+			//TODO: Decide how to react to this. This should never occur, because the board is empty at this point.
+		}
 	}
 
 	/**
 	 * Place new chess pieces at their respective places in the grid for the
 	 * start of a game.
 	 */
-	void placePiecesForNewGame()
+	private void placePiecesForNewGame() throws CannotPlacePieceException
 	{
 		for (int row = 0; row < GRID_DIMENSION; row++)
 		{
@@ -68,28 +75,49 @@ public class Board
 	 * @param piece Piece object that will be placed on the grid.
 	 * @param position Position on the grid that the piece will be put.
 	 */
-	private void placePiece(Piece piece, Position position)
+	private void placePiece(Piece piece, Position position) throws CannotPlacePieceException
 	{
 		Piece pieceAtDestination = gridLookup(position);
 
-		if (pieceAtDestination.type == PieceType.NO_PIECE)
+		if (pieceAtDestination.getType() == PieceType.NO_PIECE)
 		{
 			this.grid[position.getRow()][position.getColumn()] = piece;
 		} else
 		{
-			//TODO: throw piece already at this location exception
+			String msg = "Position with row=" + position.getRow() + ", col=" + position.getColumn()
+					+ " is not empty.";
+			throw new CannotPlacePieceException(msg);
 		}
 	}
 
 	/**
 	 * Move the piece at the current position to the new position.
 	 * 
-	 * @param currPosition
-	 * @param newPosition
+	 * @param currPosition Location on the grid the piece is currently at.
+	 * @param newPosition Location on the grid the piece is to be moved to.
 	 */
-	void movePiece(Position currPosition, Position newPosition)
+	private void movePiece(Position currPosition, Position newPosition)
+			throws CannotPlacePieceException
 	{
+		Piece pieceToMove = gridLookup(currPosition);
+		Piece pieceAtDestination = gridLookup(newPosition);
 
+		if (pieceToMove.getType() == PieceType.NO_PIECE)
+		{
+			String msg = "Position with row=" + newPosition.getRow() + ", col="
+					+ newPosition.getColumn() + " is not empty.";
+			throw new CannotPlacePieceException(msg);
+		}
+
+		if (pieceAtDestination.getType() != PieceType.NO_PIECE)
+		{
+			String msg = "Position with row=" + newPosition.getRow() + ", col="
+					+ newPosition.getColumn() + " is not empty.";
+			throw new CannotPlacePieceException(msg);
+		}
+
+		this.grid[newPosition.getRow()][newPosition.getColumn()] = pieceToMove;
+		this.grid[currPosition.getRow()][currPosition.getColumn()] = new NoPiece();
 	}
 
 	/**
@@ -100,6 +128,7 @@ public class Board
 	 */
 	boolean isCheck(PieceColor color)
 	{
+		//TODO: Fill this method
 		return false;
 	}
 
@@ -111,17 +140,41 @@ public class Board
 	 */
 	boolean isCheckmate(PieceColor color)
 	{
+		//TODO: Fill this method
 		return false;
 	}
 
 	/**
-	 * Determine the positions that the piece at the given position can move to.
+	 * Determine the positions that the piece at the given position can legally
+	 * move to.
 	 * 
 	 * @param position Location at which the piece in questions is located.
 	 * @return A list of the valid new positions.
 	 */
-	List<Position> getValidNewPositions(Position position)
+	List<Position> getValidNewPositions(Position currPosition)
 	{
+		List<Position> validNewPositions = new ArrayList<Position>();
+
+		Piece piece = gridLookup(currPosition);
+
+		List<RelativePosition> positionOffsets = piece.getNewPositionOffsets();
+
+		/*Add each position offset to the current position. Make sure new position is empty.*/
+		for (RelativePosition offset : positionOffsets)
+		{
+			for (int step = 0; step < offset.getDistance(); step++)
+			{
+				int newRow = currPosition.getRow() + (offset.getRow() * step);
+				int newColumn = currPosition.getColumn() + (offset.getColumn() * step);
+				Position newPosition = new Position(newRow, newColumn);
+
+				if (gridLookup(newPosition).getType() == PieceType.NO_PIECE)
+				{
+					validNewPositions.add(newPosition);
+				}
+			}
+		}
+
 		return null;
 	}
 
@@ -133,11 +186,6 @@ public class Board
 	 */
 	Piece gridLookup(Position position)
 	{
-		//TODO: Throw index outside of grid exception if the array is indexed out of bounds
 		return this.grid[position.getRow()][position.getColumn()];
 	}
-
-	//TODO: Create index outside of grid exception
-
-	//TODO: Create piece already at this location exception
 }

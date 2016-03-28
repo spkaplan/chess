@@ -4,9 +4,9 @@ import java.util.List;
 
 public abstract class Piece
 {
-	protected PieceColor color;
+	private PieceColor color;
 
-	protected PieceType type;
+	private PieceType type;
 
 	public Piece(PieceType type)
 	{

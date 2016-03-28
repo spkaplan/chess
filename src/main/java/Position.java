@@ -2,9 +2,9 @@ package main.java;
 
 public class Position
 {
-	protected int row;
+	private int row;
 
-	protected int column;
+	private int column;
 
 	Position(int row, int column)
 	{
@@ -35,4 +35,6 @@ public class Position
 	{
 		return (0 < row && row < Board.GRID_DIMENSION);
 	}
+
+	//TODO: Create IndexOutsideOfGridException, and throw it if isValidCoordinate returns false
 }
