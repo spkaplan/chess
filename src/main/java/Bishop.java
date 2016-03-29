@@ -5,16 +5,12 @@ import java.util.List;
 
 public class Bishop extends Piece
 {
+	List<RelativePosition> positionOffsets;
 
-	public Bishop(PieceColor color)
+	public Bishop(PieceColor color) throws IndexOutsideOfGridException
 	{
 		super(color, PieceType.BISHOP);
-	}
-
-	@Override
-	List<RelativePosition> getNewPositionOffsets() throws IndexOutsideOfGridException
-	{
-		List<RelativePosition> positionOffsets = new ArrayList<RelativePosition>();
+		positionOffsets = new ArrayList<RelativePosition>();
 
 		try
 		{
@@ -26,7 +22,11 @@ public class Bishop extends Piece
 		{
 			throw ex;
 		}
+	}
 
-		return positionOffsets;
+	@Override
+	List<RelativePosition> getNewPositionOffsets()
+	{
+		return this.positionOffsets;
 	}
 }

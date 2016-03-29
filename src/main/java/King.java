@@ -5,16 +5,12 @@ import java.util.List;
 
 public class King extends Piece
 {
+	List<RelativePosition> positionOffsets;
 
-	public King(PieceColor color)
+	public King(PieceColor color) throws IndexOutsideOfGridException
 	{
 		super(color, PieceType.KING);
-	}
-
-	@Override
-	List<RelativePosition> getNewPositionOffsets() throws IndexOutsideOfGridException
-	{
-		List<RelativePosition> positionOffsets = new ArrayList<RelativePosition>();
+		positionOffsets = new ArrayList<RelativePosition>();
 
 		try
 		{
@@ -30,7 +26,11 @@ public class King extends Piece
 		{
 			throw ex;
 		}
+	}
 
-		return positionOffsets;
+	@Override
+	List<RelativePosition> getNewPositionOffsets()
+	{
+		return this.positionOffsets;
 	}
 }

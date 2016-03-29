@@ -157,7 +157,7 @@ public class Board
 	 * @param position Location at which the piece in questions is located.
 	 * @return A list of the valid new positions.
 	 */
-	List<Position> getValidNewPositions(Position currPosition)
+	List<Position> getValidNewPositions(Position currPosition) throws IndexOutsideOfGridException
 	{
 		List<Position> validNewPositions = new ArrayList<Position>();
 
@@ -172,7 +172,14 @@ public class Board
 			{
 				int newRow = currPosition.getRow() + (offset.getRow() * step);
 				int newColumn = currPosition.getColumn() + (offset.getColumn() * step);
-				Position newPosition = new Position(newRow, newColumn);
+				Position newPosition;
+				try
+				{
+					newPosition = new Position(newRow, newColumn);
+				} catch (IndexOutsideOfGridException ex)
+				{
+					throw ex;
+				}
 
 				if (gridLookup(newPosition).getType() == PieceType.NO_PIECE)
 				{

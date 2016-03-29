@@ -36,6 +36,6 @@ public abstract class Piece
 	 * @return A list of these valid position offsets.
 	 * @throws IndexOutsideOfGridException
 	 */
-	abstract List<RelativePosition> getNewPositionOffsets() throws IndexOutsideOfGridException;
+	abstract List<RelativePosition> getNewPositionOffsets();
 
 }
