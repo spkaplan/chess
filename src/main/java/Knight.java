@@ -12,17 +12,25 @@ public class Knight extends Piece
 	}
 
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPositionOffsets() throws IndexOutsideOfGridException
 	{
 		List<RelativePosition> positionOffsets = new ArrayList<RelativePosition>();
-		positionOffsets.add(new RelativePosition(1, 2, 1));
-		positionOffsets.add(new RelativePosition(2, 1, 1));
-		positionOffsets.add(new RelativePosition(1, -2, 1));
-		positionOffsets.add(new RelativePosition(2, -1, 1));
-		positionOffsets.add(new RelativePosition(-1, 2, 1));
-		positionOffsets.add(new RelativePosition(-2, 1, 1));
-		positionOffsets.add(new RelativePosition(-1, -2, 1));
-		positionOffsets.add(new RelativePosition(-2, -1, 1));
+
+		try
+		{
+			positionOffsets.add(new RelativePosition(1, 2, 1));
+			positionOffsets.add(new RelativePosition(2, 1, 1));
+			positionOffsets.add(new RelativePosition(1, -2, 1));
+			positionOffsets.add(new RelativePosition(2, -1, 1));
+			positionOffsets.add(new RelativePosition(-1, 2, 1));
+			positionOffsets.add(new RelativePosition(-2, 1, 1));
+			positionOffsets.add(new RelativePosition(-1, -2, 1));
+			positionOffsets.add(new RelativePosition(-2, -1, 1));
+		} catch (IndexOutsideOfGridException ex)
+		{
+			throw ex;
+		}
+
 		return positionOffsets;
 	}
 }

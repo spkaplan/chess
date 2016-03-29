@@ -16,9 +16,11 @@ public class Board
 		try
 		{
 			placePiecesForNewGame();
-		} catch (CannotPlacePieceException ex)
+		} catch (IndexOutsideOfGridException | CannotPlacePieceException ex)
 		{
-			//TODO: Decide how to react to this. This should never occur, because the board is empty at this point.
+			//TODO: Decide how to react to this. This should never occur.
+			//IndexOutsideOfGridException is thrown if we have wrongly placed a piece when initializing the game.
+			//CannotPlacePieceException is thrown if you try to place a piece on top of another piece.
 		}
 	}
 
@@ -26,7 +28,8 @@ public class Board
 	 * Place new chess pieces at their respective places in the grid for the
 	 * start of a game.
 	 */
-	private void placePiecesForNewGame() throws CannotPlacePieceException
+	private void placePiecesForNewGame() throws CannotPlacePieceException,
+			IndexOutsideOfGridException
 	{
 		for (int row = 0; row < GRID_DIMENSION; row++)
 		{
@@ -102,17 +105,20 @@ public class Board
 		Piece pieceToMove = gridLookup(currPosition);
 		Piece pieceAtDestination = gridLookup(newPosition);
 
+		/*Make sure there is a piece to move*/
 		if (pieceToMove.getType() == PieceType.NO_PIECE)
 		{
 			String msg = "Position with row=" + newPosition.getRow() + ", col="
-					+ newPosition.getColumn() + " is not empty.";
+					+ newPosition.getColumn() + " is empty.";
 			throw new CannotPlacePieceException(msg);
 		}
 
-		if (pieceAtDestination.getType() != PieceType.NO_PIECE)
+		/*Make sure there the piece in the destination is of the other color*/
+		if (pieceAtDestination.getType() != PieceType.NO_PIECE
+				&& pieceAtDestination.getColor() == pieceToMove.getColor())
 		{
 			String msg = "Position with row=" + newPosition.getRow() + ", col="
-					+ newPosition.getColumn() + " is not empty.";
+					+ newPosition.getColumn() + " is of the same color of the moving piece.";
 			throw new CannotPlacePieceException(msg);
 		}
 

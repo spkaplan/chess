@@ -6,12 +6,24 @@ public class Position
 
 	private int column;
 
-	Position(int row, int column)
+	Position(int row, int column) throws IndexOutsideOfGridException
 	{
-		if (isValidCoordinate(row) && isValidCoordinate(column))
+		if (isValidCoordinate(row))
 		{
 			this.row = row;
+		} else
+		{
+			String msg = "Row value=" + row + " is out of bounds.";
+			throw new IndexOutsideOfGridException(msg);
+		}
+
+		if (isValidCoordinate(column))
+		{
 			this.column = column;
+		} else
+		{
+			String msg = "Column value=" + column + " is out of bounds.";
+			throw new IndexOutsideOfGridException(msg);
 		}
 	}
 
@@ -33,7 +45,7 @@ public class Position
 	 */
 	protected boolean isValidCoordinate(int coordinate)
 	{
-		return (0 < row && row < Board.GRID_DIMENSION);
+		return (0 <= row && row < Board.GRID_DIMENSION);
 	}
 
 	//TODO: Create IndexOutsideOfGridException, and throw it if isValidCoordinate returns false

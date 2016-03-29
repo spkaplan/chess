@@ -12,17 +12,25 @@ public class Queen extends Piece
 	}
 
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPositionOffsets() throws IndexOutsideOfGridException
 	{
 		List<RelativePosition> positionOffsets = new ArrayList<RelativePosition>();
-		positionOffsets.add(new RelativePosition(1, 1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(1, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, 1, Board.GRID_DIMENSION));
+
+		try
+		{
+			positionOffsets.add(new RelativePosition(1, 1, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(1, -1, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(-1, -1, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
+			positionOffsets.add(new RelativePosition(-1, 1, Board.GRID_DIMENSION));
+		} catch (IndexOutsideOfGridException ex)
+		{
+			throw ex;
+		}
+
 		return positionOffsets;
 	}
 }
