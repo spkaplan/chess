@@ -7,7 +7,7 @@ public class Bishop extends Piece
 {
 	List<RelativePosition> positionOffsets;
 
-	public Bishop(PieceColor color) throws IndexOutsideOfGridException
+	public Bishop(PieceColor color)
 	{
 		super(color, PieceType.BISHOP);
 		positionOffsets = new ArrayList<RelativePosition>();

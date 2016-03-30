@@ -7,7 +7,7 @@ public class Pawn extends Piece
 {
 	List<RelativePosition> positionOffsets;
 
-	public Pawn(PieceColor color) throws IndexOutsideOfGridException
+	public Pawn(PieceColor color)
 	{
 		super(color, PieceType.PAWN);
 		positionOffsets = new ArrayList<RelativePosition>();

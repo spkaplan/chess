@@ -7,7 +7,7 @@ public class Rook extends Piece
 {
 	List<RelativePosition> positionOffsets;
 
-	public Rook(PieceColor color) throws IndexOutsideOfGridException
+	public Rook(PieceColor color)
 	{
 		super(color, PieceType.ROOK);
 		positionOffsets = new ArrayList<RelativePosition>();

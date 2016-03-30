@@ -7,7 +7,7 @@ public class Knight extends Piece
 {
 	List<RelativePosition> positionOffsets;
 
-	public Knight(PieceColor color) throws IndexOutsideOfGridException
+	public Knight(PieceColor color)
 	{
 		super(color, PieceType.KNIGHT);
 		positionOffsets = new ArrayList<RelativePosition>();

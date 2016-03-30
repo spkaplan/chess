@@ -7,7 +7,7 @@ public class Queen extends Piece
 {
 	List<RelativePosition> positionOffsets;
 
-	public Queen(PieceColor color) throws IndexOutsideOfGridException
+	public Queen(PieceColor color)
 	{
 		super(color, PieceType.QUEEN);
 		positionOffsets = new ArrayList<RelativePosition>();

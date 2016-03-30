@@ -7,7 +7,7 @@ public class King extends Piece
 {
 	List<RelativePosition> positionOffsets;
 
-	public King(PieceColor color) throws IndexOutsideOfGridException
+	public King(PieceColor color)
 	{
 		super(color, PieceType.KING);
 		positionOffsets = new ArrayList<RelativePosition>();

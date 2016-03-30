@@ -15,11 +15,16 @@ public class Board
 		placePiecesForNewGame();
 	}
 
+	public Piece[][] getGrid()
+	{
+		return this.grid;
+	}
+
 	/**
 	 * Place new chess pieces at their respective places in the grid for the
 	 * start of a game.
 	 * 
-	 * @throws CannotPlacePieceExceptionIf there is a piece already in the
+	 * @throws CannotPlacePieceException If there is a piece already in the
 	 *             destination which prevents the piece from being moved.
 	 * @throws IndexOutsideOfGridException If the piece tries to create a new
 	 *             position that is off the grid.
@@ -158,9 +163,9 @@ public class Board
 	{
 		Position kingPosition = getKingPosition(color);
 
-		for (int row = 0; row < this.GRID_DIMENSION; row++)
+		for (int row = 0; row < Board.GRID_DIMENSION; row++)
 		{
-			for (int column = 0; column < this.GRID_DIMENSION; column++)
+			for (int column = 0; column < Board.GRID_DIMENSION; column++)
 			{
 				Piece piece = gridLookup(new Position(row, column));
 
@@ -202,9 +207,9 @@ public class Board
 	 */
 	Position getKingPosition(PieceColor color) throws IndexOutsideOfGridException
 	{
-		for (int row = 0; row < this.GRID_DIMENSION; row++)
+		for (int row = 0; row < Board.GRID_DIMENSION; row++)
 		{
-			for (int column = 0; column < this.GRID_DIMENSION; column++)
+			for (int column = 0; column < Board.GRID_DIMENSION; column++)
 			{
 				Piece piece = gridLookup(new Position(row, column));
 				if (piece.getColor() == color && piece.getType() == PieceType.KING)
