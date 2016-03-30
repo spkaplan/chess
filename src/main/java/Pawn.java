@@ -12,12 +12,26 @@ public class Pawn extends Piece
 		super(color, PieceType.PAWN);
 		positionOffsets = new ArrayList<RelativePosition>();
 
-		try
+		if (this.getColor() == PieceColor.WHITE)
 		{
-			positionOffsets.add(new RelativePosition(0, 1, 1));
-		} catch (IndexOutsideOfGridException ex)
+			/*On the first turn, pawns can move two spaces.*/
+			if (Model.getTurnCount() == 1)
+			{
+				positionOffsets.add(new RelativePosition(0, -1, 2));
+			} else
+			{
+				positionOffsets.add(new RelativePosition(0, -1, 1));
+			}
+		} else
 		{
-			throw ex;
+			/*On the second turn (Black's first turn), pawns can move two spaces.*/
+			if (Model.getTurnCount() == 2)
+			{
+				positionOffsets.add(new RelativePosition(0, 1, 2));
+			} else
+			{
+				positionOffsets.add(new RelativePosition(0, 1, 1));
+			}
 		}
 	}
 

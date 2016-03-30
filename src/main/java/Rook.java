@@ -12,16 +12,10 @@ public class Rook extends Piece
 		super(color, PieceType.ROOK);
 		positionOffsets = new ArrayList<RelativePosition>();
 
-		try
-		{
-			positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
-		} catch (IndexOutsideOfGridException ex)
-		{
-			throw ex;
-		}
+		positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
 	}
 
 	@Override

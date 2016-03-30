@@ -8,6 +8,7 @@ public class Position
 
 	Position(int row, int column) throws IndexOutsideOfGridException
 	{
+		/*Check row is in valid range*/
 		if (isValidCoordinate(row))
 		{
 			this.row = row;
@@ -17,6 +18,7 @@ public class Position
 			throw new IndexOutsideOfGridException(msg);
 		}
 
+		/*Check column is in valid range*/
 		if (isValidCoordinate(column))
 		{
 			this.column = column;
@@ -47,4 +49,32 @@ public class Position
 	{
 		return (0 <= row && row < Board.GRID_DIMENSION);
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (!(obj instanceof Position))
+		{
+			return false;
+		}
+		Position other = (Position) obj;
+		if (this.column != other.column)
+		{
+			return false;
+		}
+		if (this.row != other.row)
+		{
+			return false;
+		}
+		return true;
+	}
+
 }

@@ -12,20 +12,14 @@ public class King extends Piece
 		super(color, PieceType.KING);
 		positionOffsets = new ArrayList<RelativePosition>();
 
-		try
-		{
-			positionOffsets.add(new RelativePosition(1, 1, 1));
-			positionOffsets.add(new RelativePosition(0, 1, 1));
-			positionOffsets.add(new RelativePosition(1, 0, 1));
-			positionOffsets.add(new RelativePosition(1, -1, 1));
-			positionOffsets.add(new RelativePosition(-1, 0, 1));
-			positionOffsets.add(new RelativePosition(-1, -1, 1));
-			positionOffsets.add(new RelativePosition(0, -1, 1));
-			positionOffsets.add(new RelativePosition(-1, 1, 1));
-		} catch (IndexOutsideOfGridException ex)
-		{
-			throw ex;
-		}
+		positionOffsets.add(new RelativePosition(1, 1, 1));
+		positionOffsets.add(new RelativePosition(0, 1, 1));
+		positionOffsets.add(new RelativePosition(1, 0, 1));
+		positionOffsets.add(new RelativePosition(1, -1, 1));
+		positionOffsets.add(new RelativePosition(-1, 0, 1));
+		positionOffsets.add(new RelativePosition(-1, -1, 1));
+		positionOffsets.add(new RelativePosition(0, -1, 1));
+		positionOffsets.add(new RelativePosition(-1, 1, 1));
 	}
 
 	@Override

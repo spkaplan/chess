@@ -12,20 +12,14 @@ public class Queen extends Piece
 		super(color, PieceType.QUEEN);
 		positionOffsets = new ArrayList<RelativePosition>();
 
-		try
-		{
-			positionOffsets.add(new RelativePosition(1, 1, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(1, -1, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(-1, -1, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
-			positionOffsets.add(new RelativePosition(-1, 1, Board.GRID_DIMENSION));
-		} catch (IndexOutsideOfGridException ex)
-		{
-			throw ex;
-		}
+		positionOffsets.add(new RelativePosition(1, 1, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(1, -1, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(-1, -1, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
+		positionOffsets.add(new RelativePosition(-1, 1, Board.GRID_DIMENSION));
 	}
 
 	@Override

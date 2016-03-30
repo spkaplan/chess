@@ -33,8 +33,7 @@ public abstract class Piece
 	 * Determine the valid positions that the chess piece can move RELATIVE to
 	 * their current position.
 	 * 
-	 * @return A list of these valid position offsets.
-	 * @throws IndexOutsideOfGridException
+	 * @return A list of valid position offsets.
 	 */
 	abstract List<RelativePosition> getNewPositionOffsets();
 

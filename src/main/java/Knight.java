@@ -12,20 +12,14 @@ public class Knight extends Piece
 		super(color, PieceType.KNIGHT);
 		positionOffsets = new ArrayList<RelativePosition>();
 
-		try
-		{
-			positionOffsets.add(new RelativePosition(1, 2, 1));
-			positionOffsets.add(new RelativePosition(2, 1, 1));
-			positionOffsets.add(new RelativePosition(1, -2, 1));
-			positionOffsets.add(new RelativePosition(2, -1, 1));
-			positionOffsets.add(new RelativePosition(-1, 2, 1));
-			positionOffsets.add(new RelativePosition(-2, 1, 1));
-			positionOffsets.add(new RelativePosition(-1, -2, 1));
-			positionOffsets.add(new RelativePosition(-2, -1, 1));
-		} catch (IndexOutsideOfGridException ex)
-		{
-			throw ex;
-		}
+		positionOffsets.add(new RelativePosition(1, 2, 1));
+		positionOffsets.add(new RelativePosition(2, 1, 1));
+		positionOffsets.add(new RelativePosition(1, -2, 1));
+		positionOffsets.add(new RelativePosition(2, -1, 1));
+		positionOffsets.add(new RelativePosition(-1, 2, 1));
+		positionOffsets.add(new RelativePosition(-2, 1, 1));
+		positionOffsets.add(new RelativePosition(-1, -2, 1));
+		positionOffsets.add(new RelativePosition(-2, -1, 1));
 	}
 
 	@Override
