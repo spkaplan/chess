@@ -116,8 +116,9 @@ public class Board
 			this.grid[currPosition.getRow()][currPosition.getColumn()] = new NoPiece();
 		} else
 		{
-			String msg = "Position with row=" + newPosition.getRow() + ", col="
-					+ newPosition.getColumn() + " is of the same color of the moving piece.";
+			String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col="
+					+ currPosition.getColumn() + " to " + newPosition.getRow() + ", col="
+					+ newPosition.getColumn();
 			throw new CannotPlacePieceException(msg);
 		}
 	}
@@ -129,30 +130,9 @@ public class Board
 	 * @param newPosition Location on the grid the piece is to be moved to.
 	 * @return True if the piece is allowed to be moved.
 	 */
-	boolean isMoveValid(Position currPosition, Position newPosition)
-			throws IndexOutsideOfGridException
+	boolean isMoveValid(Position currPosition, Position destinationPosition)
 	{
-		Piece pieceToMove = gridLookup(currPosition);
-		Piece pieceAtDestination = gridLookup(newPosition);
-
-		/*Make sure there is a piece to move*/
-		if (pieceToMove.getType() == PieceType.NO_PIECE)
-		{
-			return false;
-		}
-
-		/*Make sure, if there is a the piece in the destination, that it is of the other color*/
-		if (pieceAtDestination.getType() != PieceType.NO_PIECE
-				&& pieceAtDestination.getColor() == pieceToMove.getColor())
-		{
-			return false;
-		}
-
-		List<Position> possiblePositions = getValidNewPositions(currPosition);
-
-		//TODO: insert getNewValidPosition logic right here, and use the RelativePosition objects to figure out when the movement of the piece would collide with another piece.
-
-		return true;
+		return getValidNewPositions(currPosition).contains(destinationPosition);
 	}
 
 	/**
@@ -230,34 +210,56 @@ public class Board
 	 * move to.
 	 * 
 	 * @param position Location at which the piece in questions is located.
-	 * @throws IndexOutsideOfGridException
 	 * @return A list of the valid new positions.
 	 */
 	List<Position> getValidNewPositions(Position currPosition)
-	{//TODO: get rid of method. move this logic into isMoveValid. Then, the board can go through the loop and check if there are other pieces in the way.
+	{
 		List<Position> validNewPositions = new ArrayList<Position>();
+		Piece pieceToMove = gridLookup(currPosition);
+		List<RelativePosition> positionOffsets = pieceToMove.getNewPositionOffsets();
 
-		Piece piece = gridLookup(currPosition);
-
-		List<RelativePosition> positionOffsets = piece.getNewPositionOffsets();
-
-		/*Add each position offset to the current position.*/
+		/*Add each position offset to the current position. Determine if the combination of the two is a valid place to move to*/
 		for (RelativePosition offset : positionOffsets)
 		{
-			for (int step = 0; step < offset.getDistance(); step++)
+			for (int step = 1; step <= offset.getDistance(); step++)
 			{
 				int newRow = currPosition.getRow() + (offset.getRow() * step);
 				int newColumn = currPosition.getColumn() + (offset.getColumn() * step);
-				Position newPosition;
 
+				/*Confirm the position is within the bounds of the grid*/
+				Position candidatePosition;
 				try
 				{
-					newPosition = new Position(newRow, newColumn);
-					validNewPositions.add(newPosition);
+					candidatePosition = new Position(newRow, newColumn);
 				} catch (IndexOutsideOfGridException ex)
 				{
-					//Do nothing, because it failed to create a position, which is okay.
+					break;
 				}
+
+				/*Position has piece of same color*/
+				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
+						&& pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
+				{
+					break;
+				}
+
+				/*Position has a king of the opposite color*/
+				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
+						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor()
+						&& gridLookup(candidatePosition).getType() != PieceType.KING)
+				{
+					break;
+				}
+
+				/*Position has piece of opposite color*/
+				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
+						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
+				{
+					/*The moving piece can advance to the position, but no further.*/
+					validNewPositions.add(candidatePosition);
+					break;
+				}
+				validNewPositions.add(candidatePosition);
 			}
 		}
 
