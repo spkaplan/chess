@@ -11,9 +11,6 @@ class TextView implements Observer{
     private Model model;
     private TextController controller;
 
-    TextView() {
-    }
-
     void refresh() {
         System.out.println("The view has called refresh");
     }

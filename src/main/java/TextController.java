@@ -8,9 +8,6 @@ public class TextController {
 
     private Model model;
 
-    public TextController() {
-    }
-
     void userEvent(String event) {
         model.incomingAction(event);
     }
