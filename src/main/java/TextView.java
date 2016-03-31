@@ -12,7 +12,6 @@ class TextView implements Observer{
     private TextController controller;
 
     TextView() {
-        model = null; //must be set using "setModel" in Chess()
     }
 
     void refresh() {

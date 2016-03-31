@@ -9,7 +9,6 @@ public class TextController {
     private Model model;
 
     public TextController() {
-        model = null;
     }
 
     void userEvent(String event) {

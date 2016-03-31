@@ -37,7 +37,7 @@ class Model {
     }
 
     int getTurnCount() {
-        return turnCount;
+        return this.turnCount;
     }
 
     Model getState() {
