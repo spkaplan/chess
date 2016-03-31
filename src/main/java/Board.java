@@ -130,6 +130,7 @@ public class Board
 	 * @return True if the piece is allowed to be moved.
 	 */
 	boolean isMoveValid(Position currPosition, Position newPosition)
+			throws IndexOutsideOfGridException
 	{
 		Piece pieceToMove = gridLookup(currPosition);
 		Piece pieceAtDestination = gridLookup(newPosition);
@@ -147,7 +148,9 @@ public class Board
 			return false;
 		}
 
-		//TODO: Figure out logic for determining if there is a piece in the way, and would prevent moving.
+		List<Position> possiblePositions = getValidNewPositions(currPosition);
+
+		//TODO: insert getNewValidPosition logic right here, and use the RelativePosition objects to figure out when the movement of the piece would collide with another piece.
 
 		return true;
 	}
@@ -230,8 +233,8 @@ public class Board
 	 * @throws IndexOutsideOfGridException
 	 * @return A list of the valid new positions.
 	 */
-	List<Position> getValidNewPositions(Position currPosition) throws IndexOutsideOfGridException
-	{
+	List<Position> getValidNewPositions(Position currPosition)
+	{//TODO: get rid of method. move this logic into isMoveValid. Then, the board can go through the loop and check if there are other pieces in the way.
 		List<Position> validNewPositions = new ArrayList<Position>();
 
 		Piece piece = gridLookup(currPosition);
@@ -246,11 +249,14 @@ public class Board
 				int newRow = currPosition.getRow() + (offset.getRow() * step);
 				int newColumn = currPosition.getColumn() + (offset.getColumn() * step);
 				Position newPosition;
-				newPosition = new Position(newRow, newColumn);
 
-				if (isMoveValid(currPosition, newPosition))
+				try
 				{
+					newPosition = new Position(newRow, newColumn);
 					validNewPositions.add(newPosition);
+				} catch (IndexOutsideOfGridException ex)
+				{
+					//Do nothing, because it failed to create a position, which is okay.
 				}
 			}
 		}
