@@ -1,20 +1,22 @@
 package main.java;
 
 /**
- * Created by brandon on 3/29/2016.
+ * Created by brandon on 3/29/2016 at 4:44 PM as part of the chess project.
  */
+
 public class TextController {
 
-    private Model textModel;
-    private TextView textView;
+    private Model model;
 
     public TextController() {
-        textModel = new Model(); //TODO: Is text controller created a model or getting an existing one at instantiation?
-        textView = new TextView(); // And same here
-
+        model = null;
     }
 
     void userEvent(String event) {
-        System.out.println(event);
+        model.incomingAction(event);
+    }
+
+    void setModel(Model model) {
+        this.model = model;
     }
 }
