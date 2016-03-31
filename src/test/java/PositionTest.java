@@ -53,6 +53,7 @@ public class PositionTest
 				numExceptions += 1;
 			}
 		}
+		/*36 b/c there are 36 positions outlining the board that were tested*/
 		assertEquals(numExceptions, 36);
 	}
 

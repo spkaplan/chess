@@ -3,10 +3,12 @@ package main.java;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Create crash file. Use this file to write errors that are not from user input, such as creating a position that is invalid due to error in our code.
+//This will get rid of throwing exceptions that the user did not cause
+
 public class Board
 {
 	static final int GRID_DIMENSION = 8;
-
 	private Piece[][] grid;
 
 	public Board() throws IndexOutsideOfGridException, CannotPlacePieceException
@@ -85,7 +87,7 @@ public class Board
 	{
 		Piece pieceAtDestination = gridLookup(position);
 
-		if (pieceAtDestination.getType() == PieceType.NO_PIECE)
+		if (pieceAtDestination == null || pieceAtDestination.getType() == PieceType.NO_PIECE)
 		{
 			this.grid[position.getRow()][position.getColumn()] = piece;
 		} else
@@ -105,7 +107,7 @@ public class Board
 	 *             destination or something else which prevents the piece from
 	 *             being moved to the destination.
 	 */
-	private void movePiece(Position currPosition, Position newPosition)
+	public void movePiece(Position currPosition, Position newPosition)
 			throws CannotPlacePieceException
 	{
 		Piece pieceToMove = gridLookup(currPosition);
@@ -114,6 +116,12 @@ public class Board
 		{
 			this.grid[newPosition.getRow()][newPosition.getColumn()] = pieceToMove;
 			this.grid[currPosition.getRow()][currPosition.getColumn()] = new NoPiece();
+
+			if (pieceToMove.getType() == PieceType.PAWN)
+			{
+				Pawn pawn = (Pawn) pieceToMove;
+				pawn.setHasBeenMoved(true);
+			}
 		} else
 		{
 			String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col="
@@ -246,7 +254,7 @@ public class Board
 				/*Position has a king of the opposite color*/
 				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
 						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor()
-						&& gridLookup(candidatePosition).getType() != PieceType.KING)
+						&& gridLookup(candidatePosition).getType() == PieceType.KING)
 				{
 					break;
 				}
@@ -262,8 +270,7 @@ public class Board
 				validNewPositions.add(candidatePosition);
 			}
 		}
-
-		return null;
+		return validNewPositions;
 	}
 
 	/**

@@ -19,12 +19,12 @@ public abstract class Piece
 		this.type = type;
 	}
 
-	PieceColor getColor()
+	public PieceColor getColor()
 	{
 		return this.color;
 	}
 
-	PieceType getType()
+	public PieceType getType()
 	{
 		return this.type;
 	}

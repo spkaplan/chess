@@ -5,39 +5,47 @@ import java.util.List;
 
 public class Pawn extends Piece
 {
-	List<RelativePosition> positionOffsets;
+	List<RelativePosition> positionOffsetsInitial;
+	List<RelativePosition> positionOffsetsRegular;
+	boolean hasBeenMoved = false;
 
 	public Pawn(PieceColor color)
 	{
 		super(color, PieceType.PAWN);
-		positionOffsets = new ArrayList<RelativePosition>();
+		positionOffsetsInitial = new ArrayList<RelativePosition>();
+		positionOffsetsRegular = new ArrayList<RelativePosition>();
 
+		/*Pawns move different directions depending on color*/
 		if (this.getColor() == PieceColor.WHITE)
 		{
-			/*On the first turn, pawns can move two spaces.*/
-			if (Model.getTurnCount() == 1)
-			{
-				positionOffsets.add(new RelativePosition(0, -1, 2));
-			} else
-			{
-				positionOffsets.add(new RelativePosition(0, -1, 1));
-			}
+			positionOffsetsInitial.add(new RelativePosition(-1, 0, 2));
+			positionOffsetsRegular.add(new RelativePosition(-1, 0, 1));
 		} else
 		{
-			/*On the second turn (Black's first turn), pawns can move two spaces.*/
-			if (Model.getTurnCount() == 2)
-			{
-				positionOffsets.add(new RelativePosition(0, 1, 2));
-			} else
-			{
-				positionOffsets.add(new RelativePosition(0, 1, 1));
-			}
+			positionOffsetsInitial.add(new RelativePosition(1, 0, 2));
+			positionOffsetsRegular.add(new RelativePosition(1, 0, 1));
 		}
 	}
 
+	/**
+	 * Return the position offsets list that corresponds to whether the pawn has
+	 * been moved before or not.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	List<RelativePosition> getNewPositionOffsets()
 	{
-		return this.positionOffsets;
+		if (this.hasBeenMoved)
+		{
+			return this.positionOffsetsRegular;
+		}
+
+		return this.positionOffsetsInitial;
+	}
+
+	public void setHasBeenMoved(boolean hasBeenMoved)
+	{
+		this.hasBeenMoved = hasBeenMoved;
 	}
 }
