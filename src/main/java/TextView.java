@@ -24,28 +24,65 @@ class TextView {
     		{
     			Position currentPosition = new Position(row, col);
     			Piece currentPiece = board.gridLookup(currentPosition);
+    			PieceColor currentPieceColor = currentPiece.getColor();
     			if (col == 0)
     			{
-    				System.out.print("| " + getAbbriviation(currentPiece));
+    			    if (currentPieceColor == PieceColor.BLACK)
+    			    {
+    			    	System.out.print("| " + (getAbbriviation(currentPiece).toLowerCase()));
+    			    }
+    			    else
+    			    {
+    			    	System.out.print("| " + getAbbriviation(currentPiece));
+    			    }         
     			}
     			else if(col == 7)
     			{
-    				System.out.print(getAbbriviation(currentPiece) +" |");
+    				if (currentPieceColor == PieceColor.BLACK)
+    				{
+    					System.out.print((getAbbriviation(currentPiece).toLowerCase()) +" |");
+    				}
+    				else
+    				{
+    					System.out.print(getAbbriviation(currentPiece) +" |");
+    				}
     				
     			}
     			else if (row == 0)
     			{
     				System.out.println("_");
-    				System.out.print(getAbbriviation(currentPiece));
+    				
+    				if (currentPieceColor == PieceColor.BLACK)
+    				{
+    					System.out.print((getAbbriviation(currentPiece).toLowerCase()));
+    				}
+    				else
+    				{
+    					System.out.print(getAbbriviation(currentPiece));
+    				}
     			}
     			else if (row == 7)
     			{
-    				System.out.print(getAbbriviation(currentPiece));
+    				if (currentPieceColor == PieceColor.BLACK)
+    				{
+    					System.out.print((getAbbriviation(currentPiece).toLowerCase()));
+    				}
+    				else
+    				{
+    					System.out.print(getAbbriviation(currentPiece));
+    				}
     				System.out.println("_");
     			}
     			else
     			{
-    				System.out.print(getAbbriviation(currentPiece));
+    				if (currentPieceColor == PieceColor.BLACK)
+    				{
+    					System.out.print((getAbbriviation(currentPiece).toLowerCase()));
+    				}
+    				else
+    				{
+    					System.out.print(getAbbriviation(currentPiece));
+    				}
     			}
     		}
     	}
