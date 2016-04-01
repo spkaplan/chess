@@ -5,26 +5,26 @@ import java.util.List;
 
 public class Queen extends Piece
 {
-	List<RelativePosition> positionOffsets;
+	List<RelativePosition> possibleMoves;
 
 	public Queen(PieceColor color)
 	{
 		super(color, PieceType.QUEEN);
-		positionOffsets = new ArrayList<RelativePosition>();
+		possibleMoves = new ArrayList<RelativePosition>();
 
-		positionOffsets.add(new RelativePosition(1, 1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(0, 1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(1, 0, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(1, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, 0, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(0, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, 1, Board.GRID_DIMENSION));
+		possibleMoves.add(new RelativePosition(1, 1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(0, 1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(1, 0, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(1, -1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(-1, 0, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(-1, -1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(0, -1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(-1, 1, Board.GRID_SIZE));
 	}
 
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPossibleMoves()
 	{
-		return this.positionOffsets;
+		return this.possibleMoves;
 	}
 }

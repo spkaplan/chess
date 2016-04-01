@@ -50,7 +50,7 @@ public class BoardTest
 		assert (numPieces == 32);
 	}
 
-	@Test
+	@Test()
 	public void testCorrectPiecesAtCorrectLocationsAtBeginningOfGame()
 	{
 		Board board = getBoard();

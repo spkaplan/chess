@@ -12,7 +12,7 @@ public class NoPiece extends Piece
 	}
 
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPossibleMoves()
 	{
 		return new ArrayList<RelativePosition>(); //Empty list, because it cannot move anywhere
 	}

@@ -47,7 +47,7 @@ public class Position
 	 */
 	protected boolean isValidCoordinate(int coordinate)
 	{
-		return (0 <= coordinate && coordinate < Board.GRID_DIMENSION);
+		return (0 <= coordinate && coordinate < Board.GRID_SIZE);
 	}
 
 	@Override

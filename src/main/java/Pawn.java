@@ -5,43 +5,43 @@ import java.util.List;
 
 public class Pawn extends Piece
 {
-	List<RelativePosition> positionOffsetsInitial;
-	List<RelativePosition> positionOffsetsRegular;
+	List<RelativePosition> possibleMovesInitial;
+	List<RelativePosition> possibleMovesRegular;
 	boolean hasBeenMoved = false;
 
 	public Pawn(PieceColor color)
 	{
 		super(color, PieceType.PAWN);
-		positionOffsetsInitial = new ArrayList<RelativePosition>();
-		positionOffsetsRegular = new ArrayList<RelativePosition>();
+		possibleMovesInitial = new ArrayList<RelativePosition>();
+		possibleMovesRegular = new ArrayList<RelativePosition>();
 
 		/*Pawns move different directions depending on color*/
 		if (this.getColor() == PieceColor.WHITE)
 		{
-			positionOffsetsInitial.add(new RelativePosition(-1, 0, 2));
-			positionOffsetsRegular.add(new RelativePosition(-1, 0, 1));
+			possibleMovesInitial.add(new RelativePosition(-1, 0, 2));
+			possibleMovesRegular.add(new RelativePosition(-1, 0, 1));
 		} else
 		{
-			positionOffsetsInitial.add(new RelativePosition(1, 0, 2));
-			positionOffsetsRegular.add(new RelativePosition(1, 0, 1));
+			possibleMovesInitial.add(new RelativePosition(1, 0, 2));
+			possibleMovesRegular.add(new RelativePosition(1, 0, 1));
 		}
 	}
 
 	/**
-	 * Return the position offsets list that corresponds to whether the pawn has
-	 * been moved before or not.
+	 * Return the list of possible moves that corresponds to whether the pawn
+	 * has been moved before or not.
 	 * 
 	 * {@inheritDoc}
 	 */
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPossibleMoves()
 	{
 		if (this.hasBeenMoved)
 		{
-			return this.positionOffsetsRegular;
+			return this.possibleMovesRegular;
 		}
 
-		return this.positionOffsetsInitial;
+		return this.possibleMovesInitial;
 	}
 
 	public void setHasBeenMoved(boolean hasBeenMoved)
