@@ -12,11 +12,8 @@ import main.java.Position;
 
 import org.junit.Test;
 
-//TODO: change assert to assertEquals for lots of the tests
-
 public class BoardTest
 {
-
 	@Test
 	public void testDimensionsOfGrid()
 	{
@@ -38,7 +35,6 @@ public class BoardTest
 	{
 		int numPieces = 0;
 		Board board = getBoard();
-
 		Piece[][] grid = board.getGrid();
 
 		for (int row = 0; row < 8; row++)
@@ -58,7 +54,6 @@ public class BoardTest
 	public void testCorrectPiecesAtCorrectLocationsAtBeginningOfGame()
 	{
 		Board board = getBoard();
-
 		Piece[][] grid = board.getGrid();
 
 		/*Top row. Black royalty.*/
@@ -205,7 +200,6 @@ public class BoardTest
 	public void testMovePawnsIllegally() throws IndexOutsideOfGridException
 	{
 		Board board = getBoard();
-
 		int numErrors = 0;
 
 		/*ONE(1) space, then TWO(2) spaces*/
@@ -249,10 +243,6 @@ public class BoardTest
 		}
 		/*16 b/c there are 16 pawns that get moved illegally*/
 		assertEquals(numErrors, 16);
-
-		//move every other piece around the board a couple times. Introduce some invalid moves in there. 
-
-		//try moving pieces "through" each other, and make sure they can't. Make sure knights CAN jump over anything
 	}
 
 	private Board getBoard()

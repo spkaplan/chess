@@ -36,5 +36,4 @@ public abstract class Piece
 	 * @return A list of valid position offsets.
 	 */
 	abstract List<RelativePosition> getNewPositionOffsets();
-
 }
