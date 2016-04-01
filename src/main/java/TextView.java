@@ -6,18 +6,29 @@ package main.java;
 class TextView {
     private Model model;
 
-    TextView() {
+    TextView() 
+    {
         model = new Model(); //TODO: do we create the model or "get" it?
     }
+    
 
-    void refresh() {
+    /**
+     * Retrieves current state of the model and calls drawBoard.
+     */
+    void refresh()
+    {
     	model.getState();
     	drawBoard(model.getBoard());
     	
         System.out.println("The view has called refresh");
     }
-    
-    void drawBoard(Board board) throws IndexOutsideOfGridException{
+    /**
+     * Iterates through board object printing to the console the correct abbreviation for a given piece and the outer frame of the board.
+     * @param board Current board state. 
+     * @throws IndexOutsideOfGridException
+     */
+    void drawBoard(Board board) throws IndexOutsideOfGridException
+    {
     	for (int row = 0; row < board.GRID_DIMENSION; row++)
     	{
     		for(int col = 0; col < board.GRID_DIMENSION; col++)
@@ -25,26 +36,27 @@ class TextView {
     			Position currentPosition = new Position(row, col);
     			Piece currentPiece = board.gridLookup(currentPosition);
     			PieceColor currentPieceColor = currentPiece.getColor();
+    			String abbreviation = getAbbreviation(currentPiece);
     			if (col == 0)
     			{
     			    if (currentPieceColor == PieceColor.BLACK)
     			    {
-    			    	System.out.print("| " + (getAbbriviation(currentPiece).toLowerCase()));
+    			    	System.out.print("| " + (abbreviation.toLowerCase()));
     			    }
     			    else
     			    {
-    			    	System.out.print("| " + getAbbriviation(currentPiece));
+    			    	System.out.print("| " + abbreviation);
     			    }         
     			}
     			else if(col == 7)
     			{
     				if (currentPieceColor == PieceColor.BLACK)
     				{
-    					System.out.print((getAbbriviation(currentPiece).toLowerCase()) +" |");
+    					System.out.print(abbreviation +" |");
     				}
     				else
     				{
-    					System.out.print(getAbbriviation(currentPiece) +" |");
+    					System.out.print(abbreviation +" |");
     				}
     				
     			}
@@ -54,22 +66,22 @@ class TextView {
     				
     				if (currentPieceColor == PieceColor.BLACK)
     				{
-    					System.out.print((getAbbriviation(currentPiece).toLowerCase()));
+    					System.out.print(abbreviation.toLowerCase());
     				}
     				else
     				{
-    					System.out.print(getAbbriviation(currentPiece));
+    					System.out.print(abbreviation);
     				}
     			}
     			else if (row == 7)
     			{
     				if (currentPieceColor == PieceColor.BLACK)
     				{
-    					System.out.print((getAbbriviation(currentPiece).toLowerCase()));
+    					System.out.print(abbreviation.toLowerCase());
     				}
     				else
     				{
-    					System.out.print(getAbbriviation(currentPiece));
+    					System.out.print(abbreviation);
     				}
     				System.out.println("_");
     			}
@@ -77,20 +89,27 @@ class TextView {
     			{
     				if (currentPieceColor == PieceColor.BLACK)
     				{
-    					System.out.print((getAbbriviation(currentPiece).toLowerCase()));
+    					System.out.print(abbreviation.toLowerCase());
     				}
     				else
     				{
-    					System.out.print(getAbbriviation(currentPiece));
+    					System.out.print(abbreviation);
     				}
     			}
     		}
     	}
     }
-    
-    String getAbbriviation(Piece piece){
+    /**
+     * Maps piece to string representation. 
+     * @param piece
+     * @return String representation of piece. 
+     * @throws IllegalArgumentException For invalid piece type. 
+     */
+    String getAbbreviation(Piece piece) throws IllegalArgumentException
+    {
     	PieceType pieceType = piece.getType();
-    	switch(pieceType){
+    	switch(pieceType)
+    	{
     		case BISHOP: 
     			return " BI ";
     		case KING: 
@@ -106,7 +125,7 @@ class TextView {
     		case NO_PIECE: 
     			return " .. ";
     		default: 
-    			return " ";
+    			throw new IllegalArgumentException("Invalid piece type.");
     		
     	}
     }
