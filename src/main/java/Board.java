@@ -1,6 +1,7 @@
 package main.java;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board
@@ -11,6 +12,12 @@ public class Board
 	public Board() throws IndexOutsideOfGridException, CannotPlacePieceException
 	{
 		this.grid = new Piece[GRID_SIZE][GRID_SIZE];
+
+		for (Piece[] row : this.grid)
+		{
+			Arrays.fill(row, new NoPiece());
+		}
+
 		placePiecesForNewGame();
 	}
 
@@ -31,14 +38,6 @@ public class Board
 	private void placePiecesForNewGame() throws CannotPlacePieceException,
 			IndexOutsideOfGridException
 	{
-		for (int row = 0; row < GRID_SIZE; row++)
-		{
-			for (int column = 0; column < GRID_SIZE; column++)
-			{
-				placePiece(new NoPiece(), new Position(row, column));
-			}
-		}
-
 		/*Top row*/
 		placePiece(new Rook(PieceColor.BLACK), new Position(0, 0));
 		placePiece(new Knight(PieceColor.BLACK), new Position(0, 1));
@@ -84,7 +83,7 @@ public class Board
 	{
 		Piece pieceAtDestination = gridLookup(position);
 
-		if (pieceAtDestination == null || pieceAtDestination.getType() == PieceType.NO_PIECE)
+		if (pieceAtDestination.getType() == PieceType.NO_PIECE)
 		{
 			this.grid[position.getRow()][position.getColumn()] = piece;
 		} else
