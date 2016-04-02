@@ -15,8 +15,6 @@ public class Chess
 		controller.setModel(model);
 
 		TextView view = new TextView();
-		view.setModel(model);
-		view.setController(controller);
 
 		model.addObserver(view);
 	}
