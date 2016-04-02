@@ -1,16 +1,21 @@
 package main.java;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Created by brand on 3/29/2016.
  */
-class TextView
+class TextView implements Observer
 {
 
 	/**
 	 * Retrieves current state of the model and calls drawBoard.
 	 */
-	void update(Model model, Object arg)
+	@Override
+	public void update(Observable o, Object arg)
 	{
+		Model model = (Model) o;
 		try
 		{
 			drawBoard(model.getBoard());
@@ -31,9 +36,9 @@ class TextView
 	 */
 	void drawBoard(Board board) throws IndexOutsideOfGridException
 	{
-		for (int row = 0; row < board.GRID_DIMENSION; row++)
+		for (int row = 0; row < board.GRID_SIZE; row++)
 		{
-			for (int col = 0; col < board.GRID_DIMENSION; col++)
+			for (int col = 0; col < board.GRID_SIZE; col++)
 			{
 				Position currentPosition = new Position(row, col);
 				Piece currentPiece = board.gridLookup(currentPosition);
