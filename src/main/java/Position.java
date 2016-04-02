@@ -6,7 +6,7 @@ public class Position
 
 	private int column;
 
-	Position(int row, int column) throws IndexOutsideOfGridException
+	public Position(int row, int column) throws IndexOutsideOfGridException
 	{
 		/*Check row is in valid range*/
 		if (isValidCoordinate(row))
@@ -47,7 +47,7 @@ public class Position
 	 */
 	protected boolean isValidCoordinate(int coordinate)
 	{
-		return (0 <= row && row < Board.GRID_DIMENSION);
+		return (0 <= coordinate && coordinate < Board.GRID_SIZE);
 	}
 
 	@Override
@@ -76,5 +76,4 @@ public class Position
 		}
 		return true;
 	}
-
 }

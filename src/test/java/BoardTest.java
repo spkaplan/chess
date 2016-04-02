@@ -1,30 +1,40 @@
 package test.java;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import main.java.Bishop;
 import main.java.Board;
 import main.java.CannotPlacePieceException;
 import main.java.IndexOutsideOfGridException;
-import main.java.King;
-import main.java.Knight;
-import main.java.Pawn;
 import main.java.Piece;
 import main.java.PieceColor;
 import main.java.PieceType;
-import main.java.Queen;
-import main.java.Rook;
+import main.java.Position;
 
 import org.junit.Test;
 
 public class BoardTest
 {
+	@Test
+	public void testDimensionsOfGrid()
+	{
+		Board board = getBoard();
+
+		assertEquals(board.getGrid().length, 8);
+		assertEquals(board.getGrid()[0].length, 8);
+		assertEquals(board.getGrid()[1].length, 8);
+		assertEquals(board.getGrid()[2].length, 8);
+		assertEquals(board.getGrid()[3].length, 8);
+		assertEquals(board.getGrid()[4].length, 8);
+		assertEquals(board.getGrid()[5].length, 8);
+		assertEquals(board.getGrid()[6].length, 8);
+		assertEquals(board.getGrid()[7].length, 8);
+	}
 
 	@Test
 	public void testNumPiecesOnBoardAtBeginningOfGame()
 	{
 		int numPieces = 0;
 		Board board = getBoard();
-
 		Piece[][] grid = board.getGrid();
 
 		for (int row = 0; row < 8; row++)
@@ -40,70 +50,199 @@ public class BoardTest
 		assert (numPieces == 32);
 	}
 
-	@Test
+	@Test()
 	public void testCorrectPiecesAtCorrectLocationsAtBeginningOfGame()
 	{
-		int numPieces = 0;
 		Board board = getBoard();
-
 		Piece[][] grid = board.getGrid();
 
 		/*Top row. Black royalty.*/
-		assert (grid[0][0].equals(new Rook(PieceColor.BLACK)));
-		assert (grid[0][1].equals(new Knight(PieceColor.BLACK)));
-		assert (grid[0][2].equals(new Bishop(PieceColor.BLACK)));
-		assert (grid[0][3].equals(new Queen(PieceColor.BLACK)));
-		assert (grid[0][4].equals(new King(PieceColor.BLACK)));
-		assert (grid[0][5].equals(new Bishop(PieceColor.BLACK)));
-		assert (grid[0][6].equals(new Knight(PieceColor.BLACK)));
-		assert (grid[0][7].equals(new Rook(PieceColor.BLACK)));
+		assertEquals(grid[0][0].getType(), PieceType.ROOK);
+		assertEquals(grid[0][0].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][1].getType(), PieceType.KNIGHT);
+		assertEquals(grid[0][1].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][2].getType(), PieceType.BISHOP);
+		assertEquals(grid[0][2].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][3].getType(), PieceType.QUEEN);
+		assertEquals(grid[0][3].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][4].getType(), PieceType.KING);
+		assertEquals(grid[0][4].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][5].getType(), PieceType.BISHOP);
+		assertEquals(grid[0][5].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][6].getType(), PieceType.KNIGHT);
+		assertEquals(grid[0][6].getColor(), PieceColor.BLACK);
+		assertEquals(grid[0][7].getType(), PieceType.ROOK);
+		assertEquals(grid[0][7].getColor(), PieceColor.BLACK);
 
 		/*Second to top row. Black pawns.*/
-		assert (grid[1][0].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][1].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][2].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][3].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][4].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][5].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][6].equals(new Pawn(PieceColor.BLACK)));
-		assert (grid[1][7].equals(new Pawn(PieceColor.BLACK)));
+		for (int column = 0; column < 8; column++)
+		{
+			assertEquals(grid[1][column].getType(), PieceType.PAWN);
+			assertEquals(grid[1][column].getColor(), PieceColor.BLACK);
+		}
 
 		/*Second to bottom row. White pawns.*/
-		assert (grid[6][0].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][1].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][2].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][3].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][4].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][5].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][6].equals(new Pawn(PieceColor.WHITE)));
-		assert (grid[6][7].equals(new Pawn(PieceColor.WHITE)));
+		for (int column = 0; column < 8; column++)
+		{
+			assertEquals(grid[6][column].getType(), PieceType.PAWN);
+			assertEquals(grid[6][column].getColor(), PieceColor.WHITE);
+		}
 
 		/*Bottom row. White royalty.*/
-		assert (grid[7][0].equals(new Rook(PieceColor.WHITE)));
-		assert (grid[7][1].equals(new Knight(PieceColor.WHITE)));
-		assert (grid[7][2].equals(new Bishop(PieceColor.WHITE)));
-		assert (grid[7][3].equals(new Queen(PieceColor.WHITE)));
-		assert (grid[7][4].equals(new King(PieceColor.WHITE)));
-		assert (grid[7][5].equals(new Bishop(PieceColor.WHITE)));
-		assert (grid[7][6].equals(new Knight(PieceColor.WHITE)));
-		assert (grid[7][7].equals(new Rook(PieceColor.WHITE)));
+		assertEquals(grid[7][0].getType(), PieceType.ROOK);
+		assertEquals(grid[7][0].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][1].getType(), PieceType.KNIGHT);
+		assertEquals(grid[7][1].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][2].getType(), PieceType.BISHOP);
+		assertEquals(grid[7][2].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][3].getType(), PieceType.QUEEN);
+		assertEquals(grid[7][3].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][4].getType(), PieceType.KING);
+		assertEquals(grid[7][4].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][5].getType(), PieceType.BISHOP);
+		assertEquals(grid[7][5].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][6].getType(), PieceType.KNIGHT);
+		assertEquals(grid[7][6].getColor(), PieceColor.WHITE);
+		assertEquals(grid[7][7].getType(), PieceType.ROOK);
+		assertEquals(grid[7][7].getColor(), PieceColor.WHITE);
 	}
 
 	@Test
-	public void testDimensionsOfGrid()
+	public void testMovePawnsLegally() throws IndexOutsideOfGridException
 	{
-		int numPieces = 0;
-		Board board = getBoard();
+		Board board1 = getBoard();
 
-		assert (board.getGrid().length == 8);
-		assert (board.getGrid()[0].length == 8);
-		assert (board.getGrid()[1].length == 8);
-		assert (board.getGrid()[2].length == 8);
-		assert (board.getGrid()[3].length == 8);
-		assert (board.getGrid()[4].length == 8);
-		assert (board.getGrid()[5].length == 8);
-		assert (board.getGrid()[6].length == 8);
-		assert (board.getGrid()[7].length == 8);
+		/*ONE(1) space, then ONE(1) space again*/
+		for (int column = 0; column < 8; column++)
+		{
+			/*Black pawns*/
+			/*First move*/
+			try
+			{
+				board1.movePiece(new Position(1, column), new Position(2, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+			/*Second move*/
+			try
+			{
+				board1.movePiece(new Position(2, column), new Position(3, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+
+			/*White pawns*/
+			/*First move*/
+			try
+			{
+				board1.movePiece(new Position(6, column), new Position(5, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+			/*Second move*/
+			try
+			{
+				board1.movePiece(new Position(5, column), new Position(4, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+		}
+
+		/*New simulation. Generate new board.*/
+		Board board2 = getBoard();
+
+		/*TWO(2) spaces, then ONE(1) space*/
+		for (int column = 0; column < 8; column++)
+		{
+			/*Black pawns*/
+			/*First move*/
+			try
+			{
+				board2.movePiece(new Position(1, column), new Position(3, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+			/*Second move*/
+			try
+			{
+				board2.movePiece(new Position(3, column), new Position(4, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+
+			/*White pawns*/
+			/*First move*/
+			try
+			{
+				board2.movePiece(new Position(6, column), new Position(4, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+			/*Second move*/
+			try
+			{
+				board2.movePiece(new Position(4, column), new Position(3, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+		}
+	}
+
+	@Test
+	public void testMovePawnsIllegally() throws IndexOutsideOfGridException
+	{
+		Board board = getBoard();
+		int numErrors = 0;
+
+		/*ONE(1) space, then TWO(2) spaces*/
+		for (int column = 0; column < 8; column++)
+		{
+			/*Black pawns*/
+			/*First move*/
+			try
+			{
+				board.movePiece(new Position(1, column), new Position(2, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				numErrors += 1;
+			}
+			/*Second move*/
+			try
+			{
+				board.movePiece(new Position(2, column), new Position(4, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				numErrors += 1;
+			}
+
+			/*White pawns*/
+			/*First move*/
+			try
+			{
+				board.movePiece(new Position(6, column), new Position(5, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				numErrors += 1;
+			}
+			/*Second move*/
+			try
+			{
+				board.movePiece(new Position(5, column), new Position(3, column));
+			} catch (CannotPlacePieceException ex)
+			{
+				numErrors += 1;
+			}
+		}
+		/*16 b/c there are 16 pawns that get moved illegally*/
+		assertEquals(numErrors, 16);
 	}
 
 	private Board getBoard()

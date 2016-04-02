@@ -5,22 +5,22 @@ import java.util.List;
 
 public class Bishop extends Piece
 {
-	List<RelativePosition> positionOffsets;
+	List<RelativePosition> possibleMoves;
 
 	public Bishop(PieceColor color)
 	{
 		super(color, PieceType.BISHOP);
-		positionOffsets = new ArrayList<RelativePosition>();
+		possibleMoves = new ArrayList<RelativePosition>();
 
-		positionOffsets.add(new RelativePosition(1, 1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, 1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(1, -1, Board.GRID_DIMENSION));
-		positionOffsets.add(new RelativePosition(-1, -1, Board.GRID_DIMENSION));
+		possibleMoves.add(new RelativePosition(1, 1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(-1, 1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(1, -1, Board.GRID_SIZE));
+		possibleMoves.add(new RelativePosition(-1, -1, Board.GRID_SIZE));
 	}
 
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPossibleMoves()
 	{
-		return this.positionOffsets;
+		return this.possibleMoves;
 	}
 }

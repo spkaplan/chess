@@ -5,26 +5,26 @@ import java.util.List;
 
 public class Knight extends Piece
 {
-	List<RelativePosition> positionOffsets;
+	List<RelativePosition> possibleMoves;
 
 	public Knight(PieceColor color)
 	{
 		super(color, PieceType.KNIGHT);
-		positionOffsets = new ArrayList<RelativePosition>();
+		possibleMoves = new ArrayList<RelativePosition>();
 
-		positionOffsets.add(new RelativePosition(1, 2, 1));
-		positionOffsets.add(new RelativePosition(2, 1, 1));
-		positionOffsets.add(new RelativePosition(1, -2, 1));
-		positionOffsets.add(new RelativePosition(2, -1, 1));
-		positionOffsets.add(new RelativePosition(-1, 2, 1));
-		positionOffsets.add(new RelativePosition(-2, 1, 1));
-		positionOffsets.add(new RelativePosition(-1, -2, 1));
-		positionOffsets.add(new RelativePosition(-2, -1, 1));
+		possibleMoves.add(new RelativePosition(1, 2, 1));
+		possibleMoves.add(new RelativePosition(2, 1, 1));
+		possibleMoves.add(new RelativePosition(1, -2, 1));
+		possibleMoves.add(new RelativePosition(2, -1, 1));
+		possibleMoves.add(new RelativePosition(-1, 2, 1));
+		possibleMoves.add(new RelativePosition(-2, 1, 1));
+		possibleMoves.add(new RelativePosition(-1, -2, 1));
+		possibleMoves.add(new RelativePosition(-2, -1, 1));
 	}
 
 	@Override
-	List<RelativePosition> getNewPositionOffsets()
+	List<RelativePosition> getNewPossibleMoves()
 	{
-		return this.positionOffsets;
+		return this.possibleMoves;
 	}
 }

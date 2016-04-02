@@ -6,12 +6,6 @@ package main.java;
 class TextView {
     private Model model;
 
-    TextView() 
-    {
-        model = new Model(); //TODO: do we create the model or "get" it?
-    }
-    
-
     /**
      * Retrieves current state of the model and calls drawBoard.
      */
