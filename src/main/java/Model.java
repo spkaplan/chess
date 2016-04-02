@@ -1,17 +1,14 @@
 package main.java;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
+import java.util.Observable;
 
 /**
  * Created by brandon on 3/29/2016 at 4:44 PM as part of the chess project.
  */
-class Model
+class Model extends Observable
 {
 	private Board board;
 	private PieceColor whosTurn;
-	private List<Observer> observers;
 	private int turnCount;
 
 	Model()
@@ -24,13 +21,7 @@ class Model
 			//TODO: when doing feature-5 (logging) remove the try-catch
 		}
 		this.whosTurn = PieceColor.WHITE;
-		this.observers = new ArrayList<>();
 		this.turnCount = 1;
-	}
-
-	void addObserver(Observer observer)
-	{
-		observers.add(observer);
 	}
 
 	void incomingAction(String action)
@@ -51,10 +42,5 @@ class Model
 	int getTurnCount()
 	{
 		return this.turnCount;
-	}
-
-	Model getState()
-	{
-		return this;
 	}
 }
