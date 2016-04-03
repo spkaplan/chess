@@ -3,11 +3,15 @@ package main.java;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by brand on 3/29/2016.
  */
 public class TextView implements Observer
 {
+	final Logger logger = LoggerFactory.getLogger(TextView.class);
 
 	/**
 	 * Retrieves current state of the model and calls drawBoard.
@@ -16,13 +20,7 @@ public class TextView implements Observer
 	public void update(Observable o, Object arg)
 	{
 		Model model = (Model) o;
-		try
-		{
-			drawBoard(model.getBoard());
-		} catch (IndexOutsideOfGridException ex)
-		{
-			//TODO: in feature-5 (logging) remove this try/catch statement
-		}
+		drawBoard(model.getBoard());
 
 		System.out.println("The view has called refresh");
 	}
@@ -34,13 +32,21 @@ public class TextView implements Observer
 	 * @param board Current board state.
 	 * @throws IndexOutsideOfGridException
 	 */
-	void drawBoard(Board board) throws IndexOutsideOfGridException
+	void drawBoard(Board board)
 	{
 		for (int row = 0; row < board.GRID_SIZE; row++)
 		{
 			for (int col = 0; col < board.GRID_SIZE; col++)
 			{
-				Position currentPosition = new Position(row, col);
+				Position currentPosition = null;
+				try
+				{
+					currentPosition = new Position(row, col);
+				} catch (InvalidPositionException ex)
+				{
+					logger.error(ex.getMessage());
+					System.exit(1);
+				}
 				Piece currentPiece = board.gridLookup(currentPosition);
 				PieceColor currentPieceColor = currentPiece.getColor();
 				String abbreviation = getAbbreviation(currentPiece);

@@ -6,11 +6,12 @@ public class Position
 
 	private int column;
 
-	public String toString() {
+	public String toString()
+	{
 		return Integer.toString(row) + ", " + Integer.toString(column);
 	}
 
-	public Position(int row, int column) throws IndexOutsideOfGridException
+	public Position(int row, int column) throws InvalidPositionException
 	{
 		/*Check row is in valid range*/
 		if (isValidCoordinate(row))
@@ -19,7 +20,7 @@ public class Position
 		} else
 		{
 			String msg = "Row value=" + row + " is out of bounds.";
-			throw new IndexOutsideOfGridException(msg);
+			throw new InvalidPositionException(msg);
 		}
 
 		/*Check column is in valid range*/
@@ -29,7 +30,7 @@ public class Position
 		} else
 		{
 			String msg = "Column value=" + column + " is out of bounds.";
-			throw new IndexOutsideOfGridException(msg);
+			throw new InvalidPositionException(msg);
 		}
 	}
 

@@ -3,8 +3,7 @@ package test.java;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import main.java.Board;
-import main.java.CannotPlacePieceException;
-import main.java.IndexOutsideOfGridException;
+import main.java.InvalidPositionException;
 import main.java.Piece;
 import main.java.PieceColor;
 import main.java.PieceType;
@@ -108,7 +107,7 @@ public class BoardTest
 	}
 
 	@Test
-	public void testMovePawnsLegally() throws IndexOutsideOfGridException
+	public void testMovePawnsLegally() throws InvalidPositionException
 	{
 		Board board1 = new Board();
 
@@ -120,7 +119,7 @@ public class BoardTest
 			try
 			{
 				board1.movePiece(new Position(1, column), new Position(2, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -128,7 +127,7 @@ public class BoardTest
 			try
 			{
 				board1.movePiece(new Position(2, column), new Position(3, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -138,7 +137,7 @@ public class BoardTest
 			try
 			{
 				board1.movePiece(new Position(6, column), new Position(5, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -146,7 +145,7 @@ public class BoardTest
 			try
 			{
 				board1.movePiece(new Position(5, column), new Position(4, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -163,7 +162,7 @@ public class BoardTest
 			try
 			{
 				board2.movePiece(new Position(1, column), new Position(3, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -171,7 +170,7 @@ public class BoardTest
 			try
 			{
 				board2.movePiece(new Position(3, column), new Position(4, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -181,7 +180,7 @@ public class BoardTest
 			try
 			{
 				board2.movePiece(new Position(6, column), new Position(4, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -189,7 +188,7 @@ public class BoardTest
 			try
 			{
 				board2.movePiece(new Position(4, column), new Position(3, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				fail(ex.getLocalizedMessage());
 			}
@@ -197,7 +196,7 @@ public class BoardTest
 	}
 
 	@Test
-	public void testMovePawnsIllegally() throws IndexOutsideOfGridException
+	public void testMovePawnsIllegally() throws InvalidPositionException
 	{
 		Board board = new Board();
 		int numErrors = 0;
@@ -210,7 +209,7 @@ public class BoardTest
 			try
 			{
 				board.movePiece(new Position(1, column), new Position(2, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numErrors += 1;
 			}
@@ -218,7 +217,7 @@ public class BoardTest
 			try
 			{
 				board.movePiece(new Position(2, column), new Position(4, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numErrors += 1;
 			}
@@ -228,7 +227,7 @@ public class BoardTest
 			try
 			{
 				board.movePiece(new Position(6, column), new Position(5, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numErrors += 1;
 			}
@@ -236,7 +235,7 @@ public class BoardTest
 			try
 			{
 				board.movePiece(new Position(5, column), new Position(3, column));
-			} catch (CannotPlacePieceException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numErrors += 1;
 			}
