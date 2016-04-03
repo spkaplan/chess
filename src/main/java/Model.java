@@ -16,13 +16,7 @@ public class Model extends Observable
 
 	public Model()
 	{
-		try
-		{
-			this.board = new Board();
-		} catch (CannotPlacePieceException | IndexOutsideOfGridException ex)
-		{
-			//TODO: when doing feature-5 (logging) remove the try-catch
-		}
+		this.board = new Board();
 		this.whosTurn = PieceColor.WHITE;
 		this.turnCount = 1;
 	}
