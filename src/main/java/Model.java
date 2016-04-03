@@ -10,6 +10,7 @@ class Model extends Observable
 	private Board board;
 	private PieceColor whosTurn;
 	private int turnCount;
+    private String status;
 
 	Model()
 	{
@@ -22,11 +23,6 @@ class Model extends Observable
 		}
 		this.whosTurn = PieceColor.WHITE;
 		this.turnCount = 1;
-	}
-
-	void incomingAction(String action)
-	{
-		System.out.println(action);
 	}
 
 	Board getBoard()
@@ -43,4 +39,22 @@ class Model extends Observable
 	{
 		return this.turnCount;
 	}
+
+	void movePiece(Position curPos, Position newPos) {
+        setChanged();
+		try {
+			board.movePiece(curPos, newPos);
+		} catch (CannotPlacePieceException | IndexOutsideOfGridException e) {
+			status = e.getMessage();
+		}
+        notifyObservers();
+	}
+
+    void getValidNewPositions(Position position) {
+        try {
+            status = "Valid positions for " + board.getValidNewPositions(position).toString();
+        } catch (IndexOutsideOfGridException e) {
+            status = e.getMessage();
+        }
+    }
 }

@@ -15,4 +15,10 @@ public class TextController {
     void setModel(Model model) {
         this.model = model;
     }
+
+    public void run() {
+        while(true) {
+
+        }
+    }
 }
