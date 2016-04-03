@@ -11,8 +11,8 @@ public class Model extends Observable
 	private Board board;
 	private PieceColor whosTurn;
 	private int turnCount;
-    private String status;
-    private List<Position> validmoves;
+    private List<Position> validMoves;
+    private String exceptionThrown;
 
 	public Model()
 	{
@@ -21,9 +21,13 @@ public class Model extends Observable
 		this.turnCount = 1;
 	}
 
-    public String getStatus()
+    public List<Position> getValidMoves()
     {
-        return this.status;
+        return this.validMoves;
+    }
+
+    public String getExceptionThrown() {
+        return this.exceptionThrown;
     }
 
 	public Board getBoard()
@@ -46,33 +50,29 @@ public class Model extends Observable
      * @param curPos the position of the piece you want to move
      * @param newPos the position you are attempting to move the piece to
      */
-	public void movePiece(Position curPos, Position newPos)
+	void movePiece(Position curPos, Position newPos)
     {
+        try {
+            board.movePiece(curPos, newPos);
+        } catch (CannotPlacePieceException e) {
+            exceptionThrown = e.getMessage();
+        }
         setChanged();
-		try {
-			board.movePiece(curPos, newPos);
-		} catch (CannotPlacePieceException | IndexOutsideOfGridException e) {
-			status = e.getMessage();
-		}
         notifyObservers();
-	}
+    }
 
     /**
      * Collects a list of valid moves from the board and updates the valid moves variable. Then, it notifies the
-     * observers triggering a view refresh.
+     * observers triggering a view refresh. Finally, clearing validmoves so that it's null next time the model
+     * is observed.
      * @param position the position the piece the user requested valid moves for
      */
-    public void getValidNewPositions(Position position)
+    void getValidNewPositions(Position position)
     {
+        List<Position> validNewPositions = board.getValidNewPositions(position);
+        validMoves = validNewPositions;
         setChanged();
-        try {
-            List<Position> validNewPositions = board.getValidNewPositions(position);
-            validmoves = validNewPositions;
-            status = null;
-        } catch (IndexOutsideOfGridException e) {
-            status = e.getMessage();
-        }
         notifyObservers();
-        validmoves = null;
+        validMoves = null;
     }
 }
