@@ -259,4 +259,86 @@ public class BoardTest
 		}
 		return board;
 	}
+	@Test
+	public void testValidMoveToNewPosition() 
+	{
+		
+		Board board = getBoard();
+		/* Moving pawns out of the way for tests of other pieces */
+		try
+		{
+			board.movePiece(new Position(1, 0), new Position(3, 0));
+			board.movePiece(new Position(1,1), new Position(3,1));
+			board.movePiece(new Position(1,5), new Position(3,5));
+			board.movePiece(new Position(0,0), new Position(2,0));
+			board.movePiece(new Position(0,1), new Position(2,2));
+			board.movePiece(new Position(0,2), new Position(1,1));
+			board.movePiece(new Position(0,4), new Position(3,7));
+			board.movePiece(new Position(0,3), new Position(0,4));
+			
+		}
+		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}
+	}
+	@Test 
+	public void testInvalidMoveToOutsideGrid()
+	{
+		Board board = getBoard();
+		try
+		{
+			int row =0;
+			for(int col=0; col < 8; col++)
+			{
+				board.movePiece(new Position(row, col), new Position(row, col-1));
+			}
+			board.movePiece(new Position(0,0), new Position(-1,0));
+			board.movePiece(new Position(1,0), new Position(-2,0));
+			board.movePiece(new Position(0,7), new Position(0,8));
+			board.movePiece(new Position(1,7), new Position(1,8));
+		}
+		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}
+	}
+	@Test 
+	public void testInvalidMoveOntoOtherPieces()
+	{
+		Board board = getBoard();
+		try
+		{
+			board.movePiece(new Position(1,0), new Position(3,0));
+			board.movePiece(new Position(0,0), new Position(3,0));
+			board.movePiece(new Position(1,7), new Position(2,7));
+			board.movePiece(new Position(0,5), new Position(2,7));
+			board.movePiece(new Position(0,3), new Position(0,4));
+			board.movePiece(new Position(0,4), new Position(1,5));
+			
+		}
+		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}
+	}
+	@Test 
+	public void testInvalidMoveThroughPieces()
+	{
+		Board board = getBoard();
+		try
+		{
+			board.movePiece(new Position(0,0), new Position(1,0));
+			board.movePiece(new Position(0,2), new Position(2,0));
+			board.movePiece(new Position(0,4), new Position(3,4));
+			
+		}
+		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}
+	}
+	 
+	
+	
 }
