@@ -19,6 +19,7 @@ class TextView implements Observer
 		try
 		{
 			drawBoard(model.getBoard());
+			System.out.println("CURRENT STATUS MESSAGE: " + model.getStatus());
 		} catch (IndexOutsideOfGridException ex)
 		{
 			//TODO: in feature-5 (logging) remove this try/catch statement

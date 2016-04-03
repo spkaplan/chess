@@ -25,6 +25,10 @@ class Model extends Observable
 		this.turnCount = 1;
 	}
 
+    String getStatus() {
+        return this.status;
+    }
+
 	Board getBoard()
 	{
 		return this.board;
@@ -51,10 +55,12 @@ class Model extends Observable
 	}
 
     void getValidNewPositions(Position position) {
+        setChanged();
         try {
-            status = "Valid positions for " + board.getValidNewPositions(position).toString();
+            status = "Valid positions for " + position.toString() + " are " + board.getValidNewPositions(position).toString();
         } catch (IndexOutsideOfGridException e) {
             status = e.getMessage();
         }
+        notifyObservers();
     }
 }
