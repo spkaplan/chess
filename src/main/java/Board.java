@@ -81,8 +81,6 @@ public class Board
 	 * 
 	 * @param piece Piece object that will be placed on the grid.
 	 * @param position Position on the grid that the piece will be put.
-	 * @throws CannotPlacePieceException If there is a piece already in the
-	 *             destination which prevents the piece from being moved.
 	 */
 	private void placePiece(Piece piece, Position position)
 	{
