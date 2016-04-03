@@ -69,7 +69,7 @@ public class Board
 			placePiece(new Bishop(PieceColor.WHITE), new Position(7, 5));
 			placePiece(new Knight(PieceColor.WHITE), new Position(7, 6));
 			placePiece(new Rook(PieceColor.WHITE), new Position(7, 7));
-		} catch (IndexOutsideOfGridException ex)
+		} catch (InvalidPositionException ex)
 		{
 			logger.error(ex.getMessage());
 			System.exit(1);
@@ -92,12 +92,12 @@ public class Board
 	 * 
 	 * @param currPosition Location on the grid the piece is currently at.
 	 * @param newPosition Location on the grid the piece is to be moved to.
-	 * @throws CannotPlacePieceException If there is a piece already in the
+	 * @throws InvalidPositionException If there is a piece already in the
 	 *             destination or something else which prevents the piece from
 	 *             being moved to the destination.
 	 */
 	public void movePiece(Position currPosition, Position newPosition)
-			throws CannotPlacePieceException
+			throws InvalidPositionException
 	{
 		Piece pieceToMove = gridLookup(currPosition);
 
@@ -116,7 +116,7 @@ public class Board
 			String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col="
 					+ currPosition.getColumn() + " to " + newPosition.getRow() + ", col="
 					+ newPosition.getColumn();
-			throw new CannotPlacePieceException(msg);
+			throw new InvalidPositionException(msg);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class Board
 				try
 				{
 					piecePosition = new Position(row, column);
-				} catch (IndexOutsideOfGridException ex)
+				} catch (InvalidPositionException ex)
 				{
 					logger.error(ex.getMessage());
 					System.exit(1);
@@ -213,7 +213,7 @@ public class Board
 				try
 				{
 					position = new Position(row, column);
-				} catch (IndexOutsideOfGridException ex)
+				} catch (InvalidPositionException ex)
 				{
 					logger.error(ex.getMessage());
 					System.exit(1);
@@ -256,7 +256,7 @@ public class Board
 				try
 				{
 					candidatePosition = new Position(newRow, newColumn);
-				} catch (IndexOutsideOfGridException ex)
+				} catch (InvalidPositionException ex)
 				{
 					break;
 				}
