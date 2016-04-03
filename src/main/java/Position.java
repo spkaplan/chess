@@ -6,6 +6,10 @@ public class Position
 
 	private int column;
 
+	public String toString() {
+		return Integer.toString(row) + ", " + Integer.toString(column);
+	}
+
 	public Position(int row, int column) throws IndexOutsideOfGridException
 	{
 		/*Check row is in valid range*/
