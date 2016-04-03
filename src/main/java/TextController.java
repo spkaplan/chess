@@ -15,6 +15,10 @@ public class TextController {
     Map<Character, Integer> charToIntMap = new HashMap<>();
 
     public TextController() {
+        buildcharToIntMap();
+    }
+
+    void buildcharToIntMap() {
         charToIntMap.put('a', 1);
         charToIntMap.put('b', 2);
         charToIntMap.put('c', 3);
@@ -25,6 +29,10 @@ public class TextController {
         charToIntMap.put('h', 8);
     }
 
+    /**
+     * Processes the input of the user and tells model how to react/update.
+     * @param input user input (System.in for now)
+     */
     void processInput(String input) {
         input = input.toLowerCase();
         String[] inputArray = input.split(" ");
@@ -49,6 +57,7 @@ public class TextController {
                 } catch (IndexOutsideOfGridException e) {
                     System.out.println("That grid position does not exist, try again");
                 }
+                break;
             default:
                 System.out.println("Unrecognized command: " + input);
                 break;
@@ -56,10 +65,13 @@ public class TextController {
 
     }
 
-    void setModel(Model model) {
+    public void setModel(Model model) {
         this.model = model;
     }
 
+    /**
+     * This is the method that loops indefinitely awaiting commands from the user.
+     */
     public void run() {
         Scanner reader = new Scanner(System.in);
 

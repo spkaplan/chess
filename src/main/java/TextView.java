@@ -6,7 +6,7 @@ import java.util.Observer;
 /**
  * Created by brand on 3/29/2016.
  */
-class TextView implements Observer
+public class TextView implements Observer
 {
 
 	/**
@@ -19,7 +19,6 @@ class TextView implements Observer
 		try
 		{
 			drawBoard(model.getBoard());
-			System.out.println("CURRENT STATUS MESSAGE: " + model.getStatus());
 		} catch (IndexOutsideOfGridException ex)
 		{
 			//TODO: in feature-5 (logging) remove this try/catch statement
