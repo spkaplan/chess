@@ -3,13 +3,17 @@ package test.java;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import main.java.IndexOutsideOfGridException;
+import main.java.InvalidPositionException;
 import main.java.Position;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PositionTest
 {
+	final Logger logger = LoggerFactory.getLogger(PositionTest.class);
+
 	@Test()
 	public void testErrorThrownIfPositionIsCreatedOutsideOfGrid()
 	{
@@ -21,14 +25,14 @@ public class PositionTest
 			try
 			{
 				Position position = new Position(-1, column);
-			} catch (IndexOutsideOfGridException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numExceptions += 1;
 			}
 			try
 			{
 				Position position = new Position(8, column);
-			} catch (IndexOutsideOfGridException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numExceptions += 1;
 			}
@@ -40,14 +44,14 @@ public class PositionTest
 			try
 			{
 				Position position = new Position(row, -1);
-			} catch (IndexOutsideOfGridException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numExceptions += 1;
 			}
 			try
 			{
 				Position position = new Position(row, 8);
-			} catch (IndexOutsideOfGridException ex)
+			} catch (InvalidPositionException ex)
 			{
 				numExceptions += 1;
 			}
@@ -57,30 +61,44 @@ public class PositionTest
 	}
 
 	@Test()
-	public void testNoErrorThrownIfPositionIsCreatedInsideGrid() throws IndexOutsideOfGridException
+	public void testNoErrorThrownIfPositionIsCreatedInsideGrid()
 	{
 		for (int row = 0; row < 8; row++)
 		{
 			for (int column = 0; column < 8; column++)
 			{
-				Position position = new Position(row, column);
+				try
+				{
+					Position position = new Position(row, column);
+				} catch (InvalidPositionException ex)
+				{
+					logger.error(ex.getMessage());
+					System.exit(1);
+				}
 			}
 		}
 	}
 
 	@Test()
-	public void testEquals() throws IndexOutsideOfGridException
+	public void testEquals()
 	{
-		Position position1 = new Position(0, 0);
-		Position position2 = new Position(0, 0);
-		Position position3 = new Position(0, 1);
-		Position position4 = new Position(1, 0);
-		Position position5 = new Position(1, 1);
+		try
+		{
+			Position position1 = new Position(0, 0);
+			Position position2 = new Position(0, 0);
+			Position position3 = new Position(0, 1);
+			Position position4 = new Position(1, 0);
+			Position position5 = new Position(1, 1);
 
-		assertTrue(position1.equals(position2));
+			assertTrue(position1.equals(position2));
 
-		assertFalse(position2.equals(position3));
-		assertFalse(position3.equals(position4));
-		assertFalse(position4.equals(position5));
+			assertFalse(position2.equals(position3));
+			assertFalse(position3.equals(position4));
+			assertFalse(position4.equals(position5));
+		} catch (InvalidPositionException ex)
+		{
+			logger.error(ex.getMessage());
+			System.exit(1);
+		}
 	}
 }
