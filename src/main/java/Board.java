@@ -124,7 +124,7 @@ public class Board
 	 * Determine whether a piece can move from a position to another.
 	 * 
 	 * @param currPosition Location on the grid the piece is currently at.
-	 * @param newPosition Location on the grid the piece is to be moved to.
+	 * @param destinationPosition Location on the grid the piece is moving to.
 	 * @return True if the piece is allowed to be moved.
 	 */
 	boolean isMoveValid(Position currPosition, Position destinationPosition)
@@ -146,7 +146,6 @@ public class Board
 	/**
 	 * Determine if the given color's king is in check.
 	 * 
-	 * @param color Indication of which color to verify if they're in check.
 	 * @param kingPosition
 	 * @return True if the given color's king is in check.
 	 */
@@ -234,7 +233,7 @@ public class Board
 	 * Determine the positions that the piece at the given position can legally
 	 * move to.
 	 * 
-	 * @param position Location at which the piece in questions is located.
+	 * @param currPosition Location at which the piece in questions is located.
 	 * @return A list of the valid new positions.
 	 */
 	List<Position> getValidNewPositions(Position currPosition)
