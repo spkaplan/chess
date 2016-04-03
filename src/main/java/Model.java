@@ -54,7 +54,7 @@ public class Model extends Observable
     {
         try {
             board.movePiece(curPos, newPos);
-        } catch (CannotPlacePieceException e) {
+        } catch (InvalidPositionException e) {
             exceptionThrown = e.getMessage();
         }
         setChanged();

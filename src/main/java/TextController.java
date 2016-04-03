@@ -45,7 +45,7 @@ public class TextController {
                     Position curPos = new Position(charToIntMap.get(arg1.charAt(0)), Character.getNumericValue(arg1.charAt(1)));
                     Position newPos = new Position(charToIntMap.get(arg2.charAt(0)), Character.getNumericValue(arg2.charAt(1)));
                     model.movePiece(curPos, newPos);
-                } catch (IndexOutsideOfGridException e) {
+                } catch (InvalidPositionException e) {
                     System.out.println("That grid position does not exist, try again");
                 }
                 break;
@@ -54,7 +54,7 @@ public class TextController {
                 try {
                     Position position = new Position(charToIntMap.get(arg1.charAt(0)), Character.getNumericValue(arg1.charAt(1)));
                     model.getValidNewPositions(position);
-                } catch (IndexOutsideOfGridException e) {
+                } catch (InvalidPositionException e) {
                     System.out.println("That grid position does not exist, try again");
                 }
                 break;

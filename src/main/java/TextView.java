@@ -30,7 +30,7 @@ public class TextView implements Observer
 	 * abbreviation for a given piece and the outer frame of the board.
 	 * 
 	 * @param board Current board state.
-	 * @throws IndexOutsideOfGridException
+	 * @throws InvalidPositionException
 	 */
 	void drawBoard(Board board)
 	{
