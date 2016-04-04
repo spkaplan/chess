@@ -20,9 +20,13 @@ public class TextView implements Observer
 	public void update(Observable o, Object arg)
 	{
 		Model model = (Model) o;
+		
+		System.out.println("");
+		System.out.println("LOWERCASE: BLACK | UPPERCASE: WHITE ");
+		System.out.println(model.getWhosTurn() + "'S Turn ");
+		System.out.println("Turn Number: " +model.getTurnCount());
+		System.out.println("");
 		drawBoard(model.getBoard());
-
-		System.out.println("The view has called refresh");
 	}
 
 	/**
@@ -34,6 +38,13 @@ public class TextView implements Observer
 	 */
 	void drawBoard(Board board)
 	{
+		int count = 1;
+		System.out.println("    a   b   c   d   e   f   g   h    ");
+		System.out.print("  ");
+		for (int i =0; i < board.GRID_SIZE; i++){
+			System.out.print("----");
+		}
+		System.out.println("  ");
 		for (int row = 0; row < board.GRID_SIZE; row++)
 		{
 			for (int col = 0; col < board.GRID_SIZE; col++)
@@ -54,24 +65,24 @@ public class TextView implements Observer
 				{
 					if (currentPieceColor == PieceColor.BLACK)
 					{
-						System.out.print("| " + (abbreviation.toLowerCase()));
+						System.out.print(count +" | " + (abbreviation.toLowerCase()));
 					} else
 					{
-						System.out.print("| " + abbreviation);
+						System.out.print(count + " | " + abbreviation);
 					}
+					count++;
 				} else if (col == 7)
 				{
 					if (currentPieceColor == PieceColor.BLACK)
 					{
-						System.out.print(abbreviation + " |");
+						System.out.println(abbreviation.toLowerCase() + " |");
 					} else
 					{
-						System.out.print(abbreviation + " |");
+						System.out.println(abbreviation + " |");
 					}
 
 				} else if (row == 0)
 				{
-					System.out.println("_");
 
 					if (currentPieceColor == PieceColor.BLACK)
 					{
@@ -89,7 +100,7 @@ public class TextView implements Observer
 					{
 						System.out.print(abbreviation);
 					}
-					System.out.println("_");
+
 				} else
 				{
 					if (currentPieceColor == PieceColor.BLACK)
@@ -102,6 +113,11 @@ public class TextView implements Observer
 				}
 			}
 		}
+		System.out.print("  ");
+		for (int i =0; i < board.GRID_SIZE; i++){
+			System.out.print("¯¯¯¯");
+		}
+		System.out.println("  ");
 	}
 
 	/**
