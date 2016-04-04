@@ -41,8 +41,7 @@ public class TextController {
             case "move":
                 if(inputArray.length != 3) {
                     String message = "The move command requires two grid positions separated by a space (e.g. move a1 a2)";
-                    IllegalArgumentException exception = new IllegalArgumentException(message);
-                    model.setExceptionThrown(exception);
+                    model.setExceptionThrown(new IllegalArgumentException(message));
                     break;
                 }
                 arg1 = inputArray[1];
@@ -58,8 +57,7 @@ public class TextController {
             case "validmoves":
                 if(inputArray.length != 2) {
                     String message = "The validmoves command requires one grid position (e.g. validmoves a1)";
-                    IllegalArgumentException exception = new IllegalArgumentException(message);
-                    model.setExceptionThrown(exception);
+                    model.setExceptionThrown(new IllegalArgumentException(message));
                     break;
                 }
                 arg1 = inputArray[1];
@@ -72,11 +70,10 @@ public class TextController {
                 break;
             default:
                 String message = "Unrecognized Command: " + input;
-                IllegalArgumentException exception = new IllegalArgumentException(message);
-                model.setExceptionThrown(exception);
+                model.setExceptionThrown(new IllegalArgumentException(message));
                 break;
         }
-
+        model.notifyObservers();
     }
 
     public void setModel(Model model) {

@@ -30,11 +30,25 @@ public class Model extends Observable
         return this.exceptionThrown;
     }
 
+    /**
+     * Notify the view and clear the temporary state variables that have been set.
+     */
+    public void notifyObservers() {
+        super.notifyObservers();
+        clearTempStates();
+    }
+
+    /**
+     * Clear any temporary state variables that have developed since the last call to refresh view.
+     */
+    public void clearTempStates() {
+        this.exceptionThrown = null;
+        this.validMoves = null;
+    }
+
     public void setExceptionThrown(Exception exceptionThrown) {
         this.exceptionThrown = exceptionThrown;
         setChanged();
-        notifyObservers();
-        this.exceptionThrown = null;
     }
 
 	public Board getBoard()
@@ -65,8 +79,6 @@ public class Model extends Observable
             exceptionThrown = e;
         }
         setChanged();
-        notifyObservers();
-        exceptionThrown = null;
     }
 
     /**
@@ -80,7 +92,5 @@ public class Model extends Observable
         List<Position> validNewPositions = board.getValidNewPositions(position);
         validMoves = validNewPositions;
         setChanged();
-        notifyObservers();
-        validMoves = null;
     }
 }
