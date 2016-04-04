@@ -30,7 +30,7 @@ public class TextController {
     }
 
     /**
-     * Processes the input of the user and tells model how to react/update.
+     * Processes the input of the user and tells model how to react/update. Also queues the model to refresh the view
      * @param input user input (System.in for now)
      */
     void processInput(String input) {
