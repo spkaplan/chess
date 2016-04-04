@@ -12,7 +12,7 @@ public class Model extends Observable
 	private PieceColor whosTurn;
 	private int turnCount;
     private List<Position> validMoves;
-    private String exceptionThrown;
+    private Exception exceptionThrown;
 
 	public Model()
 	{
@@ -26,8 +26,15 @@ public class Model extends Observable
         return this.validMoves;
     }
 
-    public String getExceptionThrown() {
+    public Exception getExceptionThrown() {
         return this.exceptionThrown;
+    }
+
+    public void setExceptionThrown(Exception exceptionThrown) {
+        this.exceptionThrown = exceptionThrown;
+        setChanged();
+        notifyObservers();
+        this.exceptionThrown = null;
     }
 
 	public Board getBoard()
@@ -55,10 +62,11 @@ public class Model extends Observable
         try {
             board.movePiece(curPos, newPos);
         } catch (InvalidPositionException e) {
-            exceptionThrown = e.getMessage();
+            exceptionThrown = e;
         }
         setChanged();
         notifyObservers();
+        exceptionThrown = null;
     }
 
     /**

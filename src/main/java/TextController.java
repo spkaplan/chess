@@ -15,10 +15,10 @@ public class TextController {
     Map<Character, Integer> charToIntMap = new HashMap<>();
 
     public TextController() {
-        buildcharToIntMap();
+        buildCharToIntMap();
     }
 
-    void buildcharToIntMap() {
+    void buildCharToIntMap() {
         charToIntMap.put('a', 1);
         charToIntMap.put('b', 2);
         charToIntMap.put('c', 3);
@@ -39,27 +39,41 @@ public class TextController {
         String arg1, arg2;
         switch(inputArray[0]) {
             case "move":
+                if(inputArray.length != 3) {
+                    String message = "The move command requires two grid positions separated by a space (e.g. move a1 a2)";
+                    IllegalArgumentException exception = new IllegalArgumentException(message);
+                    model.setExceptionThrown(exception);
+                    break;
+                }
                 arg1 = inputArray[1];
                 arg2 = inputArray[2];
                 try {
-                    Position curPos = new Position(charToIntMap.get(arg1.charAt(0)), Character.getNumericValue(arg1.charAt(1)));
-                    Position newPos = new Position(charToIntMap.get(arg2.charAt(0)), Character.getNumericValue(arg2.charAt(1)));
+                    Position curPos = new Position(Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position newPos = new Position(Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
                     model.movePiece(curPos, newPos);
                 } catch (InvalidPositionException e) {
-                    System.out.println("That grid position does not exist, try again");
+                    model.setExceptionThrown(e);
                 }
                 break;
             case "validmoves":
+                if(inputArray.length != 2) {
+                    String message = "The validmoves command requires one grid position (e.g. validmoves a1)";
+                    IllegalArgumentException exception = new IllegalArgumentException(message);
+                    model.setExceptionThrown(exception);
+                    break;
+                }
                 arg1 = inputArray[1];
                 try {
-                    Position position = new Position(charToIntMap.get(arg1.charAt(0)), Character.getNumericValue(arg1.charAt(1)));
+                    Position position = new Position(Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
                     model.getValidNewPositions(position);
                 } catch (InvalidPositionException e) {
-                    System.out.println("That grid position does not exist, try again");
+                    model.setExceptionThrown(e);
                 }
                 break;
             default:
-                System.out.println("Unrecognized command: " + input);
+                String message = "Unrecognized Command: " + input;
+                IllegalArgumentException exception = new IllegalArgumentException(message);
+                model.setExceptionThrown(exception);
                 break;
         }
 
