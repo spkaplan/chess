@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by brand on 3/29/2016.
  */
-class TextView implements Observer
+public class TextView implements Observer
 {
 	final Logger logger = LoggerFactory.getLogger(TextView.class);
 
@@ -30,7 +30,7 @@ class TextView implements Observer
 	 * abbreviation for a given piece and the outer frame of the board.
 	 * 
 	 * @param board Current board state.
-	 * @throws IndexOutsideOfGridException
+	 * @throws InvalidPositionException
 	 */
 	void drawBoard(Board board)
 	{

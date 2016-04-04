@@ -114,7 +114,7 @@ public class Board
 		} else
 		{
 			String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col="
-					+ currPosition.getColumn() + " to " + newPosition.getRow() + ", col="
+					+ currPosition.getColumn() + " to row=" + newPosition.getRow() + ", col="
 					+ newPosition.getColumn();
 			throw new InvalidPositionException(msg);
 		}
