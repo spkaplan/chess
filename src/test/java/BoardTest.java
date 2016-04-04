@@ -338,6 +338,29 @@ public class BoardTest
 			fail(ex.getLocalizedMessage());
 		}
 	}
+	@Test 
+	public void testInvalidMoveNotContainedInList()
+	{
+		Board board = getBoard();
+		try
+		{
+			int row =0;
+			for(int col=0; col < 8; col++)
+			{
+				board.movePiece(new Position(row, col), new Position(row, col+2));
+			}
+			board.movePiece(new Position(0,0), new Position(2,1));
+			board.movePiece(new Position(0,1), new Position(1,2));
+			board.movePiece(new Position(0,2), new Position(1,0));
+			board.movePiece(new Position(0,3), new Position(2,3));
+			board.movePiece(new Position(0,4), new Position(2,5));
+			
+		}
+		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}
+	}
 	 
 	
 	
