@@ -17,5 +17,7 @@ public class Chess
 		TextView view = new TextView();
 
 		model.addObserver(view);
+
+        controller.run();
 	}
 }
