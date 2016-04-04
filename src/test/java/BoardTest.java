@@ -247,7 +247,7 @@ public class BoardTest
 	public void testValidMoveToNewPosition() 
 	{
 		
-		Board board = getBoard();
+		Board board = new Board();
 		/* Moving pawns out of the way for tests of other pieces */
 		try
 		{
@@ -261,7 +261,7 @@ public class BoardTest
 			board.movePiece(new Position(0,3), new Position(0,4));
 			
 		}
-		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		catch(InvalidPositionException ex)
 		{
 			fail(ex.getLocalizedMessage());
 		}
@@ -269,7 +269,7 @@ public class BoardTest
 	@Test 
 	public void testInvalidMoveToOutsideGrid()
 	{
-		Board board = getBoard();
+		Board board = new Board();
 		try
 		{
 			int row =0;
@@ -282,7 +282,7 @@ public class BoardTest
 			board.movePiece(new Position(0,7), new Position(0,8));
 			board.movePiece(new Position(1,7), new Position(1,8));
 		}
-		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		catch(InvalidPositionException ex)
 		{
 			fail(ex.getLocalizedMessage());
 		}
@@ -290,7 +290,7 @@ public class BoardTest
 	@Test 
 	public void testInvalidMoveOntoOtherPieces()
 	{
-		Board board = getBoard();
+		Board board = new Board();
 		try
 		{
 			board.movePiece(new Position(1,0), new Position(3,0));
@@ -301,7 +301,7 @@ public class BoardTest
 			board.movePiece(new Position(0,4), new Position(1,5));
 			
 		}
-		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		catch(InvalidPositionException ex)
 		{
 			fail(ex.getLocalizedMessage());
 		}
@@ -309,7 +309,7 @@ public class BoardTest
 	@Test 
 	public void testInvalidMoveThroughPieces()
 	{
-		Board board = getBoard();
+		Board board = new Board();
 		try
 		{
 			board.movePiece(new Position(0,0), new Position(1,0));
@@ -317,7 +317,7 @@ public class BoardTest
 			board.movePiece(new Position(0,4), new Position(3,4));
 			
 		}
-		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		catch(InvalidPositionException ex)
 		{
 			fail(ex.getLocalizedMessage());
 		}
@@ -325,7 +325,7 @@ public class BoardTest
 	@Test 
 	public void testInvalidMoveNotContainedInList()
 	{
-		Board board = getBoard();
+		Board board = new Board();
 		try
 		{
 			int row =0;
@@ -340,7 +340,7 @@ public class BoardTest
 			board.movePiece(new Position(0,4), new Position(2,5));
 			
 		}
-		catch(CannotPlacePieceException | IndexOutsideOfGridException ex)
+		catch(InvalidPositionException ex)
 		{
 			fail(ex.getLocalizedMessage());
 		}
