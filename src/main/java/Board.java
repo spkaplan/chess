@@ -140,7 +140,7 @@ public class Board
 	 */
 	boolean isCheck(PieceColor color)
 	{
-		return isCheck(getKingPosition(color));
+		return isCheck(getKingPosition(color), color);
 	}
 
 	/**
@@ -149,10 +149,8 @@ public class Board
 	 * @param kingPosition
 	 * @return True if the given color's king is in check.
 	 */
-	boolean isCheck(Position kingPosition)
+	boolean isCheck(Position kingPosition, PieceColor color)
 	{
-		PieceColor color = gridLookup(kingPosition).getColor();
-
 		for (int row = 0; row < Board.GRID_SIZE; row++)
 		{
 			for (int column = 0; column < Board.GRID_SIZE; column++)
@@ -169,7 +167,7 @@ public class Board
 				Piece piece = gridLookup(piecePosition);
 
 				if (piece.getColor() != color
-						&& getValidNewPositions(piecePosition).contains(kingPosition))
+						&& getPositionsThreatened(piecePosition).contains(kingPosition))
 				{
 					return true;
 				}
@@ -267,14 +265,6 @@ public class Board
 					break;
 				}
 
-				/*Position has a king of the opposite color*/
-				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
-						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor()
-						&& gridLookup(candidatePosition).getType() == PieceType.KING)
-				{
-					break;
-				}
-
 				/*Position has piece of opposite color*/
 				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
 						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
@@ -285,7 +275,8 @@ public class Board
 				}
 
 				/*King moves into check*/
-				if (pieceToMove.getType() == PieceType.KING && isCheck(candidatePosition))
+				if (pieceToMove.getType() == PieceType.KING
+						&& isCheck(candidatePosition, pieceToMove.getColor()))
 				{
 					break;
 				}
@@ -294,6 +285,67 @@ public class Board
 			}
 		}
 		return validNewPositions;
+	}
+
+	/**
+	 * Determine the positions that the piece threatens.
+	 * 
+	 * @param currPosition Location at which the piece in questions is located.
+	 * @return A list of the positions that this piece threatens.
+	 */
+	List<Position> getPositionsThreatened(Position currPosition)
+	{
+		List<Position> positionsThreatened = new ArrayList<Position>();
+		Piece pieceToMove = gridLookup(currPosition);
+		List<RelativePosition> possibleMoves = pieceToMove.getNewPossibleMoves();
+
+		/*Add each position possible move to the current position. Determine if the combination of the two is a valid place to move to*/
+		for (RelativePosition move : possibleMoves)
+		{
+			for (int step = 1; step <= move.getDistance(); step++)
+			{
+				int newRow = currPosition.getRow() + (move.getRow() * step);
+				int newColumn = currPosition.getColumn() + (move.getColumn() * step);
+
+				/*Confirm the position is within the bounds of the grid*/
+				Position candidatePosition;
+				try
+				{
+					candidatePosition = new Position(newRow, newColumn);
+				} catch (InvalidPositionException ex)
+				{
+					break;
+				}
+
+				/*Position has piece of same color*/
+				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
+						&& pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
+				{
+					break;
+				}
+
+				/*Position has a king of the opposite color*/
+				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
+						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor()
+						&& gridLookup(candidatePosition).getType() == PieceType.KING)
+				{
+					positionsThreatened.add(candidatePosition);
+					break;
+				}
+
+				/*Position has piece of opposite color*/
+				if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
+						&& pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
+				{
+					/*The moving piece can advance to the position, but no further.*/
+					positionsThreatened.add(candidatePosition);
+					break;
+				}
+
+				positionsThreatened.add(candidatePosition);
+			}
+		}
+		return positionsThreatened;
 	}
 
 	/**
