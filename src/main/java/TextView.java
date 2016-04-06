@@ -9,11 +9,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by brand on 3/29/2016.
  */
-public class TextView implements Observer
+public class TextView implements Observer 
 {
-	final Logger logger = LoggerFactory.getLogger(TextView.class);
-	final static String NEWLINE = "\n";
-	final static String SPACE = "   ";
+	private final static Logger logger = LoggerFactory.getLogger(TextView.class);
+	private final static String NEWLINE = "\n";
+	private final static String SPACE = "   ";
+	private final static String SMALLSPACE = "  ";
 
 	/**
 	 * Retrieves current state of the model and calls drawBoard.
@@ -22,6 +23,7 @@ public class TextView implements Observer
 	public void update(Observable o, Object arg)
 	{
 		Model model = (Model) o;
+		model.getExceptionThrown();
 		drawHeader(model);
 		drawBoard(model.getBoard());
 	}
@@ -32,11 +34,11 @@ public class TextView implements Observer
 	 */
 	void drawHeader(Model model){
 		StringBuilder header = new StringBuilder("LOWERCASE: BLACK | UPPERCASE: WHITE");
-		header.append("\n");
+		header.append(NEWLINE);
 		header.append(model.getWhosTurn() + "'S Turn ");
-		header.append("\n");
+		header.append(NEWLINE);
 		header.append("Turn Number: " + model.getTurnCount());
-		header.append("\n");
+		header.append(NEWLINE);
 		System.out.println(header);
 	}
 
@@ -52,13 +54,13 @@ public class TextView implements Observer
 		System.out.println("     a   b   c   d   e   f   g   h    ");
 		System.out.print(SPACE);
 		
-		for (int i =0; i < board.GRID_SIZE; i++){
+		for (int i =0; i < Board.GRID_SIZE; i++){
 			System.out.print("----");
 		}
-		System.out.println("  ");
-		for (int row = 0; row < board.GRID_SIZE; row++)
+		System.out.println(SMALLSPACE);
+		for (int row = 0; row < Board.GRID_SIZE; row++)
 		{
-			for (int col = 0; col < board.GRID_SIZE; col++)
+			for (int col = 0; col < Board.GRID_SIZE; col++)
 			{
 				Position currentPosition = null;
 				try
@@ -70,7 +72,6 @@ public class TextView implements Observer
 					System.exit(1);
 				}
 				Piece currentPiece = board.gridLookup(currentPosition);
-				PieceColor currentPieceColor = currentPiece.getColor();
 				String abbreviation = getAbbreviation(currentPiece);
 				if (col == 0)
 				{
@@ -139,11 +140,12 @@ public class TextView implements Observer
 			pieceAbr = " .. ";
 			break;
 		default:
-			
+			String msg = "Invalid piece";
+			throw new IllegalArgumentException(msg);
 		}	
 		if (piece.getColor() == PieceColor.BLACK)
 		{
-			pieceAbr = pieceAbr.toLowerCase();
+			return pieceAbr.toLowerCase();
 		}
 		return pieceAbr;
 	}
