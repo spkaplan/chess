@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 public class TextView implements Observer
 {
 	final Logger logger = LoggerFactory.getLogger(TextView.class);
+	final static String NEWLINE = "\n";
+	final static String SPACE = "   ";
 
 	/**
 	 * Retrieves current state of the model and calls drawBoard.
@@ -20,13 +22,22 @@ public class TextView implements Observer
 	public void update(Observable o, Object arg)
 	{
 		Model model = (Model) o;
-		
-		System.out.println("");
-		System.out.println("LOWERCASE: BLACK | UPPERCASE: WHITE ");
-		System.out.println(model.getWhosTurn() + "'S Turn ");
-		System.out.println("Turn Number: " +model.getTurnCount());
-		System.out.println("");
+		drawHeader(model);
 		drawBoard(model.getBoard());
+	}
+	
+	/**	
+	 * Takes current model and prints key, turn count and who's turn
+	 * @param model
+	 */
+	void drawHeader(Model model){
+		StringBuilder header = new StringBuilder("LOWERCASE: BLACK | UPPERCASE: WHITE");
+		header.append("\n");
+		header.append(model.getWhosTurn() + "'S Turn ");
+		header.append("\n");
+		header.append("Turn Number: " + model.getTurnCount());
+		header.append("\n");
+		System.out.println(header);
 	}
 
 	/**
@@ -34,13 +45,13 @@ public class TextView implements Observer
 	 * abbreviation for a given piece and the outer frame of the board.
 	 * 
 	 * @param board Current board state.
-	 * @throws InvalidPositionException
 	 */
 	void drawBoard(Board board)
 	{
-		int count = 1;
-		System.out.println("    a   b   c   d   e   f   g   h    ");
-		System.out.print("  ");
+		int rowCount = 1;
+		System.out.println("     a   b   c   d   e   f   g   h    ");
+		System.out.print(SPACE);
+		
 		for (int i =0; i < board.GRID_SIZE; i++){
 			System.out.print("----");
 		}
@@ -63,61 +74,34 @@ public class TextView implements Observer
 				String abbreviation = getAbbreviation(currentPiece);
 				if (col == 0)
 				{
-					if (currentPieceColor == PieceColor.BLACK)
-					{
-						System.out.print(count +" | " + (abbreviation.toLowerCase()));
-					} else
-					{
-						System.out.print(count + " | " + abbreviation);
-					}
-					count++;
+					System.out.print(rowCount + " | " + abbreviation);
+					rowCount++;
+					
 				} else if (col == 7)
 				{
-					if (currentPieceColor == PieceColor.BLACK)
-					{
-						System.out.println(abbreviation.toLowerCase() + " |");
-					} else
-					{
-						System.out.println(abbreviation + " |");
-					}
+					System.out.println(abbreviation + " |");
 
 				} else if (row == 0)
 				{
-
-					if (currentPieceColor == PieceColor.BLACK)
-					{
-						System.out.print(abbreviation.toLowerCase());
-					} else
-					{
-						System.out.print(abbreviation);
-					}
+					System.out.print(abbreviation);
+					
 				} else if (row == 7)
 				{
-					if (currentPieceColor == PieceColor.BLACK)
-					{
-						System.out.print(abbreviation.toLowerCase());
-					} else
-					{
-						System.out.print(abbreviation);
-					}
+					System.out.print(abbreviation);
 
-				} else
+				} else	
 				{
-					if (currentPieceColor == PieceColor.BLACK)
-					{
-						System.out.print(abbreviation.toLowerCase());
-					} else
-					{
-						System.out.print(abbreviation);
-					}
+					System.out.print(abbreviation);
+					
 				}
 			}
 		}
-		System.out.print("  ");
+		System.out.print(SPACE);
+		
 		for (int i =0; i < board.GRID_SIZE; i++){
 			System.out.print("¯¯¯¯");
 		}
-		System.out.println("  ");
+		System.out.println(NEWLINE);
 	}
 
 	/**
@@ -127,28 +111,42 @@ public class TextView implements Observer
 	 * @return String representation of piece.
 	 * @throws IllegalArgumentException For invalid piece type.
 	 */
-	String getAbbreviation(Piece piece) throws IllegalArgumentException
+	String getAbbreviation(Piece piece)
 	{
 		PieceType pieceType = piece.getType();
+		String pieceAbr ="";
 		switch (pieceType)
 		{
 		case BISHOP:
-			return " BI ";
+			pieceAbr = " BI ";
+			break;
 		case KING:
-			return " KI ";
+			pieceAbr = " KI ";
+			break;
 		case KNIGHT:
-			return " KN ";
+			pieceAbr = " KN ";
+			break;
 		case PAWN:
-			return " PA ";
+			pieceAbr = " PA ";
+			break;
 		case QUEEN:
-			return " QU ";
+			pieceAbr = " QU ";
+			break;
 		case ROOK:
-			return " RO ";
+			pieceAbr = " RO ";
+			break;
 		case NO_PIECE:
-			return " .. ";
+			pieceAbr = " .. ";
+			break;
 		default:
-			throw new IllegalArgumentException("Invalid piece type.");
-
+			
+		}	
+		if (piece.getColor() == PieceColor.BLACK)
+		{
+			pieceAbr = pieceAbr.toLowerCase();
 		}
+		return pieceAbr;
 	}
 }
+
+
