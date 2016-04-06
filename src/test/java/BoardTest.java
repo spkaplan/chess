@@ -243,12 +243,12 @@ public class BoardTest
 		/*16 b/c there are 16 pawns that get moved illegally*/
 		assertEquals(numErrors, 16);
 	}
+	
+	//Moves pawns forward to test functionality of moving pieces to valid locations. 
 	@Test
 	public void testValidMoveToNewPosition() 
 	{
-		
 		Board board = new Board();
-		/* Moving pawns out of the way for tests of other pieces */
 		try
 		{
 			board.movePiece(new Position(1,0), new Position(3, 0));
@@ -267,6 +267,7 @@ public class BoardTest
 		}
 	}
 	
+	//Error check for pieces moved off the board. 
 	@Test 
 	public void testInvalidMoveToOutsideGrid()
 	{
@@ -290,8 +291,12 @@ public class BoardTest
 				numErrors += 1;
 			}
 		}
+		/*12 errors for out of bounds 
+		  8 to check the first row moving backwards
+		  4 for checking corners */
 		assertEquals(numErrors, 12);
 	}
+	
 	@Test 
 	public void testInvalidMoveOntoOtherPieces()
 	{
