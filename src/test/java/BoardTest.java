@@ -40,13 +40,13 @@ public class BoardTest
 		{
 			for (int column = 0; column < 8; column++)
 			{
-				if (!grid[0][0].equals(PieceType.NO_PIECE))
+				if (!grid[row][column].getType().equals(PieceType.NO_PIECE))
 				{
 					numPieces += 1;
 				}
 			}
 		}
-		assert (numPieces == 32);
+		assertEquals(numPieces,32);
 	}
 
 	@Test()
@@ -251,14 +251,14 @@ public class BoardTest
 		/* Moving pawns out of the way for tests of other pieces */
 		try
 		{
-			board.movePiece(new Position(1, 0), new Position(3, 0));
+			board.movePiece(new Position(1,0), new Position(3, 0));
 			board.movePiece(new Position(1,1), new Position(3,1));
-			board.movePiece(new Position(1,5), new Position(3,5));
+			board.movePiece(new Position(1,4), new Position(3,4));
 			board.movePiece(new Position(0,0), new Position(2,0));
 			board.movePiece(new Position(0,1), new Position(2,2));
 			board.movePiece(new Position(0,2), new Position(1,1));
-			board.movePiece(new Position(0,4), new Position(3,7));
-			board.movePiece(new Position(0,3), new Position(0,4));
+			board.movePiece(new Position(0,3), new Position(1,4)); 
+			board.movePiece(new Position(0,4), new Position(0,3));
 			
 		}
 		catch(InvalidPositionException ex)
@@ -266,70 +266,86 @@ public class BoardTest
 			fail(ex.getLocalizedMessage());
 		}
 	}
+	
 	@Test 
 	public void testInvalidMoveToOutsideGrid()
 	{
 		Board board = new Board();
-		try
-		{
-			int row =0;
-			for(int col=0; col < 8; col++)
+		int numErrors = 0;
+		for(int catchNum = 0; catchNum < 12; catchNum++){
+			try
 			{
-				board.movePiece(new Position(row, col), new Position(row, col-1));
+				int row = 0;
+				for(int col = 0; col < 8; col++)
+				{
+					board.movePiece(new Position(row, col), new Position(row, col-1));
+				}
+				board.movePiece(new Position(0,0), new Position(-1,0));
+				board.movePiece(new Position(1,0), new Position(-2,0));
+				board.movePiece(new Position(0,7), new Position(0,8));
+				board.movePiece(new Position(1,7), new Position(1,8));
 			}
-			board.movePiece(new Position(0,0), new Position(-1,0));
-			board.movePiece(new Position(1,0), new Position(-2,0));
-			board.movePiece(new Position(0,7), new Position(0,8));
-			board.movePiece(new Position(1,7), new Position(1,8));
+			catch(InvalidPositionException ex)
+			{
+				numErrors += 1;
+			}
 		}
-		catch(InvalidPositionException ex)
-		{
-			fail(ex.getLocalizedMessage());
-		}
+		assertEquals(numErrors, 12);
 	}
 	@Test 
 	public void testInvalidMoveOntoOtherPieces()
 	{
 		Board board = new Board();
-		try
-		{
-			board.movePiece(new Position(1,0), new Position(3,0));
-			board.movePiece(new Position(0,0), new Position(3,0));
-			board.movePiece(new Position(1,7), new Position(2,7));
-			board.movePiece(new Position(0,5), new Position(2,7));
-			board.movePiece(new Position(0,3), new Position(0,4));
-			board.movePiece(new Position(0,4), new Position(1,5));
-			
+		int numErrors = 0;
+		for(int catchNum =0; catchNum < 6; catchNum++){
+			try
+			{
+				board.movePiece(new Position(1,0), new Position(3,0));
+				board.movePiece(new Position(0,0), new Position(3,0));
+				board.movePiece(new Position(1,7), new Position(2,7));
+				board.movePiece(new Position(0,5), new Position(2,7));
+				board.movePiece(new Position(0,3), new Position(0,4));
+				board.movePiece(new Position(0,4), new Position(1,5));
+				
+			}
+			catch(InvalidPositionException ex)
+			{
+				numErrors += 1;
+			}
 		}
-		catch(InvalidPositionException ex)
-		{
-			fail(ex.getLocalizedMessage());
-		}
+		assertEquals(numErrors,6);
 	}
+	
 	@Test 
 	public void testInvalidMoveThroughPieces()
 	{
 		Board board = new Board();
-		try
-		{
-			board.movePiece(new Position(0,0), new Position(1,0));
-			board.movePiece(new Position(0,2), new Position(2,0));
-			board.movePiece(new Position(0,4), new Position(3,4));
-			
+		int numErrors = 0;
+		for(int catchNum =0; catchNum < 3; catchNum++){
+			try
+			{
+				board.movePiece(new Position(0,0), new Position(1,0));
+				board.movePiece(new Position(0,2), new Position(2,0));
+				board.movePiece(new Position(0,4), new Position(3,4));
+				
+			}
+			catch(InvalidPositionException ex)
+			{
+				numErrors += 1;
+			}
 		}
-		catch(InvalidPositionException ex)
-		{
-			fail(ex.getLocalizedMessage());
-		}
+		assertEquals(numErrors,3);
 	}
+	
 	@Test 
 	public void testInvalidMoveNotContainedInList()
 	{
 		Board board = new Board();
+		int numErrors = 0;
 		try
 		{
-			int row =0;
-			for(int col=0; col < 8; col++)
+			int row = 0;
+			for(int col = 0; col < 8; col++)
 			{
 				board.movePiece(new Position(row, col), new Position(row, col+2));
 			}
@@ -342,8 +358,9 @@ public class BoardTest
 		}
 		catch(InvalidPositionException ex)
 		{
-			fail(ex.getLocalizedMessage());
+			numErrors+=1;
 		}
+		assertEquals(numErrors,1);
 	}
 	 
 	
