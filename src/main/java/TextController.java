@@ -87,9 +87,7 @@ public class TextController {
         Scanner reader = new Scanner(System.in);
 
         while(true) {
-            System.out.println("Awaiting user input");
             String input = reader.nextLine();
-            System.out.println("The user typed: " + input);
             processInput(input);
         }
     }
