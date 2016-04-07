@@ -1,9 +1,22 @@
+#general
 /build/
 /bin/
+log/
+lib/
+
+
+#intellij
 /.idea/*
 
+
+#eclipse
 .project
 *.class
 .classpath
-*.jar
+.settings
+.metadata
+
+
+#gradle
+.gradle/
 
