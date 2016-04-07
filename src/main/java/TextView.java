@@ -1,5 +1,6 @@
 package main.java;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,13 +20,38 @@ public class TextView implements Observer
 	/**
 	 * Retrieves current state of the model and calls drawBoard.
 	 */
+	//TODO: Debug and break up getValidMoves. 
+	//TODO: Fix printing validmoves of a given position: specifically the piece and it's coordinates.
+	//TODO: Take StringBuilder out of loop and append each move with every iteration. 
 	@Override
 	public void update(Observable o, Object arg)
 	{
 		Model model = (Model) o;
-		model.getExceptionThrown();
-		drawHeader(model);
-		drawBoard(model.getBoard());
+		Board board = model.getBoard();
+		
+		if (model.getValidMoves() != null )
+		{
+			List<Position> validPositionsList = model.getValidMoves();
+			for (int validMoveIndex = 0; validMoveIndex < validPositionsList.size(); validMoveIndex++)
+			{
+				Position currPosition = validPositionsList.get(validMoveIndex);
+				Piece currPiece = board.gridLookup(currPosition);
+				String validMove = currPiece.getType() + " : (" + currPosition.getRow() + "," + currPosition.getColumn()+ ")";
+				StringBuilder validMsg = new StringBuilder();
+				validMsg.append(validMove);
+				System.out.println(validMsg);
+			}
+		}
+		else if (model.getExceptionThrown() != null)
+		{
+			System.out.println(model.getExceptionThrown().getMessage());
+		}
+		else
+		{
+			drawHeader(model);
+			drawBoard(board);
+		}
+		
 	}
 	
 	/**	
@@ -40,6 +66,7 @@ public class TextView implements Observer
 		header.append("Turn Number: " + model.getTurnCount());
 		header.append(NEWLINE);
 		System.out.println(header);
+		model.getExceptionThrown();
 	}
 
 	/**
