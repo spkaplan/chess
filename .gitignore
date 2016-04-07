@@ -2,6 +2,7 @@
 /build/
 /bin/
 log/
+lib/
 
 
 #intellij
@@ -12,7 +13,6 @@ log/
 .project
 *.class
 .classpath
-*.jar
 .settings
 .metadata
 
