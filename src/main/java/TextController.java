@@ -87,6 +87,7 @@ public class TextController {
         Scanner reader = new Scanner(System.in);
 
         while(true) {
+            System.out.print(">>");
             String input = reader.nextLine();
             processInput(input);
         }
