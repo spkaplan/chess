@@ -21,8 +21,6 @@ public class TextView implements Observer
 	{
 		Model model = (Model) o;
 		drawBoard(model.getBoard());
-
-		System.out.println("The view has called refresh");
 	}
 
 	/**
