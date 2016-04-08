@@ -20,3 +20,4 @@ lib/
 #gradle
 .gradle/
 
+chess.iml
