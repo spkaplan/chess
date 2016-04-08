@@ -244,16 +244,19 @@ public class BoardTest
 		assertEquals(numErrors, 16);
 	}
 	
-	//Moves pawns forward to test functionality of moving pieces to valid locations. 
+	//Moves pieces to valid locations  
 	@Test
 	public void testValidMoveToNewPosition() 
 	{
 		Board board = new Board();
 		try
 		{
+			//Move pawns out of the way
 			board.movePiece(new Position(1,0), new Position(3, 0));
 			board.movePiece(new Position(1,1), new Position(3,1));
 			board.movePiece(new Position(1,4), new Position(3,4));
+			
+			//Move pieces. 
 			board.movePiece(new Position(0,0), new Position(2,0));
 			board.movePiece(new Position(0,1), new Position(2,2));
 			board.movePiece(new Position(0,2), new Position(1,1));
@@ -273,7 +276,7 @@ public class BoardTest
 	{
 		Board board = new Board();
 		int numErrors = 0;
-		for(int catchNum = 0; catchNum < 12; catchNum++){
+		for(int catchNum = 0; catchNum < 8; catchNum++){
 			try
 			{
 				int row = 0;
@@ -281,16 +284,44 @@ public class BoardTest
 				{
 					board.movePiece(new Position(row, col), new Position(row, col-1));
 				}
-				board.movePiece(new Position(0,0), new Position(-1,0));
-				board.movePiece(new Position(1,0), new Position(-2,0));
-				board.movePiece(new Position(0,7), new Position(0,8));
-				board.movePiece(new Position(1,7), new Position(1,8));
 			}
 			catch(InvalidPositionException ex)
 			{
 				numErrors += 1;
 			}
 		}
+		try
+		{
+			board.movePiece(new Position(0,0), new Position(-1,0));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(1,0), new Position(-2,0));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}try
+		{
+			board.movePiece(new Position(0,7), new Position(0,8));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(1,7), new Position(1,8));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+			
 		/*12 errors for out of bounds 
 		  8 to check the first row moving backwards
 		  4 for checking corners */
@@ -367,7 +398,11 @@ public class BoardTest
 		}
 		assertEquals(numErrors,1);
 	}
-	 
 	
-	
+	@Test
+	public void testValidMoveTakesPiece()
+	{
+		
+		
+	}
 }
