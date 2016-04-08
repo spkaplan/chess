@@ -1,6 +1,8 @@
 package main.java;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,13 +18,50 @@ public class TextView implements Observer
 	private final static String NEWLINE = "\n";
 	private final static String SPACE = "   ";
 	private final static String SMALLSPACE = "  ";
+	Map<Integer, Character> intToChar;
+	Map<Integer, Integer> intRowConversion;
 
 	/**
-	 * Retrieves current state of the model and calls drawBoard.
+	 * Constructor 
 	 */
-	//TODO: Debug and break up getValidMoves. 
-	//TODO: Fix printing validmoves of a given position: specifically the piece and it's coordinates.
-	//TODO: Take StringBuilder out of loop and append each move with every iteration. 
+	public TextView(){
+		buildIntToCharMap();
+		buildIntConversionMap();
+	}
+	
+	/**
+	 * Build  map to convert column to a given character.
+	 */
+	void buildIntToCharMap() {
+		intToChar =  new HashMap<>();
+        intToChar.put(0,'a');
+        intToChar.put(1,'b');
+        intToChar.put(2,'c');
+        intToChar.put(3,'d');
+        intToChar.put(4,'e');
+        intToChar.put(5,'f');
+        intToChar.put(6,'g');
+        intToChar.put(7,'h');
+    }
+	
+	/**
+	 * Build map to convert a row number. 
+	 */
+	void buildIntConversionMap() {
+		intRowConversion =  new HashMap<>();
+		intRowConversion.put(0, 8);
+		intRowConversion.put(1,7);
+		intRowConversion.put(2,6);
+		intRowConversion.put(3,5);
+		intRowConversion.put(4,4);
+		intRowConversion.put(5,3);
+		intRowConversion.put(6,2);
+		intRowConversion.put(7,1);
+    }
+	
+	/**
+	 * Updates the console to display info from the given command. 
+	 */
 	@Override
 	public void update(Observable o, Object arg)
 	{
@@ -31,16 +70,7 @@ public class TextView implements Observer
 		
 		if (model.getValidMoves() != null )
 		{
-			List<Position> validPositionsList = model.getValidMoves();
-			for (int validMoveIndex = 0; validMoveIndex < validPositionsList.size(); validMoveIndex++)
-			{
-				Position currPosition = validPositionsList.get(validMoveIndex);
-				Piece currPiece = board.gridLookup(currPosition);
-				String validMove = currPiece.getType() + " : (" + currPosition.getRow() + "," + currPosition.getColumn()+ ")";
-				StringBuilder validMsg = new StringBuilder();
-				validMsg.append(validMove);
-				System.out.println(validMsg);
-			}
+			showValidMoves(model.getValidMoves());
 		}
 		else if (model.getExceptionThrown() != null)
 		{
@@ -51,7 +81,26 @@ public class TextView implements Observer
 			drawHeader(model);
 			drawBoard(board);
 		}
-		
+	}
+	
+	/**
+	 * Displays valid moves of a given piece.
+	 * @param validPositionsList
+	 * 
+	 */
+	void showValidMoves(List<Position> validPositionsList)
+	{
+		StringBuilder validMsg = new StringBuilder();
+		for (Position currValidPosition : validPositionsList)
+		{
+			Position currPosition = currValidPosition;
+			validMsg.append("(");
+			validMsg.append(intToChar.get(currPosition.getColumn()));
+			validMsg.append(",");
+			validMsg.append(intRowConversion.get(currPosition.getRow()));
+			validMsg.append(")");
+		}
+		System.out.println(validMsg);
 	}
 	
 	/**	
@@ -77,7 +126,7 @@ public class TextView implements Observer
 	 */
 	void drawBoard(Board board)
 	{
-		int rowCount = 1;
+		int rowCount = 8;
 		System.out.println("     a   b   c   d   e   f   g   h    ");
 		System.out.print(SPACE);
 		
@@ -103,7 +152,7 @@ public class TextView implements Observer
 				if (col == 0)
 				{
 					System.out.print(rowCount + " | " + abbreviation);
-					rowCount++;
+					rowCount--;
 					
 				} else if (col == 7)
 				{
