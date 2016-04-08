@@ -91,14 +91,13 @@ public class TextView implements Observer
 	void showValidMoves(List<Position> validPositionsList)
 	{
 		StringBuilder validMsg = new StringBuilder();
+		validMsg.append("Valid Moves: ");
 		for (Position currValidPosition : validPositionsList)
 		{
 			Position currPosition = currValidPosition;
-			validMsg.append("(");
 			validMsg.append(intToChar.get(currPosition.getColumn()));
-			validMsg.append(",");
 			validMsg.append(intRowConversion.get(currPosition.getRow()));
-			validMsg.append(")");
+			validMsg.append(SMALLSPACE);
 		}
 		System.out.println(validMsg);
 	}
