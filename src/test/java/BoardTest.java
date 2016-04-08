@@ -402,7 +402,37 @@ public class BoardTest
 	@Test
 	public void testValidMoveTakesPiece()
 	{
-		
-		
+		Board board = new Board();
+		Piece[][] grid = board.getGrid();
+		try
+		{
+			//Bishop takes pawn
+			board.movePiece(new Position(1,3), new Position(3,3));
+			board.movePiece(new Position(6,7), new Position(5,7));
+			board.movePiece(new Position(0,2), new Position(5,7));
+			
+			//Rook takes Bishop
+			board.movePiece(new Position(7,7), new Position(5,7));
+			
+			//Knight takes pawn 
+			board.movePiece(new Position(0,1), new Position(2,2));
+			board.movePiece(new Position(6,3), new Position(4,3));
+			board.movePiece(new Position(2,2), new Position(4,3));
+			
+			//moving pawn out of way
+			board.movePiece(new Position(6,4), new Position(4,4));
+			
+			//Queen takes Knight
+			board.movePiece(new Position(7,3), new Position(4,3));
+
+			//Pawn takes pawn
+			board.movePiece(new Position(1,4), new Position(3,4)); 
+			board.movePiece(new Position(4,4), new Position(3,4));
+			
+		}
+		catch(InvalidPositionException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}	
 	}
 }
