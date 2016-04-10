@@ -82,21 +82,20 @@ public class Model extends Observable
 	{
 		Piece pieceToMove = board.gridLookup(curPos);
 
-		if (pieceToMove.getColor() == this.whosTurn)
-		{
-			try
-			{
-				board.movePiece(curPos, newPos);
-			} catch (InvalidPositionException e)
-			{
-				this.exceptionThrown = e;
-			}
-		} else
+		if (pieceToMove.getColor() != this.whosTurn)
 		{
 			String msg = "Cannot move piece of the other color";
 			this.exceptionThrown = new IllegalArgumentException(msg);
+			setChanged();
+			return;
 		}
-
+		try
+		{
+			board.movePiece(curPos, newPos);
+		} catch (InvalidPositionException e)
+		{
+			this.exceptionThrown = e;
+		}
 		setChanged();
 	}
 
