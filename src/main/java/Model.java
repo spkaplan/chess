@@ -19,6 +19,7 @@ public class Model extends Observable
 		this.board = new Board();
 		this.whosTurn = PieceColor.WHITE;
 		this.turnCount = 1;
+		setChanged();
 	}
 
     public List<Position> getValidMoves()
@@ -68,6 +69,7 @@ public class Model extends Observable
 
     /**
      * Moves a piece on the board by interacting with the board. Also, notifies the observers and triggers a view refresh
+     * 
      * @param curPos the position of the piece you want to move
      * @param newPos the position you are attempting to move the piece to
      */
@@ -85,12 +87,32 @@ public class Model extends Observable
      * Collects a list of valid moves from the board and updates the valid moves variable. Then, it notifies the
      * observers triggering a view refresh. Finally, clearing validmoves so that it's null next time the model
      * is observed.
-     * @param position the position the piece the user requested valid moves for
+     * 
+     * @param position the position of the piece the user requested valid moves for
      */
     void getValidNewPositions(Position position)
     {
         List<Position> validNewPositions = board.getValidNewPositions(position);
         validMoves = validNewPositions;
         setChanged();
+    }
+    
+    void incrementTurnCount() 
+    {
+    	this.turnCount = this.turnCount + 1;
+    }
+    
+    /**
+     * Change who's turn it is.
+     */
+    void switchWhosTurn() 
+    {
+    	if(this.whosTurn == PieceColor.WHITE) 
+    	{
+    		this.whosTurn = PieceColor.BLACK;
+    	}else
+    	{
+    		this.whosTurn = PieceColor.WHITE;
+    	}
     }
 }
