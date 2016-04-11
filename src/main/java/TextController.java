@@ -30,7 +30,8 @@ public class TextController {
     }
 
     /**
-     * Processes the input of the user and tells model how to react/update. Also queues the model to refresh the view
+     * Processes the input of the user and tells model how to react/update. Also queues the model to refresh the view.
+     * 
      * @param input user input (System.in for now)
      */
     void processInput(String input) {
@@ -73,7 +74,6 @@ public class TextController {
                 model.setExceptionThrown(new IllegalArgumentException(message));
                 break;
         }
-        model.notifyObservers();
     }
 
     public void setModel(Model model) {
@@ -85,11 +85,17 @@ public class TextController {
      */
     public void run() {
         Scanner reader = new Scanner(System.in);
+        
+        /*Trigger the view so it is displayed immediately*/
+        this.model.notifyObservers();
 
         while(true) {
             System.out.print(">>");
             String input = reader.nextLine();
             processInput(input);
+            this.model.notifyObservers();
+            this.model.incrementTurnCount();
+            this.model.switchWhosTurn();
         }
     }
 }
