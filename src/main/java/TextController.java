@@ -19,14 +19,14 @@ public class TextController {
     }
 
     void buildCharToIntMap() {
-        charToIntMap.put('a', 1);
-        charToIntMap.put('b', 2);
-        charToIntMap.put('c', 3);
-        charToIntMap.put('d', 4);
-        charToIntMap.put('e', 5);
-        charToIntMap.put('f', 6);
-        charToIntMap.put('g', 7);
-        charToIntMap.put('h', 8);
+        charToIntMap.put('a', 0);
+        charToIntMap.put('b', 1);
+        charToIntMap.put('c', 2);
+        charToIntMap.put('d', 3);
+        charToIntMap.put('e', 4);
+        charToIntMap.put('f', 5);
+        charToIntMap.put('g', 6);
+        charToIntMap.put('h', 7);
     }
 
     /**
@@ -47,8 +47,8 @@ public class TextController {
                 arg1 = inputArray[1];
                 arg2 = inputArray[2];
                 try {
-                    Position curPos = new Position(Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                    Position newPos = new Position(Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+                    Position curPos = new Position(8-Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position newPos = new Position(8-Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
                     model.movePiece(curPos, newPos);
                 } catch (InvalidPositionException e) {
                     model.setExceptionThrown(e);
@@ -62,7 +62,7 @@ public class TextController {
                 }
                 arg1 = inputArray[1];
                 try {
-                    Position position = new Position(Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position position = new Position(8-Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
                     model.getValidNewPositions(position);
                 } catch (InvalidPositionException e) {
                     model.setExceptionThrown(e);
