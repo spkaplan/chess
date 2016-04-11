@@ -18,12 +18,9 @@ public class TextView implements Observer
 	private final static String NEWLINE = "\n";
 	private final static String SPACE = "   ";
 	private final static String SMALLSPACE = "  ";
-	Map<Integer, Character> intToChar;
-	Map<Integer, Integer> intRowConversion;
+	private static Map<Integer, Character> intToChar;
+	private static Map<Integer, Integer> intRowConversion;
 
-	/**
-	 * Constructor 
-	 */
 	public TextView(){
 		buildIntToCharMap();
 		buildIntConversionMap();
@@ -49,7 +46,7 @@ public class TextView implements Observer
 	 */
 	void buildIntConversionMap() {
 		intRowConversion =  new HashMap<>();
-		intRowConversion.put(0, 8);
+		intRowConversion.put(0,8);
 		intRowConversion.put(1,7);
 		intRowConversion.put(2,6);
 		intRowConversion.put(3,5);
@@ -60,7 +57,7 @@ public class TextView implements Observer
     }
 	
 	/**
-	 * Updates the console to display info from the given command. 
+	 * Updates the console to display info from the current model. 
 	 */
 	@Override
 	public void update(Observable o, Object arg)
@@ -85,36 +82,36 @@ public class TextView implements Observer
 	
 	/**
 	 * Displays valid moves of a given piece.
-	 * @param validPositionsList
+	 * @param validPositions
 	 * 
 	 */
-	void showValidMoves(List<Position> validPositionsList)
+	void showValidMoves(List<Position> validPositions)
 	{
 		StringBuilder validMsg = new StringBuilder();
 		validMsg.append("Valid Moves: ");
-		for (Position currValidPosition : validPositionsList)
+		for (Position currValidPosition : validPositions)
 		{
-			Position currPosition = currValidPosition;
-			validMsg.append(intToChar.get(currPosition.getColumn()));
-			validMsg.append(intRowConversion.get(currPosition.getRow()));
+			validMsg.append(intToChar.get(currValidPosition.getColumn()));
+			validMsg.append(intRowConversion.get(currValidPosition.getRow()));
 			validMsg.append(SMALLSPACE);
 		}
 		System.out.println(validMsg);
 	}
 	
 	/**	
-	 * Takes current model and prints key, turn count and who's turn
+	 * Displays high level game info.
+	 * 
 	 * @param model
 	 */
 	void drawHeader(Model model){
-		StringBuilder header = new StringBuilder("LOWERCASE: BLACK | UPPERCASE: WHITE");
+		StringBuilder header = new StringBuilder();
+		header.append("LOWERCASE: BLACK | UPPERCASE: WHITE");
 		header.append(NEWLINE);
 		header.append(model.getWhosTurn() + "'S Turn ");
 		header.append(NEWLINE);
 		header.append("Turn Number: " + model.getTurnCount());
 		header.append(NEWLINE);
 		System.out.println(header);
-		model.getExceptionThrown();
 	}
 
 	/**
@@ -125,7 +122,7 @@ public class TextView implements Observer
 	 */
 	void drawBoard(Board board)
 	{
-		int rowCount = 8;
+		
 		System.out.println("     a   b   c   d   e   f   g   h    ");
 		System.out.print(SPACE);
 		
@@ -135,6 +132,7 @@ public class TextView implements Observer
 		System.out.println(SMALLSPACE);
 		for (int row = 0; row < Board.GRID_SIZE; row++)
 		{
+			int rowCount = 8;
 			for (int col = 0; col < Board.GRID_SIZE; col++)
 			{
 				Position currentPosition = null;
@@ -157,24 +155,15 @@ public class TextView implements Observer
 				{
 					System.out.println(abbreviation + " |");
 
-				} else if (row == 0)
-				{
-					System.out.print(abbreviation);
-					
-				} else if (row == 7)
-				{
-					System.out.print(abbreviation);
-
 				} else	
 				{
 					System.out.print(abbreviation);
-					
 				}
 			}
 		}
 		System.out.print(SPACE);
 		
-		for (int i =0; i < board.GRID_SIZE; i++){
+		for (int i = 0; i < board.GRID_SIZE; i++){
 			System.out.print("¯¯¯¯");
 		}
 		System.out.println(NEWLINE);
@@ -215,8 +204,8 @@ public class TextView implements Observer
 			pieceAbr = " .. ";
 			break;
 		default:
-			String msg = "Invalid piece";
-			throw new IllegalArgumentException(msg);
+			String msg = "Piece type isn't accounted for.";
+			logger.error(msg);
 		}	
 		if (piece.getColor() == PieceColor.BLACK)
 		{
