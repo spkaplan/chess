@@ -47,8 +47,8 @@ public class TextController {
                 arg1 = inputArray[1];
                 arg2 = inputArray[2];
                 try {
-                    Position curPos = new Position(Character.getNumericValue(8-arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                    Position newPos = new Position(Character.getNumericValue(8-arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+                    Position curPos = new Position(8-Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position newPos = new Position(8-Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
                     model.movePiece(curPos, newPos);
                 } catch (InvalidPositionException e) {
                     model.setExceptionThrown(e);
@@ -62,7 +62,7 @@ public class TextController {
                 }
                 arg1 = inputArray[1];
                 try {
-                    Position position = new Position(Character.getNumericValue(8-arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position position = new Position(8-Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
                     model.getValidNewPositions(position);
                 } catch (InvalidPositionException e) {
                     model.setExceptionThrown(e);
