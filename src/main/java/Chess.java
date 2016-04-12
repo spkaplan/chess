@@ -5,19 +5,19 @@ package main.java;
  */
 public class Chess
 {
-	public static void main(String[] args)
-	{
-		//Instantiate the Model, View, and Controller//
+    public static void main(String[] args)
+    {
+        //Instantiate the Model, View, and Controller//
 
-		Model model = new Model();
+        Model model = new Model();
 
-		TextController controller = new TextController();
-		controller.setModel(model);
+        TextController controller = new TextController();
+        controller.setModel(model);
 
-		TextView view = new TextView();
+        TextView view = new TextView();
 
-		model.addObserver(view);
+        model.addObserver(view);
 
         controller.run();
-	}
+    }
 }
