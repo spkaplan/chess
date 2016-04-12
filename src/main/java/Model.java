@@ -14,12 +14,13 @@ public class Model extends Observable
     private List<Position> validMoves;
     private Exception exceptionThrown;
 
-    public Model()
-    {
-        this.board = new Board();
-        this.whosTurn = PieceColor.WHITE;
-        this.turnCount = 1;
-    }
+	public Model()
+	{
+		this.board = new Board();
+		this.whosTurn = PieceColor.WHITE;
+		this.turnCount = 1;
+		setChanged();
+	}
 
     public List<Position> getValidMoves()
     {
@@ -105,12 +106,31 @@ public class Model extends Observable
      * Finally, clearing validmoves so that it's null next time the model is
      * observed.
      * 
-     * @param position the position the piece the user requested valid moves for
+     * @param position the position of the piece the user requested valid moves for
      */
     void getValidNewPositions(Position position)
     {
         List<Position> validNewPositions = this.board.getValidNewPositions(position);
         this.validMoves = validNewPositions;
         setChanged();
+    }
+    
+    void incrementTurnCount() 
+    {
+    	this.turnCount = this.turnCount + 1;
+    }
+    
+    /**
+     * Change who's turn it is.
+     */
+    void switchWhosTurn() 
+    {
+    	if(this.whosTurn == PieceColor.WHITE) 
+    	{
+    		this.whosTurn = PieceColor.BLACK;
+    	}else
+    	{
+    		this.whosTurn = PieceColor.WHITE;
+    	}
     }
 }

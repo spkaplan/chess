@@ -19,18 +19,19 @@ public class TextController {
     }
 
     void buildCharToIntMap() {
-        charToIntMap.put('a', 1);
-        charToIntMap.put('b', 2);
-        charToIntMap.put('c', 3);
-        charToIntMap.put('d', 4);
-        charToIntMap.put('e', 5);
-        charToIntMap.put('f', 6);
-        charToIntMap.put('g', 7);
-        charToIntMap.put('h', 8);
+        charToIntMap.put('a', 0);
+        charToIntMap.put('b', 1);
+        charToIntMap.put('c', 2);
+        charToIntMap.put('d', 3);
+        charToIntMap.put('e', 4);
+        charToIntMap.put('f', 5);
+        charToIntMap.put('g', 6);
+        charToIntMap.put('h', 7);
     }
 
     /**
-     * Processes the input of the user and tells model how to react/update. Also queues the model to refresh the view
+     * Processes the input of the user and tells model how to react/update. Also queues the model to refresh the view.
+     * 
      * @param input user input (System.in for now)
      */
     void processInput(String input) {
@@ -47,8 +48,8 @@ public class TextController {
                 arg1 = inputArray[1];
                 arg2 = inputArray[2];
                 try {
-                    Position curPos = new Position(Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                    Position newPos = new Position(Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+                    Position curPos = new Position(8-Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position newPos = new Position(8-Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
                     model.movePiece(curPos, newPos);
                 } catch (InvalidPositionException e) {
                     model.setExceptionThrown(e);
@@ -62,7 +63,7 @@ public class TextController {
                 }
                 arg1 = inputArray[1];
                 try {
-                    Position position = new Position(Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position position = new Position(8-Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
                     model.getValidNewPositions(position);
                 } catch (InvalidPositionException e) {
                     model.setExceptionThrown(e);
@@ -73,7 +74,6 @@ public class TextController {
                 model.setExceptionThrown(new IllegalArgumentException(message));
                 break;
         }
-        model.notifyObservers();
     }
 
     public void setModel(Model model) {
@@ -85,11 +85,17 @@ public class TextController {
      */
     public void run() {
         Scanner reader = new Scanner(System.in);
+        
+        /*Trigger the view so it is displayed immediately*/
+        this.model.notifyObservers();
 
         while(true) {
             System.out.print(">>");
             String input = reader.nextLine();
             processInput(input);
+            this.model.notifyObservers();
+            this.model.incrementTurnCount();
+            this.model.switchWhosTurn();
         }
     }
 }
