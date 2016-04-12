@@ -276,20 +276,20 @@ public class BoardTest
 	{
 		Board board = new Board();
 		int numErrors = 0;
-		for(int catchNum = 0; catchNum < 8; catchNum++){
+		int row = 0;
+		
+		//Moving top row of pieces off top of board.
+		for(int col = 0; col < 8; col++){
 			try
 			{
-				int row = 0;
-				for(int col = 0; col < 8; col++)
-				{
-					board.movePiece(new Position(row, col), new Position(row, col-1));
-				}
+				board.movePiece(new Position(row, col), new Position(row-1, col));
 			}
 			catch(InvalidPositionException ex)
 			{
 				numErrors += 1;
 			}
 		}
+		//Test moving pieces off corner of the board.
 		try
 		{
 			board.movePiece(new Position(0,0), new Position(-1,0));
@@ -305,7 +305,8 @@ public class BoardTest
 		catch(InvalidPositionException ex)
 		{
 			numErrors += 1;
-		}try
+		}
+		try
 		{
 			board.movePiece(new Position(0,7), new Position(0,8));
 		}
@@ -321,10 +322,6 @@ public class BoardTest
 		{
 			numErrors += 1;
 		}
-			
-		/*12 errors for out of bounds 
-		  8 to check the first row moving backwards
-		  4 for checking corners */
 		assertEquals(numErrors, 12);
 	}
 	
@@ -333,23 +330,51 @@ public class BoardTest
 	{
 		Board board = new Board();
 		int numErrors = 0;
-		for(int catchNum =0; catchNum < 6; catchNum++){
-			try
-			{
-				board.movePiece(new Position(1,0), new Position(3,0));
-				board.movePiece(new Position(0,0), new Position(3,0));
-				board.movePiece(new Position(1,7), new Position(2,7));
-				board.movePiece(new Position(0,5), new Position(2,7));
-				board.movePiece(new Position(0,3), new Position(0,4));
-				board.movePiece(new Position(0,4), new Position(1,5));
-				
-			}
-			catch(InvalidPositionException ex)
-			{
-				numErrors += 1;
-			}
+		//Move pieces for setup.
+		try
+		{
+			board.movePiece(new Position(1,0), new Position(3,0));
+			board.movePiece(new Position(1,7), new Position(2,7));
 		}
-		assertEquals(numErrors,6);
+		catch(InvalidPositionException ex)
+		{
+			fail(ex.getLocalizedMessage());
+		}
+		//Moves onto other pieces.
+		try
+		{
+			board.movePiece(new Position(0,0), new Position(3,0));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,5), new Position(2,7));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,3), new Position(0,4));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,4), new Position(1,5));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		
+		assertEquals(numErrors,4);
 	}
 	
 	@Test 
@@ -357,18 +382,30 @@ public class BoardTest
 	{
 		Board board = new Board();
 		int numErrors = 0;
-		for(int catchNum =0; catchNum < 3; catchNum++){
-			try
-			{
-				board.movePiece(new Position(0,0), new Position(1,0));
-				board.movePiece(new Position(0,2), new Position(2,0));
-				board.movePiece(new Position(0,4), new Position(3,4));
-				
-			}
-			catch(InvalidPositionException ex)
-			{
-				numErrors += 1;
-			}
+		try
+		{
+			board.movePiece(new Position(0,0), new Position(1,0));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,2), new Position(2,0));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,4), new Position(3,4));
+			
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors += 1;
 		}
 		assertEquals(numErrors,3);
 	}
@@ -378,25 +415,60 @@ public class BoardTest
 	{
 		Board board = new Board();
 		int numErrors = 0;
+		
+		//Moving pawns out of the way.
+		int row = 1;
+		for(int col = 0; col < 8; col++){
+			try
+			{
+				board.movePiece(new Position(row, col), new Position(row+2, col));
+			}
+			catch(InvalidPositionException ex)
+			{
+				fail(ex.getLocalizedMessage());
+			}
+		}
 		try
 		{
-			int row = 0;
-			for(int col = 0; col < 8; col++)
-			{
-				board.movePiece(new Position(row, col), new Position(row, col+2));
-			}
 			board.movePiece(new Position(0,0), new Position(2,1));
-			board.movePiece(new Position(0,1), new Position(1,2));
-			board.movePiece(new Position(0,2), new Position(1,0));
-			board.movePiece(new Position(0,3), new Position(2,3));
-			board.movePiece(new Position(0,4), new Position(2,5));
-			
 		}
 		catch(InvalidPositionException ex)
 		{
 			numErrors+=1;
 		}
-		assertEquals(numErrors,1);
+		try
+		{
+			board.movePiece(new Position(0,1), new Position(1,1));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors+=1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,2), new Position(1,0));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors+=1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,3), new Position(1,1));
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors+=1;
+		}
+		try
+		{
+			board.movePiece(new Position(0,4), new Position(2,5));	
+		}
+		catch(InvalidPositionException ex)
+		{
+			numErrors+=1;
+		}
+		assertEquals(numErrors,5);
 	}
 	
 	@Test
@@ -419,7 +491,7 @@ public class BoardTest
 			board.movePiece(new Position(6,3), new Position(4,3));
 			board.movePiece(new Position(2,2), new Position(4,3));
 			
-			//moving pawn out of way
+			//Moving pawn out of way
 			board.movePiece(new Position(6,4), new Position(4,4));
 			
 			//Queen takes Knight
@@ -428,7 +500,6 @@ public class BoardTest
 			//Pawn takes pawn
 			board.movePiece(new Position(1,4), new Position(3,4)); 
 			board.movePiece(new Position(4,4), new Position(3,4));
-			
 		}
 		catch(InvalidPositionException ex)
 		{
