@@ -83,6 +83,15 @@ public class TextController
                 model.setExceptionThrown(e);
             }
             break;
+        case "quit":
+        case "exit":
+            if (inputArray.length != 1)
+            {
+                String message = "The quit/exit commands do not take any arguments.";
+                model.setExceptionThrown(new IllegalArgumentException(message));
+                break;
+            }
+            System.exit(0);
         default:
             String message = "Unrecognized Command: " + input;
             model.setExceptionThrown(new IllegalArgumentException(message));
