@@ -113,11 +113,21 @@ public class Board
         }
     }
 
+    /**
+     * Perform the castling move.
+     * 
+     * @param position1 A position of either the king or rook.
+     * @param position2 A position of either the king or rook.
+     * 
+     * @throws InvalidPositionException If any requirement for castling the rook
+     *             and king are not met.
+     */
     void castle(Position position1, Position position2) throws InvalidPositionException
     {
-        /*One piece must a king and the other a rook*/
         Piece piece1 = gridLookup(position1);
         Piece piece2 = gridLookup(position2);
+
+        /*One piece must a king and the other a rook*/
         if (!((piece1.getType().equals(PieceType.KING) && piece2.getType().equals(PieceType.ROOK)) || (piece1.getType().equals(PieceType.ROOK) && piece2.getType().equals(PieceType.KING))))
         {
             String msg = "To castle, one piece must be a king, and the other a rook.";
