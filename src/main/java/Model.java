@@ -32,6 +32,21 @@ public class Model extends Observable
         return this.exceptionThrown;
     }
 
+    public Board getBoard()
+    {
+        return this.board;
+    }
+
+    public PieceColor getWhosTurn()
+    {
+        return this.whosTurn;
+    }
+
+    public int getTurnCount()
+    {
+        return this.turnCount;
+    }
+
     /**
      * Notify the view and clear the temporary state variables that have been
      * set.
@@ -56,21 +71,6 @@ public class Model extends Observable
     {
         this.exceptionThrown = exceptionThrown;
         setChanged();
-    }
-
-    public Board getBoard()
-    {
-        return this.board;
-    }
-
-    public PieceColor getWhosTurn()
-    {
-        return this.whosTurn;
-    }
-
-    public int getTurnCount()
-    {
-        return this.turnCount;
     }
 
     /**
@@ -113,6 +113,25 @@ public class Model extends Observable
     {
         List<Position> validNewPositions = this.board.getValidNewPositions(position);
         this.validMoves = validNewPositions;
+        setChanged();
+    }
+
+    /**
+     * Perform the move castling move.
+     * 
+     * @param position1 A position of either the king or rook.
+     * @param position2 A position of either the king or rook.
+     */
+    void castle(Position position1, Position position2)
+    {
+        try
+        {
+            this.board.castle(position1, position2);
+        } catch (InvalidPositionException ex)
+        {
+            this.exceptionThrown = ex;
+        }
+
         setChanged();
     }
 
