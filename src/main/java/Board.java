@@ -163,47 +163,6 @@ public class Board
         }
 
         /*There must be nothing in between them*/
-        try
-        {
-            Position upperLeft = new Position(0, 0);
-            Position upperRight = new Position(0, 7);
-            Position lowerLeft = new Position(7, 0);
-            Position lowerRight = new Position(7, 7);
-
-            String errorMsg = "To castle, there must be no piece between the rook and king";
-
-            if (rookPosition.equals(upperLeft))
-            {
-                if (!gridLookup(new Position(0, 1)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 2)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 3)).equals(PieceType.NO_PIECE))
-                {
-                    throw new IllegalArgumentException(errorMsg);
-                }
-            } else if (rookPosition.equals(upperRight))
-            {
-                if (!gridLookup(new Position(0, 5)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 6)).equals(PieceType.NO_PIECE))
-                {
-                    throw new IllegalArgumentException(errorMsg);
-                }
-            } else if (rookPosition.equals(lowerLeft))
-            {
-                if (!gridLookup(new Position(7, 1)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 2)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 3)).equals(PieceType.NO_PIECE))
-                {
-                    throw new IllegalArgumentException(errorMsg);
-                }
-            } else if (rookPosition.equals(lowerRight))
-            {
-                if (!gridLookup(new Position(7, 5)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 6)).equals(PieceType.NO_PIECE))
-                {
-                    throw new IllegalArgumentException(errorMsg);
-                }
-            }
-        } catch (InvalidPositionException ex)
-        {
-            logger.error(ex.getMessage());
-            System.exit(1);
-        }
-        //TODO: only define upperleft etc once
-
         /*The king is not currently in check, and does not move through check at any point during the process*/
         try
         {
@@ -212,31 +171,48 @@ public class Board
             Position lowerLeft = new Position(7, 0);
             Position lowerRight = new Position(7, 7);
 
-            String errorMsg = "To castle, the king may not castle out of, through, or into check";
+            String pieceInTheWayMsg = "To castle, there must be no piece between the rook and king";
+            String moveIntoCheckMsg = "To castle, the king may not castle out of, through, or into check";
 
             if (rookPosition.equals(upperLeft))
             {
+                if (!gridLookup(new Position(0, 1)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 2)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 3)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(pieceInTheWayMsg);
+                }
                 if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(0, 3), king.getColor()) || isCheck(new Position(0, 2), king.getColor()))
                 {
-                    throw new IllegalArgumentException(errorMsg);
+                    throw new IllegalArgumentException(moveIntoCheckMsg);
                 }
             } else if (rookPosition.equals(upperRight))
             {
+                if (!gridLookup(new Position(0, 5)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 6)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(pieceInTheWayMsg);
+                }
                 if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(0, 5), king.getColor()) || isCheck(new Position(0, 6), king.getColor()))
                 {
-                    throw new IllegalArgumentException(errorMsg);
+                    throw new IllegalArgumentException(moveIntoCheckMsg);
                 }
             } else if (rookPosition.equals(lowerLeft))
             {
-                if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(7, 2), king.getColor()) || isCheck(new Position(7, 3), king.getColor()))
+                if (!gridLookup(new Position(7, 1)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 2)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 3)).equals(PieceType.NO_PIECE))
                 {
-                    throw new IllegalArgumentException(errorMsg);
+                    throw new IllegalArgumentException(pieceInTheWayMsg);
+                }
+                if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(7, 3), king.getColor()) || isCheck(new Position(7, 2), king.getColor()))
+                {
+                    throw new IllegalArgumentException(moveIntoCheckMsg);
                 }
             } else if (rookPosition.equals(lowerRight))
             {
+                if (!gridLookup(new Position(7, 5)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 6)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(pieceInTheWayMsg);
+                }
                 if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(7, 5), king.getColor()) || isCheck(new Position(7, 6), king.getColor()))
                 {
-                    throw new IllegalArgumentException(errorMsg);
+                    throw new IllegalArgumentException(moveIntoCheckMsg);
                 }
             }
         } catch (InvalidPositionException ex)
@@ -244,7 +220,6 @@ public class Board
             logger.error(ex.getMessage());
             System.exit(1);
         }
-
     }
 
     /**

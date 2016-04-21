@@ -127,12 +127,12 @@ public class Model extends Observable
         try
         {
             this.board.castle(position1, position2);
+            setChanged();
         } catch (IllegalArgumentException ex)
         {
             this.exceptionThrown = ex;
+            setChanged();
         }
-
-        setChanged();
     }
 
     void incrementTurnCount()
