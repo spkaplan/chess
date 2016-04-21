@@ -127,7 +127,7 @@ public class Model extends Observable
         try
         {
             this.board.castle(position1, position2);
-        } catch (InvalidPositionException ex)
+        } catch (IllegalArgumentException ex)
         {
             this.exceptionThrown = ex;
         }

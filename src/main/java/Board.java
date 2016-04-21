@@ -122,35 +122,129 @@ public class Board
      * @throws InvalidPositionException If any requirement for castling the rook
      *             and king are not met.
      */
-    void castle(Position position1, Position position2) throws InvalidPositionException
+    void castle(Position position1, Position position2) throws IllegalArgumentException
     {
-        Piece piece1 = gridLookup(position1);
-        Piece piece2 = gridLookup(position2);
+        Piece king = null;
+        Piece rook = null;
+        Position kingPosition = null;
+        Position rookPosition = null;
 
         /*One piece must a king and the other a rook*/
-        if (!((piece1.getType().equals(PieceType.KING) && piece2.getType().equals(PieceType.ROOK)) || (piece1.getType().equals(PieceType.ROOK) && piece2.getType().equals(PieceType.KING))))
+        if (gridLookup(position1).getType().equals(PieceType.KING) && gridLookup(position2).getType().equals(PieceType.ROOK))
+        {
+            king = gridLookup(position1);
+            rook = gridLookup(position2);
+            kingPosition = position1;
+            rookPosition = position2;
+        } else if (gridLookup(position1).getType().equals(PieceType.ROOK) && gridLookup(position2).getType().equals(PieceType.KING))
+        {
+            king = gridLookup(position2);
+            rook = gridLookup(position1);
+            kingPosition = position2;
+            rookPosition = position1;
+        } else
         {
             String msg = "To castle, one piece must be a king, and the other a rook.";
-            throw new InvalidPositionException(msg);
+            throw new IllegalArgumentException(msg);
         }
 
         /*They must be of the same color*/
-        if (!(piece1.getColor().equals(piece2.getColor())))
+        if (!(king.getColor().equals(rook.getColor())))
         {
             String msg = "To castle, the pieces must be of the same color.";
-            throw new InvalidPositionException(msg);
+            throw new IllegalArgumentException(msg);
         }
 
         /*They must have not been moved before*/
-        if (!(piece1.getHasBeenMoved() == false && piece2.getHasBeenMoved() == false))
+        if (!(king.getHasBeenMoved() == false && rook.getHasBeenMoved() == false))
         {
             String msg = "To castle, neither of the pieces are allowed to have been moved before.";
-            throw new InvalidPositionException(msg);
+            throw new IllegalArgumentException(msg);
         }
 
         /*There must be nothing in between them*/
+        try
+        {
+            Position upperLeft = new Position(0, 0);
+            Position upperRight = new Position(0, 7);
+            Position lowerLeft = new Position(7, 0);
+            Position lowerRight = new Position(7, 7);
+
+            String errorMsg = "To castle, there must be no piece between the rook and king";
+
+            if (rookPosition.equals(upperLeft))
+            {
+                if (!gridLookup(new Position(0, 1)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 2)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 3)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else if (rookPosition.equals(upperRight))
+            {
+                if (!gridLookup(new Position(0, 5)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(0, 6)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else if (rookPosition.equals(lowerLeft))
+            {
+                if (!gridLookup(new Position(7, 1)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 2)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 3)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else if (rookPosition.equals(lowerRight))
+            {
+                if (!gridLookup(new Position(7, 5)).equals(PieceType.NO_PIECE) || !gridLookup(new Position(7, 6)).equals(PieceType.NO_PIECE))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            }
+        } catch (InvalidPositionException ex)
+        {
+            logger.error(ex.getMessage());
+            System.exit(1);
+        }
+        //TODO: only define upperleft etc once
 
         /*The king is not currently in check, and does not move through check at any point during the process*/
+        try
+        {
+            Position upperLeft = new Position(0, 0);
+            Position upperRight = new Position(0, 7);
+            Position lowerLeft = new Position(7, 0);
+            Position lowerRight = new Position(7, 7);
+
+            String errorMsg = "To castle, the king may not castle out of, through, or into check";
+
+            if (rookPosition.equals(upperLeft))
+            {
+                if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(0, 3), king.getColor()) || isCheck(new Position(0, 2), king.getColor()))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else if (rookPosition.equals(upperRight))
+            {
+                if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(0, 5), king.getColor()) || isCheck(new Position(0, 6), king.getColor()))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else if (rookPosition.equals(lowerLeft))
+            {
+                if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(7, 2), king.getColor()) || isCheck(new Position(7, 3), king.getColor()))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else if (rookPosition.equals(lowerRight))
+            {
+                if (isCheck(kingPosition, king.getColor()) || isCheck(new Position(7, 5), king.getColor()) || isCheck(new Position(7, 6), king.getColor()))
+                {
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            }
+        } catch (InvalidPositionException ex)
+        {
+            logger.error(ex.getMessage());
+            System.exit(1);
+        }
+
     }
 
     /**
