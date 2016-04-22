@@ -60,6 +60,9 @@ public class TextController
                 Position newPos = new Position(8 - Character.getNumericValue(arg2.charAt(1)),
                         charToIntMap.get(arg2.charAt(0)));
                 model.movePiece(curPos, newPos);
+
+                this.model.incrementTurnCount();
+                this.model.switchWhosTurn();
             } catch (InvalidPositionException e)
             {
                 model.setExceptionThrown(e);
@@ -112,8 +115,6 @@ public class TextController
             String input = reader.nextLine();
             processInput(input);
             this.model.notifyObservers();
-            this.model.incrementTurnCount();
-            this.model.switchWhosTurn();
         }
     }
 }
