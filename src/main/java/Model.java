@@ -78,25 +78,19 @@ public class Model extends Observable
      * 
      * @param curPos The position of the piece you want to move.
      * @param newPos The position you are attempting to move the piece to.
+     * @throws InvalidPositionException
      */
-    public void movePiece(Position curPos, Position newPos)
+    public void movePiece(Position curPos, Position newPos) throws IllegalArgumentException, InvalidPositionException
     {
         Piece pieceToMove = board.gridLookup(curPos);
 
         if (pieceToMove.getColor() != this.whosTurn)
         {
             String msg = "Cannot move piece of the other color";
-            this.exceptionThrown = new IllegalArgumentException(msg);
-            setChanged();
-            return;
+            throw new IllegalArgumentException(msg);
         }
-        try
-        {
-            board.movePiece(curPos, newPos);
-        } catch (InvalidPositionException e)
-        {
-            this.exceptionThrown = e;
-        }
+        board.movePiece(curPos, newPos);
+
         setChanged();
     }
 
