@@ -136,7 +136,8 @@ public class TextView implements Observer
         System.out.println(SMALLSPACE);
         for (int row = 0; row < Board.GRID_SIZE; row++)
         {
-            int rowCount = 8;
+            int rowLabel = Board.GRID_SIZE - row;
+
             for (int col = 0; col < Board.GRID_SIZE; col++)
             {
                 Position currentPosition = null;
@@ -152,8 +153,7 @@ public class TextView implements Observer
                 String abbreviation = getAbbreviation(currentPiece);
                 if (col == 0)
                 {
-                    System.out.print(rowCount + " | " + abbreviation);
-                    rowCount--;
+                    System.out.print(rowLabel + " | " + abbreviation);
 
                 } else if (col == 7)
                 {
