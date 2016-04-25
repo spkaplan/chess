@@ -1,6 +1,5 @@
 package test.java;
 
-import static org.junit.Assert.assertTrue;
 import main.java.InvalidPositionException;
 import main.java.Model;
 import main.java.Position;
@@ -16,7 +15,7 @@ public class ModelTest
     /**
      * When it is white's turn, a black piece cannot be moved.
      */
-    @Test()
+    @Test(expected = IllegalArgumentException.class)
     public void testCantMovePieceOfOtherColor()
     {
         Model model = new Model();
@@ -27,14 +26,11 @@ public class ModelTest
         {
             currPosition = new Position(1, 0);
             newPosition = new Position(2, 0);
+            model.movePiece(currPosition, newPosition);
         } catch (InvalidPositionException ex)
         {
+            /*An InvalidPositionException should not be thrown, b/c this test should only create valid positions*/
             logger.error(ex.getMessage());
         }
-
-        /*White tries to move black piece*/
-        model.movePiece(currPosition, newPosition);
-
-        assertTrue(model.getExceptionThrown() instanceof IllegalArgumentException);
     }
 }

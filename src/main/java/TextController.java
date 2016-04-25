@@ -55,12 +55,13 @@ public class TextController
             arg2 = inputArray[2];
             try
             {
-                Position curPos = new Position(8 - Character.getNumericValue(arg1.charAt(1)),
-                        charToIntMap.get(arg1.charAt(0)));
-                Position newPos = new Position(8 - Character.getNumericValue(arg2.charAt(1)),
-                        charToIntMap.get(arg2.charAt(0)));
+                Position curPos = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                Position newPos = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
                 model.movePiece(curPos, newPos);
-            } catch (InvalidPositionException e)
+
+                this.model.incrementTurnCount();
+                this.model.switchWhosTurn();
+            } catch (InvalidPositionException | IllegalArgumentException e)
             {
                 model.setExceptionThrown(e);
             }
@@ -75,14 +76,22 @@ public class TextController
             arg1 = inputArray[1];
             try
             {
-                Position position = new Position(8 - Character.getNumericValue(arg1.charAt(1)),
-                        charToIntMap.get(arg1.charAt(0)));
+                Position position = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
                 model.getValidNewPositions(position);
             } catch (InvalidPositionException e)
             {
                 model.setExceptionThrown(e);
             }
             break;
+        case "quit":
+        case "exit":
+            if (inputArray.length != 1)
+            {
+                String message = "The quit/exit commands do not take any arguments.";
+                model.setExceptionThrown(new IllegalArgumentException(message));
+                break;
+            }
+            System.exit(0);
         default:
             String message = "Unrecognized Command: " + input;
             model.setExceptionThrown(new IllegalArgumentException(message));
@@ -112,8 +121,6 @@ public class TextController
             String input = reader.nextLine();
             processInput(input);
             this.model.notifyObservers();
-            this.model.incrementTurnCount();
-            this.model.switchWhosTurn();
         }
     }
 }
