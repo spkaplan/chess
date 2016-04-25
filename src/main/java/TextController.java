@@ -83,6 +83,28 @@ public class TextController
                 model.setExceptionThrown(e);
             }
             break;
+        case "castle":
+            if (inputArray.length != 3)
+            {
+                String message = "The castle command requires two grid positions (e.g. castle a1 a2)";
+                model.setExceptionThrown(new IllegalArgumentException(message));
+                break;
+            }
+            arg1 = inputArray[1];
+            arg2 = inputArray[2];
+            try
+            {
+                Position position1 = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                Position position2 = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+                model.castle(position1, position2);
+
+                this.model.incrementTurnCount();
+                this.model.switchWhosTurn();
+            } catch (InvalidPositionException | IllegalArgumentException e)
+            {
+                model.setExceptionThrown(e);
+            }
+            break;
         case "quit":
         case "exit":
             if (inputArray.length != 1)

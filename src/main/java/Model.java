@@ -116,17 +116,11 @@ public class Model extends Observable
      * @param position1 A position of either the king or rook.
      * @param position2 A position of either the king or rook.
      */
-    void castle(Position position1, Position position2)
+    void castle(Position position1, Position position2) throws IllegalArgumentException
     {
-        try
-        {
-            this.board.castle(position1, position2);
-            setChanged();
-        } catch (IllegalArgumentException ex)
-        {
-            this.exceptionThrown = ex;
-            setChanged();
-        }
+        this.board.castle(position1, position2);
+
+        setChanged();
     }
 
     void incrementTurnCount()
