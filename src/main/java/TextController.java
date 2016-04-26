@@ -92,6 +92,10 @@ public class TextController
                 break;
             }
             System.exit(0);
+
+        case "refresh":
+            model.notifyObservers();
+            break;
         default:
             String message = "Unrecognized Command: " + input;
             model.setExceptionThrown(new IllegalArgumentException(message));
