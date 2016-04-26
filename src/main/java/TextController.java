@@ -100,7 +100,7 @@ public class TextController
 
                 this.model.incrementTurnCount();
                 this.model.switchWhosTurn();
-            } catch (InvalidPositionException | IllegalArgumentException e)
+            } catch (InvalidPositionException e)
             {
                 model.setExceptionThrown(e);
             }

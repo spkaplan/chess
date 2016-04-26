@@ -115,8 +115,9 @@ public class Model extends Observable
      * 
      * @param position1 A position of either the king or rook.
      * @param position2 A position of either the king or rook.
+     * @throws InvalidPositionException
      */
-    void castle(Position position1, Position position2) throws IllegalArgumentException
+    void castle(Position position1, Position position2) throws InvalidPositionException
     {
         this.board.castle(position1, position2);
 
