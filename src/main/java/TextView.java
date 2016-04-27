@@ -125,15 +125,13 @@ public class TextView implements Observer
      */
     void drawBoard(Board board)
     {
+        String horizontalBar = "+----+----+----+----+----+----+----+----+";
+        String columnLabels = "     a    b    c    d    e    f    g    h    ";
 
-        System.out.println("     a   b   c   d   e   f   g   h    ");
-        System.out.print(SPACE);
+        System.out.println(columnLabels);
+        System.out.print(SMALLSPACE);
+        System.out.println(horizontalBar);
 
-        for (int i = 0; i < Board.GRID_SIZE; i++)
-        {
-            System.out.print("----");
-        }
-        System.out.println(SMALLSPACE);
         for (int row = 0; row < Board.GRID_SIZE; row++)
         {
             int rowLabel = Board.GRID_SIZE - row;
@@ -157,20 +155,18 @@ public class TextView implements Observer
 
                 } else if (col == 7)
                 {
-                    System.out.println(abbreviation + " |");
+                    System.out.println(" | " + abbreviation + " |");
 
                 } else
                 {
+                    System.out.print(" | ");
                     System.out.print(abbreviation);
                 }
             }
+            System.out.print(SMALLSPACE);
+            System.out.println(horizontalBar);
         }
         System.out.print(SPACE);
-
-        for (int i = 0; i < board.GRID_SIZE; i++)
-        {
-            System.out.print("¯¯¯¯");
-        }
         System.out.println(NEWLINE);
     }
 
@@ -188,25 +184,25 @@ public class TextView implements Observer
         switch (pieceType)
         {
         case BISHOP:
-            pieceAbr = " BI ";
+            pieceAbr = "BI";
             break;
         case KING:
-            pieceAbr = " KI ";
+            pieceAbr = "KI";
             break;
         case KNIGHT:
-            pieceAbr = " KN ";
+            pieceAbr = "KN";
             break;
         case PAWN:
-            pieceAbr = " PA ";
+            pieceAbr = "PA";
             break;
         case QUEEN:
-            pieceAbr = " QU ";
+            pieceAbr = "QU";
             break;
         case ROOK:
-            pieceAbr = " RO ";
+            pieceAbr = "RO";
             break;
         case NO_PIECE:
-            pieceAbr = " .. ";
+            pieceAbr = "  ";
             break;
         default:
             String msg = "Piece type isn't accounted for.";
