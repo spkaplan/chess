@@ -44,21 +44,6 @@ public class Model extends Observable
         return this.isCheckmate;
     }
 
-    public Board getBoard()
-    {
-        return this.board;
-    }
-
-    public PieceColor getWhosTurn()
-    {
-        return this.whosTurn;
-    }
-
-    public int getTurnCount()
-    {
-        return this.turnCount;
-    }
-
     /**
      * Notify the view and clear the temporary state variables that have been
      * set.
