@@ -16,8 +16,7 @@ public class TextView implements Observer
 {
     private final static Logger logger = LoggerFactory.getLogger(TextView.class);
     private final static String NEWLINE = "\n";
-    private final static String SPACE = "   ";
-    private final static String SMALLSPACE = "  ";
+    private final static String TWO_SPACES = "  ";
     private static Map<Integer, Character> intToChar;
     private static Map<Integer, Integer> intRowConversion;
 
@@ -84,7 +83,7 @@ public class TextView implements Observer
     /**
      * Displays valid moves of a given piece.
      * 
-     * @param validPositions
+     * @param validPositions Positions on the board the piece can move to.
      * 
      */
     void showValidMoves(List<Position> validPositions)
@@ -95,7 +94,7 @@ public class TextView implements Observer
         {
             validMsg.append(intToChar.get(currValidPosition.getColumn()));
             validMsg.append(intRowConversion.get(currValidPosition.getRow()));
-            validMsg.append(SMALLSPACE);
+            validMsg.append(TWO_SPACES);
         }
         System.out.println(validMsg);
     }
@@ -108,7 +107,7 @@ public class TextView implements Observer
     void drawHeader(Model model)
     {
         StringBuilder header = new StringBuilder();
-        header.append("LOWERCASE: BLACK | UPPERCASE: WHITE");
+        header.append("UPPERCASE: WHITE | lowercase: black");
         header.append(NEWLINE);
         header.append(model.getWhosTurn() + "'S Turn ");
         header.append(NEWLINE);
@@ -125,12 +124,16 @@ public class TextView implements Observer
      */
     void drawBoard(Board board)
     {
-        String horizontalBar = "+----+----+----+----+----+----+----+----+";
         String columnLabels = "     a    b    c    d    e    f    g    h    ";
+        String horizontalBar = "+----+----+----+----+----+----+----+----+";
 
-        System.out.println(columnLabels);
-        System.out.print(SMALLSPACE);
-        System.out.println(horizontalBar);
+        StringBuilder boardString = new StringBuilder();
+
+        boardString.append(columnLabels);
+        boardString.append(NEWLINE);
+        boardString.append(TWO_SPACES);
+        boardString.append(horizontalBar);
+        boardString.append(NEWLINE);
 
         for (int row = 0; row < Board.GRID_SIZE; row++)
         {
@@ -151,23 +154,28 @@ public class TextView implements Observer
                 String abbreviation = getAbbreviation(currentPiece);
                 if (col == 0)
                 {
-                    System.out.print(rowLabel + " | " + abbreviation);
-
+                    boardString.append(rowLabel);
+                    boardString.append(" | ");
+                    boardString.append(abbreviation);
                 } else if (col == 7)
                 {
-                    System.out.println(" | " + abbreviation + " |");
-
+                    boardString.append(" | ");
+                    boardString.append(abbreviation);
+                    boardString.append(" | ");
+                    boardString.append(NEWLINE);
                 } else
                 {
-                    System.out.print(" | ");
-                    System.out.print(abbreviation);
+                    boardString.append(" | ");
+                    boardString.append(abbreviation);
                 }
             }
-            System.out.print(SMALLSPACE);
-            System.out.println(horizontalBar);
+            boardString.append(TWO_SPACES);
+            boardString.append(horizontalBar);
+            boardString.append(NEWLINE);
         }
-        System.out.print(SPACE);
-        System.out.println(NEWLINE);
+        boardString.append(NEWLINE);
+
+        System.out.print(boardString);
     }
 
     /**
