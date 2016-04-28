@@ -73,6 +73,12 @@ public class TextView implements Observer
         } else if (model.getExceptionThrown() != null)
         {
             System.out.println(model.getExceptionThrown().getMessage());
+        } else if (model.getIsCheck() == true)
+        {
+            System.out.println(model.getWhosTurn() + " is in check.");
+        } else if (model.getIsCheckmate() == true)
+        {
+            System.out.println(model.getWhosTurn() + " is in checkmate. Game over.");
         } else
         {
             drawHeader(model);
