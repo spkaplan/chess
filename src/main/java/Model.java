@@ -13,6 +13,8 @@ public class Model extends Observable
     private int turnCount;
     private List<Position> validMoves;
     private Exception exceptionThrown;
+    private boolean isCheck;
+    private boolean isCheckmate;
 
     public Model()
     {
@@ -30,6 +32,16 @@ public class Model extends Observable
     public Exception getExceptionThrown()
     {
         return this.exceptionThrown;
+    }
+
+    public boolean getIsCheck()
+    {
+        return this.isCheck;
+    }
+
+    public boolean getIsCheckmate()
+    {
+        return this.isCheckmate;
     }
 
     public Board getBoard()
@@ -65,12 +77,41 @@ public class Model extends Observable
     {
         this.exceptionThrown = null;
         this.validMoves = null;
+        this.isCheck = false;
+        this.isCheckmate = false;
     }
 
     public void setExceptionThrown(Exception exceptionThrown)
     {
         this.exceptionThrown = exceptionThrown;
         setChanged();
+    }
+
+    public void setIsCheck(boolean isCheck)
+    {
+        this.isCheck = isCheck;
+        setChanged();
+    }
+
+    public void setIsCheckmate(boolean isCheckmate)
+    {
+        this.isCheckmate = isCheckmate;
+        setChanged();
+    }
+
+    public Board getBoard()
+    {
+        return this.board;
+    }
+
+    public PieceColor getWhosTurn()
+    {
+        return this.whosTurn;
+    }
+
+    public int getTurnCount()
+    {
+        return this.turnCount;
     }
 
     /**
@@ -122,6 +163,16 @@ public class Model extends Observable
         this.board.castle(position1, position2);
 
         setChanged();
+    }
+
+    boolean isCheck()
+    {
+        return this.board.isCheck(this.whosTurn);
+    }
+
+    boolean isCheckmate()
+    {
+        return this.board.isCheckmate(this.whosTurn);
     }
 
     void incrementTurnCount()

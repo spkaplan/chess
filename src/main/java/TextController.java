@@ -12,15 +12,21 @@ public class TextController
 {
     private Model model;
 
-    Map<Character, Integer> charToIntMap = new HashMap<>();
+    Map<Character, Integer> charToIntMap;
 
     public TextController()
     {
         buildCharToIntMap();
     }
 
+    public void setModel(Model model)
+    {
+        this.model = model;
+    }
+
     void buildCharToIntMap()
     {
+        charToIntMap = new HashMap<>();
         charToIntMap.put('a', 0);
         charToIntMap.put('b', 1);
         charToIntMap.put('c', 2);
@@ -35,7 +41,7 @@ public class TextController
      * Processes the input of the user and tells model how to react/update. Also
      * queues the model to refresh the view.
      * 
-     * @param input user input (System.in for now)
+     * @param input User input.
      */
     void processInput(String input)
     {
@@ -121,24 +127,28 @@ public class TextController
         }
     }
 
-    public void setModel(Model model)
-    {
-        this.model = model;
-    }
-
     /**
-     * This is the method that loops indefinitely awaiting commands from the
-     * user.
+     * Loop indefinitely, awaiting commands from the user.
      */
     public void run()
     {
         Scanner reader = new Scanner(System.in);
 
-        /*Trigger the view so it is displayed immediately*/
+        /*Cause the view to be displayed immediately*/
         this.model.notifyObservers();
 
         while (true)
         {
+            if (this.model.isCheckmate())
+            {
+                this.model.setIsCheckmate(true);
+                this.model.notifyObservers();
+                System.exit(0);
+            } else if (this.model.isCheck())
+            {
+                this.model.setIsCheck(true);
+                this.model.notifyObservers();
+            }
             System.out.print(">>");
             String input = reader.nextLine();
             processInput(input);
