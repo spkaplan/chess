@@ -112,13 +112,24 @@ public class TextView implements Observer
      */
     void drawHeader(Model model)
     {
+        String horizontalBar = "+----------------------------------------------------------------------+";
         StringBuilder header = new StringBuilder();
-        header.append("UPPERCASE: WHITE | lowercase: black");
+
+        header.append(horizontalBar);
         header.append(NEWLINE);
-        header.append(model.getWhosTurn() + "'S Turn ");
+
+        header.append(TWO_SPACES);
+        header.append(model.getWhosTurn() + "'S Turn");
+        header.append(" | ");
+        header.append("Turn #: " + model.getTurnCount());
+        header.append(" | ");
+        header.append("WHITE --> UPPERCASE");
+        header.append(" | ");
+        header.append("black --> lowercase");
         header.append(NEWLINE);
-        header.append("Turn Number: " + model.getTurnCount());
-        header.append(NEWLINE);
+
+        header.append(horizontalBar);
+
         System.out.println(header);
     }
 
@@ -180,7 +191,6 @@ public class TextView implements Observer
             boardString.append(NEWLINE);
         }
         boardString.append(NEWLINE);
-
         System.out.print(boardString);
     }
 
