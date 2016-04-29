@@ -17,6 +17,7 @@ public class TextView implements Observer
     private final static Logger logger = LoggerFactory.getLogger(TextView.class);
     private final static String NEWLINE = "\n";
     private final static String TWO_SPACES = "  ";
+    private final static String VERTICAL_BAR = " | ";
     private static Map<Integer, Character> intToChar;
     private static Map<Integer, Integer> intRowConversion;
 
@@ -120,11 +121,11 @@ public class TextView implements Observer
 
         header.append(TWO_SPACES);
         header.append(model.getWhosTurn() + "'S Turn");
-        header.append(" | ");
+        header.append(VERTICAL_BAR);
         header.append("Turn #: " + model.getTurnCount());
-        header.append(" | ");
+        header.append(VERTICAL_BAR);
         header.append("WHITE --> UPPERCASE");
-        header.append(" | ");
+        header.append(VERTICAL_BAR);
         header.append("black --> lowercase");
         header.append(NEWLINE);
 
