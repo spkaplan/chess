@@ -12,8 +12,8 @@ public class TextView implements Observer
 {
     private final static Logger logger = LoggerFactory.getLogger(TextView.class);
     private final static String NEWLINE = "\n";
-    private final static String SPACE = "   ";
-    private final static String SMALLSPACE = "  ";
+    private final static String TWO_SPACES = "  ";
+    private final static String VERTICAL_BAR = " | ";
     private static Map<Integer, Character> intToChar;
     private static Map<Integer, Integer> intRowConversion;
     private static Model model;
@@ -83,6 +83,12 @@ public class TextView implements Observer
         } else if (model.getExceptionThrown() != null)
         {
             System.out.println(model.getExceptionThrown().getMessage());
+        } else if (model.getIsCheck() == true)
+        {
+            System.out.println(model.getWhosTurn() + " is in check.");
+        } else if (model.getIsCheckmate() == true)
+        {
+            System.out.println(model.getWhosTurn() + " is in checkmate. Game over.");
         } else
         {
             drawHeader(model);
@@ -108,7 +114,7 @@ public class TextView implements Observer
     /**
      * Displays valid moves of a given piece.
      * 
-     * @param validPositions
+     * @param validPositions Positions on the board the piece can move to.
      * 
      */
     void showValidMoves(List<Position> validPositions)
@@ -119,7 +125,7 @@ public class TextView implements Observer
         {
             validMsg.append(intToChar.get(currValidPosition.getColumn()));
             validMsg.append(intRowConversion.get(currValidPosition.getRow()));
-            validMsg.append(SMALLSPACE);
+            validMsg.append(TWO_SPACES);
         }
         System.out.println(validMsg);
     }
@@ -131,13 +137,24 @@ public class TextView implements Observer
      */
     void drawHeader(Model model)
     {
+        String horizontalBar = "+----------------------------------------------------------------------+";
         StringBuilder header = new StringBuilder();
-        header.append("LOWERCASE: BLACK | UPPERCASE: WHITE");
+
+        header.append(horizontalBar);
         header.append(NEWLINE);
-        header.append(model.getWhosTurn() + "'S Turn ");
+
+        header.append(TWO_SPACES);
+        header.append(model.getWhosTurn() + "'S Turn");
+        header.append(VERTICAL_BAR);
+        header.append("Turn #: " + model.getTurnCount());
+        header.append(VERTICAL_BAR);
+        header.append("WHITE --> UPPERCASE");
+        header.append(VERTICAL_BAR);
+        header.append("black --> lowercase");
         header.append(NEWLINE);
-        header.append("Turn Number: " + model.getTurnCount());
-        header.append(NEWLINE);
+
+        header.append(horizontalBar);
+
         System.out.println(header);
     }
 
@@ -149,15 +166,17 @@ public class TextView implements Observer
      */
     void drawBoard(Board board)
     {
+        String columnLabels = "     a    b    c    d    e    f    g    h    ";
+        String horizontalBar = "+----+----+----+----+----+----+----+----+";
 
-        System.out.println("     a   b   c   d   e   f   g   h    ");
-        System.out.print(SPACE);
+        StringBuilder boardString = new StringBuilder();
 
-        for (int i = 0; i < Board.GRID_SIZE; i++)
-        {
-            System.out.print("----");
-        }
-        System.out.println(SMALLSPACE);
+        boardString.append(columnLabels);
+        boardString.append(NEWLINE);
+        boardString.append(TWO_SPACES);
+        boardString.append(horizontalBar);
+        boardString.append(NEWLINE);
+
         for (int row = 0; row < Board.GRID_SIZE; row++)
         {
             int rowLabel = Board.GRID_SIZE - row;
@@ -177,25 +196,27 @@ public class TextView implements Observer
                 String abbreviation = getAbbreviation(currentPiece);
                 if (col == 0)
                 {
-                    System.out.print(rowLabel + " | " + abbreviation);
-
+                    boardString.append(rowLabel);
+                    boardString.append(" | ");
+                    boardString.append(abbreviation);
                 } else if (col == 7)
                 {
-                    System.out.println(abbreviation + " |");
-
+                    boardString.append(" | ");
+                    boardString.append(abbreviation);
+                    boardString.append(" | ");
+                    boardString.append(NEWLINE);
                 } else
                 {
-                    System.out.print(abbreviation);
+                    boardString.append(" | ");
+                    boardString.append(abbreviation);
                 }
             }
+            boardString.append(TWO_SPACES);
+            boardString.append(horizontalBar);
+            boardString.append(NEWLINE);
         }
-        System.out.print(SPACE);
-
-        for (int i = 0; i < board.GRID_SIZE; i++)
-        {
-            System.out.print("¯¯¯¯");
-        }
-        System.out.println(NEWLINE);
+        boardString.append(NEWLINE);
+        System.out.print(boardString);
     }
 
     /**
@@ -212,25 +233,25 @@ public class TextView implements Observer
         switch (pieceType)
         {
         case BISHOP:
-            pieceAbr = " BI ";
+            pieceAbr = "BI";
             break;
         case KING:
-            pieceAbr = " KI ";
+            pieceAbr = "KI";
             break;
         case KNIGHT:
-            pieceAbr = " KN ";
+            pieceAbr = "KN";
             break;
         case PAWN:
-            pieceAbr = " PA ";
+            pieceAbr = "PA";
             break;
         case QUEEN:
-            pieceAbr = " QU ";
+            pieceAbr = "QU";
             break;
         case ROOK:
-            pieceAbr = " RO ";
+            pieceAbr = "RO";
             break;
         case NO_PIECE:
-            pieceAbr = " .. ";
+            pieceAbr = "  ";
             break;
         default:
             String msg = "Piece type isn't accounted for.";
