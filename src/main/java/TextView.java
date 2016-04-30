@@ -1,13 +1,9 @@
 package main.java;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * Created by brand on 3/29/2016.
@@ -20,6 +16,8 @@ public class TextView implements Observer
     private final static String SMALLSPACE = "  ";
     private static Map<Integer, Character> intToChar;
     private static Map<Integer, Integer> intRowConversion;
+    private static Model model;
+    String helpList = buildHelpString();
 
     public TextView()
     {
@@ -59,14 +57,25 @@ public class TextView implements Observer
         intRowConversion.put(7, 1);
     }
 
+    String buildHelpString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("move [pos 1] [pos 2] : moves piece at pos 1 to pos 2" + "\n");
+        stringBuilder.append("validmoves [pos 1] : displays the valid moves for piece at pos 1" + "\n");
+        stringBuilder.append("quit : exits the game" + "\n");
+        stringBuilder.append("exit : exits the game" + "\n");
+        stringBuilder.append("refresh : redisplays the view of the board" + "\n");
+        stringBuilder.append("help : displays a list of the available commands" + "\n");
+        return stringBuilder.toString();
+    }
+
     /**
      * Updates the console to display info from the current model.
      */
     @Override
     public void update(Observable o, Object arg)
     {
-        Model model = (Model) o;
-        Board board = model.getBoard();
+        this.model = (Model) o;
 
         if (model.getValidMoves() != null)
         {
@@ -77,8 +86,23 @@ public class TextView implements Observer
         } else
         {
             drawHeader(model);
-            drawBoard(board);
+            drawBoard(model.getBoard());
         }
+    }
+
+    /**
+     * Redisplays the view using the last model that was passed to the view
+     */
+    void refresh() {
+        drawHeader(model);
+        drawBoard(model.getBoard());
+    }
+
+    /**
+     * displays a list of available commands to the user
+     */
+    void help() {
+        System.out.println(helpList);
     }
 
     /**
