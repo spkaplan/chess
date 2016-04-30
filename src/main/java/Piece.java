@@ -8,6 +8,8 @@ public abstract class Piece
 
     private PieceType type;
 
+    private boolean hasBeenMoved = false;
+
     public Piece(PieceType type)
     {
         this.type = type;
@@ -27,6 +29,16 @@ public abstract class Piece
     public PieceType getType()
     {
         return this.type;
+    }
+
+    public boolean getHasBeenMoved()
+    {
+        return this.hasBeenMoved;
+    }
+
+    public void setHasBeenMoved(boolean hasBeenMoved)
+    {
+        this.hasBeenMoved = hasBeenMoved;
     }
 
     /**

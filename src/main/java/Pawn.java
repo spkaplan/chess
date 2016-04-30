@@ -7,7 +7,6 @@ public class Pawn extends Piece
 {
     List<RelativePosition> possibleMovesInitial;
     List<RelativePosition> possibleMovesRegular;
-    boolean hasBeenMoved = false;
 
     public Pawn(PieceColor color)
     {
@@ -36,16 +35,11 @@ public class Pawn extends Piece
     @Override
     List<RelativePosition> getNewPossibleMoves()
     {
-        if (this.hasBeenMoved)
+        if (this.getHasBeenMoved())
         {
             return this.possibleMovesRegular;
         }
 
         return this.possibleMovesInitial;
-    }
-
-    public void setHasBeenMoved(boolean hasBeenMoved)
-    {
-        this.hasBeenMoved = hasBeenMoved;
     }
 }
