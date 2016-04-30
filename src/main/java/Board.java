@@ -96,8 +96,7 @@ public class Board
      *             destination or something else which prevents the piece from
      *             being moved to the destination.
      */
-    public void movePiece(Position currPosition, Position newPosition)
-            throws InvalidPositionException
+    public void movePiece(Position currPosition, Position newPosition) throws InvalidPositionException
     {
         Piece pieceToMove = gridLookup(currPosition);
 
@@ -113,9 +112,7 @@ public class Board
             }
         } else
         {
-            String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col="
-                    + currPosition.getColumn() + " to row=" + newPosition.getRow() + ", col="
-                    + newPosition.getColumn();
+            String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col=" + currPosition.getColumn() + " to row=" + newPosition.getRow() + ", col=" + newPosition.getColumn();
             throw new InvalidPositionException(msg);
         }
     }
@@ -166,8 +163,7 @@ public class Board
                 }
                 Piece piece = gridLookup(piecePosition);
 
-                if (piece.getColor() != color
-                        && getPositionsThreatened(piecePosition).contains(kingPosition))
+                if (piece.getColor() != color && getPositionsThreatened(piecePosition).contains(kingPosition))
                 {
                     return true;
                 }
@@ -238,10 +234,9 @@ public class Board
     {
         List<Position> validNewPositions = new ArrayList<Position>();
         Piece pieceToMove = gridLookup(currPosition);
-        List<RelativePosition> possibleMoves = pieceToMove.getNewPossibleMoves();
 
         /*Add each position possible move to the current position. Determine if the combination of the two is a valid place to move to*/
-        for (RelativePosition move : possibleMoves)
+        for (RelativePosition move : pieceToMove.getNewPossibleMoves())
         {
             for (int step = 1; step <= move.getDistance(); step++)
             {
@@ -259,15 +254,13 @@ public class Board
                 }
 
                 /*Position has piece of same color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
-                        && pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
                 {
                     break;
                 }
 
                 /*Position has piece of opposite color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
-                        && pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
                 {
                     /*The moving piece can advance to the position, but no further.*/
                     validNewPositions.add(candidatePosition);
@@ -275,12 +268,22 @@ public class Board
                 }
 
                 /*King moves into check*/
-                if (pieceToMove.getType() == PieceType.KING
-                        && isCheck(candidatePosition, pieceToMove.getColor()))
+                if (pieceToMove.getType() == PieceType.KING && isCheck(candidatePosition, pieceToMove.getColor()))
                 {
                     break;
                 }
 
+                /*Pawn move diagonally(attack) into empty space*/
+                if (pieceToMove.getType() == PieceType.PAWN)
+                {
+                    if (candidatePosition.getRow() != currPosition.getRow() && candidatePosition.getColumn() != currPosition.getColumn()) //moving diagonally
+                    {
+                        if (gridLookup(candidatePosition).getType() == PieceType.NO_PIECE) //no piece in diagonal, ???or piece of same color in diagonal????? I dont tink i need to do this check, b/c of above check 
+                        {
+                            break;
+                        }
+                    }
+                }
                 validNewPositions.add(candidatePosition);
             }
         }
@@ -318,24 +321,20 @@ public class Board
                 }
 
                 /*Position has piece of same color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
-                        && pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
                 {
                     break;
                 }
 
                 /*Position has a king of the opposite color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
-                        && pieceToMove.getColor() != gridLookup(candidatePosition).getColor()
-                        && gridLookup(candidatePosition).getType() == PieceType.KING)
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() != gridLookup(candidatePosition).getColor() && gridLookup(candidatePosition).getType() == PieceType.KING)
                 {
                     positionsThreatened.add(candidatePosition);
                     break;
                 }
 
                 /*Position has piece of opposite color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE
-                        && pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
                 {
                     /*The moving piece can advance to the position, but no further.*/
                     positionsThreatened.add(candidatePosition);
