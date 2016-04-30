@@ -136,6 +136,20 @@ public class Model extends Observable
         setChanged();
     }
 
+    /**
+     * Perform the move castling move.
+     * 
+     * @param position1 A position of either the king or rook.
+     * @param position2 A position of either the king or rook.
+     * @throws InvalidPositionException
+     */
+    void castle(Position position1, Position position2) throws InvalidPositionException
+    {
+        this.board.castle(position1, position2);
+
+        setChanged();
+    }
+
     boolean isCheck()
     {
         return this.board.isCheck(this.whosTurn);
