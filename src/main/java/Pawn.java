@@ -18,11 +18,21 @@ public class Pawn extends Piece
         if (this.getColor() == PieceColor.WHITE)
         {
             possibleMovesInitial.add(new RelativePosition(-1, 0, 2));
+            possibleMovesInitial.add(new RelativePosition(-1, 1, 1));
+            possibleMovesInitial.add(new RelativePosition(-1, -1, 1));
+
             possibleMovesRegular.add(new RelativePosition(-1, 0, 1));
+            possibleMovesRegular.add(new RelativePosition(-1, 1, 1));
+            possibleMovesRegular.add(new RelativePosition(-1, -1, 1));
         } else
         {
             possibleMovesInitial.add(new RelativePosition(1, 0, 2));
+            possibleMovesInitial.add(new RelativePosition(1, 1, 1));
+            possibleMovesInitial.add(new RelativePosition(1, -1, 1));
+
             possibleMovesRegular.add(new RelativePosition(1, 0, 1));
+            possibleMovesRegular.add(new RelativePosition(1, 1, 1));
+            possibleMovesRegular.add(new RelativePosition(1, -1, 1));
         }
     }
 

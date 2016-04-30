@@ -382,10 +382,9 @@ public class Board
     {
         List<Position> validNewPositions = new ArrayList<Position>();
         Piece pieceToMove = gridLookup(currPosition);
-        List<RelativePosition> possibleMoves = pieceToMove.getNewPossibleMoves();
 
         /*Add each position possible move to the current position. Determine if the combination of the two is a valid place to move to*/
-        for (RelativePosition move : possibleMoves)
+        for (RelativePosition move : pieceToMove.getNewPossibleMoves())
         {
             for (int step = 1; step <= move.getDistance(); step++)
             {
@@ -422,6 +421,17 @@ public class Board
                     break;
                 }
 
+                /*Pawn move diagonally(attack) into empty space*/
+                if (pieceToMove.getType() == PieceType.PAWN)
+                {
+                    if (candidatePosition.getRow() != currPosition.getRow() && candidatePosition.getColumn() != currPosition.getColumn()) //moving diagonally
+                    {
+                        if (gridLookup(candidatePosition).getType() == PieceType.NO_PIECE) //no piece in diagonal, ???or piece of same color in diagonal????? I dont tink i need to do this check, b/c of above check 
+                        {
+                            break;
+                        }
+                    }
+                }
                 validNewPositions.add(candidatePosition);
             }
         }
