@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class TextController
 {
     private Model model;
+    private TextView view;
 
     Map<Character, Integer> charToIntMap;
 
@@ -120,11 +121,22 @@ public class TextController
                 break;
             }
             System.exit(0);
+
+        case "refresh":
+            this.view.refresh();
+            break;
+        case "help":
+            this.view.help();
+            break;
         default:
             String message = "Unrecognized Command: " + input;
             model.setExceptionThrown(new IllegalArgumentException(message));
             break;
         }
+    }
+
+    public void setView(TextView view) {
+        this.view = view;
     }
 
     /**

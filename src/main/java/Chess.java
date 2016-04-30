@@ -10,11 +10,12 @@ public class Chess
         //Instantiate the Model, View, and Controller//
 
         Model model = new Model();
-
-        TextController controller = new TextController();
-        controller.setModel(model);
-
         TextView view = new TextView();
+        TextController controller = new TextController();
+
+        controller.setModel(model);
+        controller.setView(view);
+
 
         model.addObserver(view);
 
