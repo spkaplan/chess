@@ -330,12 +330,28 @@ public class Board
     {
         Position kingPosition = getKingPosition(color);
 
-        if (isCheck(color) && getValidNewPositions(kingPosition).size() == 0)
+        for (int row = 0; row < GRID_SIZE; row++)
         {
-            return true;
+            for (int col = 0; col < GRID_SIZE; col++)
+            {
+                Position currPosition = null;
+
+                try
+                {
+                    currPosition = new Position(row, col);
+
+                } catch (InvalidPositionException ex)
+                {
+                    logger.error(ex.getMessage());
+                }
+                if (gridLookup(currPosition).getColor() == color && getValidNewPositions(currPosition).size() != 0)
+                {
+                    return false;
+                }
+            }
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -432,6 +448,22 @@ public class Board
                         }
                     }
                 }
+
+                /////////////////////////////////////////////////////////////
+                //TODO: THIS DOESN'T WORK!!!
+                placePiece(pieceToMove, candidatePosition);
+
+                if (isCheck(pieceToMove.getColor()))
+                {
+                    placePiece(new NoPiece(), candidatePosition);
+                    break;
+                } else
+                {
+                    placePiece(new NoPiece(), candidatePosition);
+                }
+
+                ///////////////////////////////////////////////////////////
+
                 validNewPositions.add(candidatePosition);
             }
         }
