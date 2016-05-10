@@ -1,13 +1,15 @@
 package main.java;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Board
+public class Board implements Serializable
 {
     final Logger logger = LoggerFactory.getLogger(Board.class);
     static final int GRID_SIZE = 8;
@@ -448,18 +450,15 @@ public class Board
                         }
                     }
                 }
+                /////////////////////////////
 
-                /////////////////////////////////////////////////////////////
-                //TODO: THIS DOESN'T WORK!!!
-                placePiece(pieceToMove, candidatePosition);
+                Board clonedBoard = SerializationUtils.clone(this);
 
-                if (isCheck(pieceToMove.getColor()))
+                clonedBoard.placePiece(pieceToMove, candidatePosition);
+
+                if (clonedBoard.isCheck(pieceToMove.getColor()))
                 {
-                    placePiece(new NoPiece(), candidatePosition);
                     break;
-                } else
-                {
-                    placePiece(new NoPiece(), candidatePosition);
                 }
 
                 ///////////////////////////////////////////////////////////
