@@ -1,6 +1,8 @@
 package main.java;
 
-public class RelativePosition
+import java.io.Serializable;
+
+public class RelativePosition implements Serializable
 {
     private int row;
     private int column;

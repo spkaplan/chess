@@ -419,17 +419,19 @@ public class Board implements Serializable
                     break;
                 }
 
-                /*Position has piece of same color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
+                /*Invalid move if the piece's king is in check after the move*/
+                Board clonedBoard = SerializationUtils.clone(this);
+
+                clonedBoard.placePiece(pieceToMove, candidatePosition);
+
+                if (clonedBoard.isCheck(pieceToMove.getColor()))
                 {
                     break;
                 }
 
-                /*Position has piece of opposite color*/
-                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
+                /*Position has piece of same color*/
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() == gridLookup(candidatePosition).getColor())
                 {
-                    /*The moving piece can advance to the position, but no further.*/
-                    validNewPositions.add(candidatePosition);
                     break;
                 }
 
@@ -450,18 +452,14 @@ public class Board implements Serializable
                         }
                     }
                 }
-                /////////////////////////////
 
-                Board clonedBoard = SerializationUtils.clone(this);
-
-                clonedBoard.placePiece(pieceToMove, candidatePosition);
-
-                if (clonedBoard.isCheck(pieceToMove.getColor()))
+                /*Position has piece of opposite color*/
+                if (gridLookup(candidatePosition).getType() != PieceType.NO_PIECE && pieceToMove.getColor() != gridLookup(candidatePosition).getColor())
                 {
+                    /*The moving piece can advance to the position, but no further.*/
+                    validNewPositions.add(candidatePosition);
                     break;
                 }
-
-                ///////////////////////////////////////////////////////////
 
                 validNewPositions.add(candidatePosition);
             }

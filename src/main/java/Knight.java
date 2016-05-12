@@ -1,9 +1,10 @@
 package main.java;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Knight extends Piece
+public class Knight extends Piece implements Serializable
 {
     List<RelativePosition> possibleMoves;
 
