@@ -110,9 +110,14 @@ public class Model extends Observable
     {
         Piece pieceToMove = board.gridLookup(curPos);
 
+        if (pieceToMove.getType() == PieceType.NO_PIECE)
+        {
+            String msg = "Cannot move a piece from an empty board position.";
+            throw new IllegalArgumentException(msg);
+        }
         if (pieceToMove.getColor() != this.whosTurn)
         {
-            String msg = "Cannot move piece of the other color";
+            String msg = "Cannot move piece of the other color.";
             throw new IllegalArgumentException(msg);
         }
         board.movePiece(curPos, newPos);
