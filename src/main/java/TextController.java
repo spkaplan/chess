@@ -13,6 +13,12 @@ public class TextController
     private Model model;
     private TextView view;
 
+    private String validCoords = "abcdefh";
+
+    private enum validCommands {
+        move, validmoves, help, exit, quit, castle, refresh
+    }
+
     Map<Character, Integer> charToIntMap;
 
     public TextController()
@@ -47,19 +53,150 @@ public class TextController
     void processInput(String input)
     {
         input = input.toLowerCase();
-        String[] inputArray = input.split(" ");
+        String[] inputArray = input.split("\\s+");
         String arg1, arg2;
         switch (inputArray[0])
         {
         case "move":
-            if (inputArray.length != 3)
+            move(inputArray);
+            break;
+
+        case "validmoves":
+            validmoves(inputArray);
+            break;
+
+        case "castle":
+            castle(inputArray);
+            break;
+
+        case "quit":
+        case "exit":
+            if (exit(inputArray)) break;
+
+        case "refresh":
+            this.view.refresh();
+            break;
+
+        case "help":
+            this.view.help();
+            break;
+
+        default:
+            String message = "Unrecognized Command: " + input;
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            break;
+        }
+    }
+
+    /**
+     * Checks to be sure that "exit" was the only thing passed as input and then ends the program
+     * @param inputArray
+     * @return
+     */
+    private boolean exit(String[] inputArray) {
+        if (inputArray.length != 1)
+        {
+            String message = "The quit/exit commands do not take any arguments.";
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            return true;
+        }
+        System.exit(0);
+        return false;
+    }
+
+    /**
+     * Validate input for castle, load the Position objects, and pass the request on to model
+     * @param inputArray an array of two positions, one being a rook, and the other being a king
+     */
+    private void castle(String[] inputArray) {
+        String arg1, arg2;
+        boolean valid = true;
+        if (inputArray.length != 3)
+        {
+            String message = "The castle command requires two grid positions (e.g. castle a1 a2)";
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            return;
+        }
+        arg1 = inputArray[1];
+        arg2 = inputArray[2];
+        if(!validCoords.contains(String.valueOf(arg1.charAt(0)))) {
+            String message = "invalid coordinate: " + String.valueOf(arg1.charAt(0));
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            valid = false;
+        }
+        if(!validCoords.contains(String.valueOf(arg2.charAt(0)))) {
+            String message = "invalid coordinate: " + String.valueOf(arg2.charAt(0));
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            valid = false;
+        }
+        if(valid) {
+            try
             {
-                String message = "The move command requires two grid positions separated by a space (e.g. move a1 a2)";
-                model.setExceptionThrown(new IllegalArgumentException(message));
-                break;
+                if(charToIntMap.get(arg1.charAt(0)) != null && charToIntMap.get(arg2.charAt(0)) != null) {
+                    Position position1 = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+                    Position position2 = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+                    model.castle(position1, position2);
+
+                    this.model.incrementTurnCount();
+                    this.model.switchWhosTurn();
+                }
+            } catch (InvalidPositionException e)
+            {
+                model.setExceptionThrown(e);
             }
-            arg1 = inputArray[1];
-            arg2 = inputArray[2];
+        }
+    }
+
+    /**
+     * Request list of valid moves from the model and return them to the view
+     * @param inputArray an array containing the single position string passed by the user
+     */
+    private void validmoves(String[] inputArray) {
+        String arg1;
+        if (inputArray.length != 2)
+        {
+            String message = "The validmoves command requires one grid position (e.g. validmoves a1)";
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            return;
+        }
+        arg1 = inputArray[1];
+        try
+        {
+            Position position = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+            model.getValidNewPositions(position);
+        } catch (InvalidPositionException e)
+        {
+            model.setExceptionThrown(e);
+        }
+    }
+
+    /**
+     * Validates string input, loads into position objects, and moves pieces
+     * @param inputArray the two strings input by the user (old pos, new pos)
+     */
+    private void move(String[] inputArray) {
+        String arg1;
+        String arg2;
+        boolean valid = true;
+        if (inputArray.length != 3)
+        {
+            String message = "The move command requires two grid positions separated by a space (e.g. move a1 a2)";
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            return;
+        }
+        arg1 = inputArray[1];
+        arg2 = inputArray[2];
+        if(!validCoords.contains(String.valueOf(arg1.charAt(0)))) {
+            String message = "invalid coordinate: " + String.valueOf(arg1.charAt(0));
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            valid = false;
+        }
+        if(!validCoords.contains(String.valueOf(arg2.charAt(0)))) {
+            String message = "invalid coordinate: " + String.valueOf(arg2.charAt(0));
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            valid = false;
+        }
+        if(valid) {
             try
             {
                 Position curPos = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
@@ -72,66 +209,6 @@ public class TextController
             {
                 model.setExceptionThrown(e);
             }
-            break;
-        case "validmoves":
-            if (inputArray.length != 2)
-            {
-                String message = "The validmoves command requires one grid position (e.g. validmoves a1)";
-                model.setExceptionThrown(new IllegalArgumentException(message));
-                break;
-            }
-            arg1 = inputArray[1];
-            try
-            {
-                Position position = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                model.getValidNewPositions(position);
-            } catch (InvalidPositionException e)
-            {
-                model.setExceptionThrown(e);
-            }
-            break;
-        case "castle":
-            if (inputArray.length != 3)
-            {
-                String message = "The castle command requires two grid positions (e.g. castle a1 a2)";
-                model.setExceptionThrown(new IllegalArgumentException(message));
-                break;
-            }
-            arg1 = inputArray[1];
-            arg2 = inputArray[2];
-            try
-            {
-                Position position1 = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                Position position2 = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
-                model.castle(position1, position2);
-
-                this.model.incrementTurnCount();
-                this.model.switchWhosTurn();
-            } catch (InvalidPositionException e)
-            {
-                model.setExceptionThrown(e);
-            }
-            break;
-        case "quit":
-        case "exit":
-            if (inputArray.length != 1)
-            {
-                String message = "The quit/exit commands do not take any arguments.";
-                model.setExceptionThrown(new IllegalArgumentException(message));
-                break;
-            }
-            System.exit(0);
-
-        case "refresh":
-            this.view.refresh();
-            break;
-        case "help":
-            this.view.help();
-            break;
-        default:
-            String message = "Unrecognized Command: " + input;
-            model.setExceptionThrown(new IllegalArgumentException(message));
-            break;
         }
     }
 
