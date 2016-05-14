@@ -1,6 +1,6 @@
 # Chess
 
-Play chess against a friend locally, or challenge yourself to a game to prepare for your next challenger.
+Play chess against a friend locally, or challenge yourself to a game to improve your skills.
 
 ## Install
 
