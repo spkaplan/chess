@@ -1,8 +1,11 @@
 package main.java;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by brandon on 3/29/2016 at 4:44 PM as part of the chess project.
@@ -10,16 +13,10 @@ import java.util.Scanner;
 
 public class TextController
 {
+    private static final Set<Character> validColumns = new HashSet<Character>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'));
     private Model model;
     private TextView view;
-
-    private String validCoords = "abcdefh";
-
-    private enum validCommands {
-        move, validmoves, help, exit, quit, castle, refresh
-    }
-
-    Map<Character, Integer> charToIntMap;
+    private static Map<Character, Integer> charToIntMap;
 
     public TextController()
     {
@@ -52,9 +49,23 @@ public class TextController
      */
     void processInput(String input)
     {
+        if (input.length() == 0)
+        {
+            String message = "Command must contain one or more characters";
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            return;
+        }
         input = input.toLowerCase();
         String[] inputArray = input.split("\\s+");
-        String arg1, arg2;
+
+        /*Make sure command is not just whitespace*/
+        if (inputArray.length == 0)
+        {
+            String message = "Command must contain one or more non-whitespace characters";
+            model.setExceptionThrown(new IllegalArgumentException(message));
+            return;
+        }
+
         switch (inputArray[0])
         {
         case "move":
@@ -71,7 +82,8 @@ public class TextController
 
         case "quit":
         case "exit":
-            if (exit(inputArray)) break;
+            if (exit(inputArray))
+                break;
 
         case "refresh":
             this.view.refresh();
@@ -89,11 +101,14 @@ public class TextController
     }
 
     /**
-     * Checks to be sure that "exit" was the only thing passed as input and then ends the program
+     * Checks to be sure that "exit" was the only thing passed as input and then
+     * ends the program
+     * 
      * @param inputArray
      * @return
      */
-    private boolean exit(String[] inputArray) {
+    private boolean exit(String[] inputArray)
+    {
         if (inputArray.length != 1)
         {
             String message = "The quit/exit commands do not take any arguments.";
@@ -105,12 +120,15 @@ public class TextController
     }
 
     /**
-     * Validate input for castle, load the Position objects, and pass the request on to model
-     * @param inputArray an array of two positions, one being a rook, and the other being a king
+     * Validate input for castle, load the Position objects, and pass the
+     * request on to model
+     * 
+     * @param inputArray an array of two positions, one being a rook, and the
+     *            other being a king
      */
-    private void castle(String[] inputArray) {
+    private void castle(String[] inputArray)
+    {
         String arg1, arg2;
-        boolean valid = true;
         if (inputArray.length != 3)
         {
             String message = "The castle command requires two grid positions (e.g. castle a1 a2)";
@@ -119,39 +137,41 @@ public class TextController
         }
         arg1 = inputArray[1];
         arg2 = inputArray[2];
-        if(!validCoords.contains(String.valueOf(arg1.charAt(0)))) {
-            String message = "invalid coordinate: " + String.valueOf(arg1.charAt(0));
+        if (!validColumns.contains(arg1.charAt(0)))
+        {
+            String message = "Invalid column label: " + String.valueOf(arg1.charAt(0));
             model.setExceptionThrown(new IllegalArgumentException(message));
-            valid = false;
+            return;
         }
-        if(!validCoords.contains(String.valueOf(arg2.charAt(0)))) {
-            String message = "invalid coordinate: " + String.valueOf(arg2.charAt(0));
+        if (!validColumns.contains(arg2.charAt(0)))
+        {
+            String message = "Invalid column label: " + String.valueOf(arg2.charAt(0));
             model.setExceptionThrown(new IllegalArgumentException(message));
-            valid = false;
+            return;
         }
-        if(valid) {
-            try
-            {
-                if(charToIntMap.get(arg1.charAt(0)) != null && charToIntMap.get(arg2.charAt(0)) != null) {
-                    Position position1 = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                    Position position2 = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
-                    model.castle(position1, position2);
 
-                    this.model.incrementTurnCount();
-                    this.model.switchWhosTurn();
-                }
-            } catch (InvalidPositionException e)
-            {
-                model.setExceptionThrown(e);
-            }
+        try
+        {
+            Position position1 = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+            Position position2 = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+            model.castle(position1, position2);
+
+            this.model.incrementTurnCount();
+            this.model.switchWhosTurn();
+        } catch (InvalidPositionException e)
+        {
+            model.setExceptionThrown(e);
         }
     }
 
     /**
      * Request list of valid moves from the model and return them to the view
-     * @param inputArray an array containing the single position string passed by the user
+     * 
+     * @param inputArray an array containing the single position string passed
+     *            by the user
      */
-    private void validmoves(String[] inputArray) {
+    private void validmoves(String[] inputArray)
+    {
         String arg1;
         if (inputArray.length != 2)
         {
@@ -172,9 +192,11 @@ public class TextController
 
     /**
      * Validates string input, loads into position objects, and moves pieces
+     * 
      * @param inputArray the two strings input by the user (old pos, new pos)
      */
-    private void move(String[] inputArray) {
+    private void move(String[] inputArray)
+    {
         String arg1;
         String arg2;
         boolean valid = true;
@@ -186,33 +208,34 @@ public class TextController
         }
         arg1 = inputArray[1];
         arg2 = inputArray[2];
-        if(!validCoords.contains(String.valueOf(arg1.charAt(0)))) {
-            String message = "invalid coordinate: " + String.valueOf(arg1.charAt(0));
+        if (!validColumns.contains(arg1.charAt(0)))
+        {
+            String message = "Invalid column label: " + String.valueOf(arg1.charAt(0));
             model.setExceptionThrown(new IllegalArgumentException(message));
-            valid = false;
+            return;
         }
-        if(!validCoords.contains(String.valueOf(arg2.charAt(0)))) {
-            String message = "invalid coordinate: " + String.valueOf(arg2.charAt(0));
+        if (!validColumns.contains(arg2.charAt(0)))
+        {
+            String message = "Invalid column label: " + String.valueOf(arg2.charAt(0));
             model.setExceptionThrown(new IllegalArgumentException(message));
-            valid = false;
+            return;
         }
-        if(valid) {
-            try
-            {
-                Position curPos = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
-                Position newPos = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
-                model.movePiece(curPos, newPos);
+        try
+        {
+            Position curPos = new Position(8 - Character.getNumericValue(arg1.charAt(1)), charToIntMap.get(arg1.charAt(0)));
+            Position newPos = new Position(8 - Character.getNumericValue(arg2.charAt(1)), charToIntMap.get(arg2.charAt(0)));
+            model.movePiece(curPos, newPos);
 
-                this.model.incrementTurnCount();
-                this.model.switchWhosTurn();
-            } catch (InvalidPositionException | IllegalArgumentException e)
-            {
-                model.setExceptionThrown(e);
-            }
+            this.model.incrementTurnCount();
+            this.model.switchWhosTurn();
+        } catch (InvalidPositionException | IllegalArgumentException e)
+        {
+            model.setExceptionThrown(e);
         }
     }
 
-    public void setView(TextView view) {
+    public void setView(TextView view)
+    {
         this.view = view;
     }
 
