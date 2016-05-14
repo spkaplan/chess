@@ -2,6 +2,8 @@
 
 Play chess against a friend locally, or challenge yourself to a game to improve your skills.
 
+![](http://i.imgur.com/652MTO8.gif)
+
 ## Install
 
 ### Option 1: Build from source
