@@ -84,7 +84,6 @@ public class TextController
         input = input.toLowerCase();
         String[] inputArray = input.split("\\s+");
 
-        /*Make sure command contains more than just whitespace*/
         if (inputArray.length == 0)
         {
             String message = "Command must contain one or more non-whitespace characters";
@@ -144,20 +143,25 @@ public class TextController
     private void castle(String[] commandArgs) throws IllegalArgumentException, InvalidPositionException
     {
         String position1Arg = commandArgs[0];
-        String position2Arg = commandArgs[1];
+        char position1ArgColumn = position1Arg.charAt(0);
+        char position1ArgRow = position1Arg.charAt(1);
 
-        if (!validColumns.contains(position1Arg.charAt(0)))
+        String position2Arg = commandArgs[1];
+        char position2ArgColumn = position2Arg.charAt(0);
+        char position2ArgRow = position2Arg.charAt(1);
+
+        if (!validColumns.contains(position1ArgColumn))
         {
-            String message = "Invalid column label: " + String.valueOf(position1Arg.charAt(0));
+            String message = "Invalid column label: " + String.valueOf(position1ArgColumn);
             throw new IllegalArgumentException(message);
         }
-        if (!validColumns.contains(position2Arg.charAt(0)))
+        if (!validColumns.contains(position1ArgColumn))
         {
-            String message = "Invalid column label: " + String.valueOf(position2Arg.charAt(0));
+            String message = "Invalid column label: " + String.valueOf(position1ArgColumn);
             throw new IllegalArgumentException(message);
         }
-        Position position1 = new Position(8 - Character.getNumericValue(position1Arg.charAt(1)), charToIntMap.get(position1Arg.charAt(0)));
-        Position position2 = new Position(8 - Character.getNumericValue(position2Arg.charAt(1)), charToIntMap.get(position2Arg.charAt(0)));
+        Position position1 = new Position(8 - Character.getNumericValue(position1ArgRow), charToIntMap.get(position1ArgColumn));
+        Position position2 = new Position(8 - Character.getNumericValue(position2ArgRow), charToIntMap.get(position2ArgColumn));
         model.castle(position1, position2);
 
         this.model.incrementTurnCount();
@@ -174,13 +178,15 @@ public class TextController
     private void validmoves(String[] commandArgs) throws InvalidPositionException
     {
         String positionArg = commandArgs[0];
+        char positionArgColumn = positionArg.charAt(0);
+        char positionArgRow = positionArg.charAt(1);
 
-        if (!validColumns.contains(positionArg.charAt(0)))
+        if (!validColumns.contains(positionArgColumn))
         {
-            String message = "Invalid column label: " + String.valueOf(positionArg.charAt(0));
+            String message = "Invalid column label: " + String.valueOf(positionArgColumn);
             throw new IllegalArgumentException(message);
         }
-        Position position = new Position(8 - Character.getNumericValue(positionArg.charAt(1)), charToIntMap.get(positionArg.charAt(0)));
+        Position position = new Position(8 - Character.getNumericValue(positionArgRow), charToIntMap.get(positionArgColumn));
 
         model.getValidNewPositions(position);
     }
@@ -195,20 +201,25 @@ public class TextController
     private void move(String[] commandArgs) throws IllegalArgumentException, InvalidPositionException
     {
         String startPosition = commandArgs[0];
-        String endPosition = commandArgs[1];
+        char startPositionColumn = startPosition.charAt(0);
+        char startPositionRow = startPosition.charAt(1);
 
-        if (!validColumns.contains(startPosition.charAt(0)))
+        String endPosition = commandArgs[1];
+        char endPositionColumn = endPosition.charAt(0);
+        char endPositionRow = endPosition.charAt(1);
+
+        if (!validColumns.contains(startPositionColumn))
         {
-            String message = "Invalid column label: " + String.valueOf(startPosition.charAt(0));
+            String message = "Invalid column label: " + String.valueOf(startPositionColumn);
             throw new IllegalArgumentException(message);
         }
-        if (!validColumns.contains(endPosition.charAt(0)))
+        if (!validColumns.contains(endPositionColumn))
         {
-            String message = "Invalid column label: " + String.valueOf(endPosition.charAt(0));
+            String message = "Invalid column label: " + String.valueOf(endPositionColumn);
             throw new IllegalArgumentException(message);
         }
-        Position curPos = new Position(8 - Character.getNumericValue(startPosition.charAt(1)), charToIntMap.get(startPosition.charAt(0)));
-        Position newPos = new Position(8 - Character.getNumericValue(endPosition.charAt(1)), charToIntMap.get(endPosition.charAt(0)));
+        Position curPos = new Position(8 - Character.getNumericValue(startPositionRow), charToIntMap.get(startPositionColumn));
+        Position newPos = new Position(8 - Character.getNumericValue(endPositionRow), charToIntMap.get(endPositionColumn));
         model.movePiece(curPos, newPos);
 
         this.model.incrementTurnCount();
