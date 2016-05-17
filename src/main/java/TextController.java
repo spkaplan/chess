@@ -188,7 +188,7 @@ public class TextController
         }
         Position position = new Position(8 - Character.getNumericValue(positionArgRow), charToIntMap.get(positionArgColumn));
 
-        model.getValidNewPositions(position);
+        this.view.showValidMoves(model.getValidNewPositions(position));
     }
 
     /**
@@ -255,7 +255,7 @@ public class TextController
                 processInput(input);
             } catch (IllegalArgumentException | InvalidPositionException ex)
             {
-                model.setExceptionThrown(ex);
+                this.view.showMessage(ex.getMessage());
             }
             this.model.notifyObservers();
         }
