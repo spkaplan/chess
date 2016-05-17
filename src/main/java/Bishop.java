@@ -1,9 +1,10 @@
 package main.java;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bishop extends Piece
+public class Bishop extends Piece implements Serializable
 {
     List<RelativePosition> possibleMoves;
 

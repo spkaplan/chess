@@ -1,9 +1,10 @@
 package main.java;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoPiece extends Piece
+public class NoPiece extends Piece implements Serializable
 {
     public NoPiece()
     {

@@ -1,9 +1,10 @@
 package main.java;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pawn extends Piece
+public class Pawn extends Piece implements Serializable
 {
     List<RelativePosition> possibleMovesInitial;
     List<RelativePosition> possibleMovesRegular;
