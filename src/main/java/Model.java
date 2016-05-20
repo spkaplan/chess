@@ -11,8 +11,6 @@ public class Model extends Observable
     private Board board;
     private PieceColor whosTurn;
     private int turnCount;
-    private List<Position> validMoves;
-    private Exception exceptionThrown;
     private boolean isCheck;
     private boolean isCheckmate;
 
@@ -22,16 +20,6 @@ public class Model extends Observable
         this.whosTurn = PieceColor.WHITE;
         this.turnCount = 1;
         setChanged();
-    }
-
-    public List<Position> getValidMoves()
-    {
-        return this.validMoves;
-    }
-
-    public Exception getExceptionThrown()
-    {
-        return this.exceptionThrown;
     }
 
     public boolean getIsCheck()
@@ -60,16 +48,8 @@ public class Model extends Observable
      */
     public void clearTempStates()
     {
-        this.exceptionThrown = null;
-        this.validMoves = null;
         this.isCheck = false;
         this.isCheckmate = false;
-    }
-
-    public void setExceptionThrown(Exception exceptionThrown)
-    {
-        this.exceptionThrown = exceptionThrown;
-        setChanged();
     }
 
     public void setIsCheck(boolean isCheck)
@@ -133,12 +113,11 @@ public class Model extends Observable
      * 
      * @param position the position of the piece the user requested valid moves
      *            for
+     * @return A list of the valid positions for the given piece to move to.
      */
-    void getValidNewPositions(Position position)
+    List<Position> getValidNewPositions(Position position)
     {
-        List<Position> validNewPositions = this.board.getValidNewPositions(position);
-        this.validMoves = validNewPositions;
-        setChanged();
+        return this.board.getValidNewPositions(position);
     }
 
     /**

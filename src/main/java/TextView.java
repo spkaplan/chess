@@ -1,9 +1,13 @@
 package main.java;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * Created by brand on 3/29/2016.
@@ -16,7 +20,7 @@ public class TextView implements Observer
     private final static String VERTICAL_BAR = " | ";
     private static Map<Integer, Character> intToChar;
     private static Map<Integer, Integer> intRowConversion;
-    private static Model model;
+    private Model model;
     String helpList = buildHelpString();
 
     public TextView()
@@ -57,7 +61,8 @@ public class TextView implements Observer
         intRowConversion.put(7, 1);
     }
 
-    String buildHelpString() {
+    String buildHelpString()
+    {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("move [pos 1] [pos 2] : moves piece at pos 1 to pos 2" + "\n");
@@ -77,13 +82,7 @@ public class TextView implements Observer
     {
         this.model = (Model) o;
 
-        if (model.getValidMoves() != null)
-        {
-            showValidMoves(model.getValidMoves());
-        } else if (model.getExceptionThrown() != null)
-        {
-            System.out.println(model.getExceptionThrown().getMessage());
-        } else if (model.getIsCheck() == true)
+        if (model.getIsCheck() == true)
         {
             System.out.println(model.getWhosTurn() + " is in check.");
         } else if (model.getIsCheckmate() == true)
@@ -99,7 +98,8 @@ public class TextView implements Observer
     /**
      * Redisplays the view using the last model that was passed to the view
      */
-    void refresh() {
+    void refresh()
+    {
         drawHeader(model);
         drawBoard(model.getBoard());
     }
@@ -107,8 +107,14 @@ public class TextView implements Observer
     /**
      * displays a list of available commands to the user
      */
-    void help() {
+    void help()
+    {
         System.out.println(helpList);
+    }
+
+    void showMessage(String message)
+    {
+        System.out.println(message);
     }
 
     /**
