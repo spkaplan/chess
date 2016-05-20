@@ -110,7 +110,7 @@ public class Board implements Serializable
 
         } else
         {
-            String msg = "Unable to move piece from row=" + currPosition.getRow() + ", col=" + currPosition.getColumn() + " to row=" + newPosition.getRow() + ", col=" + newPosition.getColumn();
+            String msg = "Invalid move.";
             throw new InvalidPositionException(msg);
         }
     }

@@ -19,7 +19,7 @@ public class Position
             this.row = row;
         } else
         {
-            String msg = "Row value=" + row + " is out of bounds.";
+            String msg = "Invalid row value.";
             throw new InvalidPositionException(msg);
         }
 
@@ -29,7 +29,7 @@ public class Position
             this.column = column;
         } else
         {
-            String msg = "Column value=" + column + " is out of bounds.";
+            String msg = "Invalid column value.";
             throw new InvalidPositionException(msg);
         }
     }

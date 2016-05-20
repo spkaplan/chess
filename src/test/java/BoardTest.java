@@ -2,14 +2,15 @@ package test.java;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import org.junit.Test;
+
 import main.java.Board;
 import main.java.InvalidPositionException;
 import main.java.Piece;
 import main.java.PieceColor;
 import main.java.PieceType;
 import main.java.Position;
-
-import org.junit.Test;
 
 public class BoardTest
 {
