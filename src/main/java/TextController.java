@@ -140,10 +140,17 @@ public class TextController
     private void castle(String[] commandArgs) throws IllegalArgumentException, InvalidPositionException
     {
         String position1Arg = commandArgs[0];
+
+        String position2Arg = commandArgs[1];
+
+        if (position1Arg.length() > 2 || position2Arg.length() > 2)
+        {
+            String msg = "Position argument cannot be longer than two characters.";
+            throw new IllegalArgumentException(msg);
+        }
         char position1ArgColumn = position1Arg.charAt(0);
         char position1ArgRow = position1Arg.charAt(1);
 
-        String position2Arg = commandArgs[1];
         char position2ArgColumn = position2Arg.charAt(0);
         char position2ArgRow = position2Arg.charAt(1);
 
@@ -179,6 +186,12 @@ public class TextController
     private void validmoves(String[] commandArgs) throws InvalidPositionException
     {
         String positionArg = commandArgs[0];
+
+        if (positionArg.length() > 2)
+        {
+            String msg = "Position argument cannot be longer than two characters.";
+            throw new IllegalArgumentException(msg);
+        }
         char positionArgColumn = positionArg.charAt(0);
         char positionArgRow = positionArg.charAt(1);
 
@@ -208,10 +221,17 @@ public class TextController
     private void move(String[] commandArgs) throws IllegalArgumentException, InvalidPositionException
     {
         String startPositionArg = commandArgs[0];
+        String endPositionArg = commandArgs[1];
+
+        if (startPositionArg.length() > 2 || endPositionArg.length() > 2)
+        {
+            String msg = "Position argument cannot be longer than two characters.";
+            throw new IllegalArgumentException(msg);
+
+        }
         char startPositionArgColumn = startPositionArg.charAt(0);
         char startPositionArgRow = startPositionArg.charAt(1);
 
-        String endPositionArg = commandArgs[1];
         char endPositionArgColumn = endPositionArg.charAt(0);
         char endPositionArgRow = endPositionArg.charAt(1);
 
